@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IContainerDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="Container">
+	
+		<result column="ID" property="id" />
+		<result column="CONTAINER_NAME" property="containerName" />
+		<result column="MOUNT_DIR" property="mountDir" />
+		<result column="ZOOKEEPER_ID" property="zookeeperId" />
+		<result column="IP_ADDR" property="ipAddr" />
+		<result column="GATE_ADDR" property="gateAddr" />
+		<result column="IP_MASK" property="ipMask" />
+		<result column="CLUSTER_NODE_NAME" property="clusterNodeName" />
+		<result column="ASSIGN_NAME" property="assignName" />
+		<result column="ORIGIN_NAME" property="originName" />
+		<result column="TYPE" property="type" />
+
+		<result column="DISK_SIZE" property="diskSize" />
+		<result column="CORES_NUMBER" property="coresNumber" />
+		<result column="CPU_SPEED" property="cpuSpeed" />
+		<result column="MEMORY_SIZE" property="memorySize" />
+		
+		<result column="HOST_ID" property="hostId" />
+		<result column="CLUSTER_ID" property="clusterId" />
+		
+		<result column="STATUS" property="status" />
+		<result column="IS_DELETED" property="isDeleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<!-- WEBPORTAL_CONTAINER table all fields -->
+	<sql id="Base_Column_List">
+		ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
+		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Container">
+		insert into
+		WEBPORTAL_CONTAINER
+		(ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
+		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values
+		(UUID(),#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
+		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{clusterId},#{status},'1',now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="Container">
+		delete from WEBPORTAL_CONTAINER where ID = #{id}
+	</update>
+	
+	<!-- 逻辑删除，将deleted 改成 0或1 -->
+	<update id="updateFlag" parameterType="Container">
+		update WEBPORTAL_CONTAINER set
+		<if test="isDeleted != null  ">
+			IS_DELETED=#{isDeleted}
+		</if>
+		where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER where ID = #{id}
+	</select>
+	<!-- 根据db id查询-->
+	<select id="selectByClusterId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER where CLUSTER_ID = #{clusterId}
+	</select>
+	
+</mapper>   

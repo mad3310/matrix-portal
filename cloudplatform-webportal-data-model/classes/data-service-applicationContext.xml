@@ -12,7 +12,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.letv.mms" />
 	
-	<bean id="init" class="com.letv.mms.service.impl.InitCacheServiceImpl" init-method="init" />
+	<!-- <bean id="init" class="com.letv.mms.service.impl.InitCacheServiceImpl" init-method="init" /> -->
 	
   	
 </beans>

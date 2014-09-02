@@ -3,7 +3,6 @@
   <comment>cloud platform web portal</comment>
   <projects>
     <project>webportal-common</project>
-    <project>webportal-data-model</project>
   </projects>
   <buildSpec>
     <buildCommand>

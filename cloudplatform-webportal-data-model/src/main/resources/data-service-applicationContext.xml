@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 	
 	<context:annotation-config />
-	<context:component-scan base-package="com.letv.mms" />
+	<context:component-scan base-package="com.letv.portal" />
 	
 	<!-- <bean id="init" class="com.letv.mms.service.impl.InitCacheServiceImpl" init-method="init" /> -->
 	

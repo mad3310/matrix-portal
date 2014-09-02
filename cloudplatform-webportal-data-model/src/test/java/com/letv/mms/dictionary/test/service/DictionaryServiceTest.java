@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.springframework.util.Assert;
 
 import com.letv.mms.base.AbstractTestCase;
-import com.letv.mms.model.DictionaryModel;
-import com.letv.mms.service.IDictionaryService;
+import com.letv.portal.model.DictionaryModel;
+import com.letv.portal.service.IDictionaryService;
 
 
 public class DictionaryServiceTest extends AbstractTestCase {
@@ -34,7 +34,7 @@ public class DictionaryServiceTest extends AbstractTestCase {
 	public void testSelectById()
 	{
 		DictionaryModel model=null;
-		model=dictionaryProxy.selectById(10000l);
+		model=dictionaryProxy.selectById("100001");
 		Assert.notNull(model);
 	}
 	@Test

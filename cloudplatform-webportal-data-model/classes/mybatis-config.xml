@@ -5,7 +5,7 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="Star" type="com.letv.mms.model.StarModel" />
-        <typeAlias alias="Content" type="com.letv.mms.model.ContentModel" />
+       <!--  <typeAlias alias="Content" type="com.letv.mms.model.ContentModel" />
         <typeAlias alias="Subcontent" type="com.letv.mms.model.SubcontentModel" />
         <typeAlias alias="EPMeta" type="com.letv.mms.model.EPMetaModel" />
         <typeAlias alias="DatetimeIndEPV" type="com.letv.mms.model.DatetimeIndEPVModel" />
@@ -15,13 +15,13 @@
         <typeAlias alias="TextIndEPV" type="com.letv.mms.model.TextIndEPVModel" />
         <typeAlias alias="VarcharIndEPV" type="com.letv.mms.model.VarcharIndEPVModel" />
         <typeAlias alias="ParentChildContentRel" type="com.letv.mms.model.ParentChildContentRelModel" />
-        <typeAlias alias="EPCheck" type="com.letv.mms.model.EPCheckModel" />
+        <typeAlias alias="EPCheck" type="com.letv.mms.model.EPCheckModel" /> -->
 
         <typeAlias alias="Dictionary" type="com.letv.mms.model.DictionaryModel" />
         <typeAlias alias="DictionaryType" type="com.letv.mms.model.DictionaryTypeModel" />
-		<typeAlias alias="PropertyCategory" type="com.letv.mms.model.PropertyCategoryModel" />
+		<!-- <typeAlias alias="PropertyCategory" type="com.letv.mms.model.PropertyCategoryModel" />
 		<typeAlias alias="ColumnInfo" type="com.letv.mms.model.ColumnInfoModel" />
 		<typeAlias alias="ColumnLayoutRelation" type="com.letv.mms.model.ColumnLayoutRelationModel" />
-		<typeAlias alias="ContentSubcontentRel" type="com.letv.mms.model.ContentSubcontentRelModel" />
+		<typeAlias alias="ContentSubcontentRel" type="com.letv.mms.model.ContentSubcontentRelModel" /> -->
     </typeAliases>
 </configuration>

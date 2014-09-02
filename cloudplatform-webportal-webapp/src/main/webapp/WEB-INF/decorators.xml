@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/layouts/">
+	<excludes>
+		<pattern>/static/*</pattern>
+		<pattern>/account/login</pattern>
+		
+		<!-- 异步请求 -->
+		<pattern>/db/list/data*</pattern>
+		<pattern>/db/list/dbApplyInfo*</pattern>
+		<pattern>/mcluster/list/mgrData*</pattern>
+		<pattern>/db/list/mgrMclusterInfo*</pattern>
+	</excludes>
+	
+	<decorator name="default" page="default.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>
+ 

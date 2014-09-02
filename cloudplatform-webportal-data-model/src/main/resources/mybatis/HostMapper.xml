@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IHostDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="Host">
+		<result column="ID" property="id" />
+		<result column="HOST_NAME" property="hostName" />
+		<result column="HOST_IP" property="hostIp" />
+		<result column="NODES_NUMBER" property="nodesNumber" />
+		<result column="HOST_MODEL" property="hostModel" />
+		<result column="CPU_MODEL" property="cpuModel" />
+		<result column="CORES_NUMBER" property="coresNumber" />
+		<result column="MEMORY_SIZE" property="memorySize" />
+		<result column="DISK_SIZE" property="diskSize" />
+		<result column="DISK_USED" property="diskUsed" />
+		
+		<result column="STATUS" property="status" />
+		<result column="IS_DELETED" property="isDeleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and ID=#{id}
+			</if>
+			<if test="hostName != null  and hostName != '' ">
+				and HOST_NAME like CONCAT('%','${hostName}','%')
+			</if>
+			<if test="hostIp != null  and hostIp != '' ">
+				and HOST_IP like CONCAT('%','${hostIp}','%')
+			</if>
+			
+		</trim>
+	</sql>
+	
+	<!-- WEBPORTAL_Host table all fields -->
+	<sql id="Base_Column_List">
+		ID,HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED
+		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Host">
+		insert into
+		WEBPORTAL_HOST
+		(ID,HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED
+		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values
+		(UUID(),#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
+		#{status},'1',now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="Host">
+		delete from WEBPORTAL_HOST where ID = #{id}
+	</update>
+	
+	<!-- 逻辑删除，将deleted 改成 0或1 -->
+	<update id="updateFlag" parameterType="Host">
+		update WEBPORTAL_HOST set
+		<if test="isDeleted != null  ">
+			IS_DELETED=#{isDeleted}
+		</if>
+		where ID = #{id}
+	</update>
+	
+	<!--修改node数量 -->
+	<update id="updateNodesNumber" parameterType="Host">
+		update WEBPORTAL_HOST set
+		<if test="nodesNumber != null  ">
+			NODES_NUMBER=#{nodesNumber}
+		</if>
+		where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_HOST where ID = #{id}
+	</select>
+	
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_HOST
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+</mapper>   

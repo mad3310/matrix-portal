@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.letv.common.util.HttpUtil;
-import com.letv.mms.api.base.AbstractTestCase;
+import com.letv.mms.base.AbstractTestCase;
 
 public class DeomTest extends AbstractTestCase {
 

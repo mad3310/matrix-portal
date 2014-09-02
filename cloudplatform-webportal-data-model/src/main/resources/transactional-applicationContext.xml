@@ -22,7 +22,10 @@
  	<tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="select*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
             <tx:method name="insert*" />
+            <tx:method name="modify*" />
             <tx:method name="add*"/>
             <tx:method name="update*"/>
             <tx:method name="delete*"/>
@@ -31,7 +34,7 @@
     </tx:advice>
     
     <aop:config>
-        <aop:advisor pointcut="execution(public * com.letv.mms.service..*(..))" advice-ref="txAdvice"/>
+        <aop:advisor pointcut="execution(public * com.letv.portal.service..*(..))" advice-ref="txAdvice"/>
     </aop:config>
   	
 </beans>

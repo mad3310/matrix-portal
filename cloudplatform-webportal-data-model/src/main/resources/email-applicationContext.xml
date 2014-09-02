@@ -16,17 +16,17 @@
     
     <bean id="simpleTextEmailService" class="com.letv.common.email.SimpleTextEmailSenderImpl">
         <property name="mailSender" ref="mailSender"/>
-        <property name="mailFrom" value="tvoskf@letv.com"/>
+        <property name="mailFrom" value="liuhao1@letv.com"/>
     </bean>
     
     <!-- MailSender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="username" value="tvoskf" />
-        <property name="password" value="Passw0rd@123" />
+        <property name="username" value="liuhao1" />
+        <property name="password" value="Passw0rd" />
         <property name="javaMailProperties">
             <props>
-                <prop key="mail.smtp.user">tvoskf@letv.com</prop>
-                <prop key="mail.smtp.password">Passw0rd@123</prop>
+                <prop key="mail.smtp.user">liuhao1@letv.com</prop>
+                <prop key="mail.smtp.password">Passw0rd</prop>
                 <prop key="mail.smtp.host">mail.letv.com</prop>
                 <prop key="mail.smtp.port">25</prop>
                 <prop key="mail.smtp.auth">true</prop>

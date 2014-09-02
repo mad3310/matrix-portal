@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IDbApplyStandardDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="DbStandard">
+		<result column="ID" property="id" />
+		<result column="APPLY_CODE" property="applyCode" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="VERSION" property="version" />
+		<result column="BACKUP_CYCLE" property="backupCycle" />
+		<result column="IS_EMAIL_NOTICE" property="isEmailNotice" />
+		<result column="DESCN" property="descn" />
+		<result column="MAX_CONCURRENCY" property="maxConcurrency" />
+		<result column="ENGINE_TYPE" property="engineType" />
+		<result column="FROM_DB_IP" property="fromDbIp" />
+		<result column="FROM_DB_PORT" property="fromDbPort" />
+		<result column="FROM_DB_NAME" property="fromDbName" />
+		<result column="DATA_LIMIT_IP_LIST" property="dataLimitIpList" />
+		<result column="MGR_LIMIT_IP_LIST" property="mgrLimitIpList" />
+		<result column="READ_WRITER_RATE" property="readWriterRate" />
+		<result column="DEVELOP_LANGUAGE" property="developLanguage" />
+		<result column="LINK_TYPE" property="linkType" />
+		<result column="MAX_QUERIES_PER_HOUR" property="maxQueriesPerHour" />
+		<result column="MAX_UPDATES_PER_HOUR" property="maxUpdatesPerHour" />
+		<result column="MAX_CONNECTIONS_PER_HOUR" property="maxConnectionsPerHour" />
+		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
+		<result column="BELONG_DB" property="belongDb" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="AUDIT_USER" property="auditUser" />
+		<result column="AUDIT_INFO" property="auditInfo" />
+		<result column="CLUSTER_ID" property="clusterId" />
+		<result column="STATUS" property="status" />
+		<result column="IS_DELETED" property="isDeleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<!-- WEBPORTAL_DB_APPLY_STANDARD table all fields -->
+	<sql id="Base_Column_List">
+		ID,APPLY_CODE,APPLY_NAME,VERSION,BACKUP_CYCLE,IS_EMAIL_NOTICE,DESCN,MAX_CONCURRENCY,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
+		DATA_LIMIT_IP_LIST,MGR_LIMIT_IP_LIST,READ_WRITER_RATE,DEVELOP_LANGUAGE,LINK_TYPE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,
+		MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,BELONG_DB,AUDIT_TIME,AUDIT_USER,STATUS,AUDIT_INFO,CLUSTER_ID,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="DbStandard">
+		insert into
+		WEBPORTAL_DB_APPLY_STANDARD
+		(ID,APPLY_CODE,APPLY_NAME,VERSION,BACKUP_CYCLE,IS_EMAIL_NOTICE,DESCN,MAX_CONCURRENCY,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
+		DATA_LIMIT_IP_LIST,MGR_LIMIT_IP_LIST,READ_WRITER_RATE,DEVELOP_LANGUAGE,LINK_TYPE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,
+		MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,BELONG_DB,AUDIT_TIME,AUDIT_USER,STATUS,AUDIT_INFO,CLUSTER_ID,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values
+		(UUID(),#{applyCode},#{applyName},#{version},#{backupCycle},#{isEmailNotice},#{descn},#{maxConcurrency},#{engineType},#{fromDbIp},#{fromDbPort},#{fromDbName},
+		#{dataLimitIpList},#{mgrLimitIpList},#{readWriterRate},#{developLanguage},#{linkType},#{maxQueriesPerHour},#{maxUpdatesPerHour},
+		#{maxConnectionsPerHour},#{maxUserConnections},#{belongDb},#{auditTime},#{auditUser},'0',#{auditInfo},#{clusterId},'1',now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="DbStandard">
+		delete from WEBPORTAL_DB_APPLY_STANDARD where ID = #{id}
+	</update>
+	
+	<!-- 逻辑删除，将deleted 改成 0或1 -->
+	<update id="updateFlag" parameterType="DbStandard">
+		update WEBPORTAL_DB_APPLY_STANDARD set
+		<if test="isDeleted != null  ">
+			IS_DELETED=#{isDeleted}
+		</if>
+		where ID = #{id}
+	</update>
+	<!--  审批状态， -->
+	<update id="audit" parameterType="DbStandard">
+		update WEBPORTAL_DB_APPLY_STANDARD
+		<set>
+			<if test="status != null  ">
+				status=#{status},
+			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo}
+			</if>
+		</set>
+		where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB_APPLY_STANDARD where ID = #{id}
+	</select>
+	<!-- 根据db id查询-->
+	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB_APPLY_STANDARD where BELONG_DB = #{belongDb}
+	</select>
+	
+</mapper>   

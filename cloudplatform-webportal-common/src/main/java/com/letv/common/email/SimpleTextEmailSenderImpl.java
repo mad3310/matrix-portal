@@ -71,7 +71,7 @@ public class SimpleTextEmailSenderImpl implements SimpleTextEmailSender {
         try {
             log.info("sending email to {} ...", email);
             this.mailSender.send(mailMessage);
-            log.info("successful sent email to {}" + email);
+            log.info("successful sent email to {}" , email);
         } catch (MailException ex) {
             log.warn("An exception occured when trying to send email", ex);
             // ignore it and let it go

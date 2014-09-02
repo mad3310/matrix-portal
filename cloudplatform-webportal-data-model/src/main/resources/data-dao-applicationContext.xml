@@ -14,7 +14,7 @@
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.letv.mms.dao" />
+        <property name="basePackage" value="com.letv.portal.dao" />
     </bean>
     
 </beans>

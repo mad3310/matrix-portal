@@ -40,6 +40,9 @@ public class ResultObject implements Serializable {
 	 * @param result
 	 *            result
 	 */
+	public ResultObject() {
+		this.result = 1;
+	}
 	public ResultObject(int result) {
 		this.result = result;
 	}
