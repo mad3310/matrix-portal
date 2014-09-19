@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IBuildDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="build">
+		<result column="ID" property="id" />
+		<result column="MCLUSTER_ID" property="mclusterId" />
+		<result column="DB_ID" property="dbId" />
+		<result column="STEP" property="step" />
+		<result column="STEP_MSG" property="stepMsg" />
+		<result column="STATUS" property="status" />
+		<result column="CODE" property="code" />
+		<result column="MSG" property="msg" />
+		<result column="START_TIME" property="startTime" />
+		<result column="END_TIME" property="endTime" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and ID=#{id}
+			</if>
+			<if test="mclusterId != null  and mclusterId != '' ">
+				and MCLUSTER_ID=#{mclusterId}
+			</if>
+			<if test="dbId != null  and dbId != '' ">
+				and DB_ID=#{dbId}
+			</if>
+			
+		</trim>
+	</sql>
+	
+	<!-- WEBPORTAL_BUILD table all fields -->
+	<sql id="Base_Column_List">
+		ID,MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="build">
+		insert into
+		WEBPORTAL_BUILD
+		(ID,MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME)
+		values
+		(UUID(),#{mclusterId},#{dbId},#{step},#{stepMsg},#{status},#{code},#{msg},#{startTime},#{endTime})
+	</insert>
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="build">
+		update WEBPORTAL_BUILD set
+		#{id},MCLUSTER_ID=#{mclusterId},DB_ID=#{dbId},STEP=#{step},STEP_MSG=#{stepMsg},STATUS=#{status},CODE=#{code},MSG=#{msg},START_TIME=#{startTime},END_TIME=#{endTime}
+		where MCLUSTER_ID=#{mclusterId} and STEP=#{step}
+	</update>
+	<update id="updateBySelective" parameterType="build">
+		update WEBPORTAL_BUILD
+		<set>
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId},
+			</if>
+			<if test="dbId != null  ">
+				DB_ID=#{dbId},
+			</if>
+			<if test="step != null  ">
+				STEP=#{step},
+			</if>
+			<if test="stepMsg != null  ">
+				STEP_MSG=#{stepMsg},
+			</if>
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="code != null  ">
+				CODE=#{code},
+			</if>
+			<if test="msg != null  ">
+				MSG=#{msg},
+			</if>
+			<if test="startTime != null  ">
+				START_TIME=#{startTime},
+			</if>
+			<if test="endTime != null  ">
+				END_TIME=#{endTime},
+			</if>
+		</set>
+		where MCLUSTER_ID=#{mclusterId} and STEP=#{step}
+	</update>
+	<update id="updateStatusFail" parameterType="build">
+		update WEBPORTAL_BUILD
+		<set>
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="code != null  ">
+				CODE=#{code},
+			</if>
+			<if test="msg != null  ">
+				MSG=#{msg},
+			</if>
+			<if test="startTime != null  ">
+				START_TIME=#{startTime},
+			</if>
+			<if test="endTime != null  ">
+				END_TIME=#{endTime},
+			</if>
+		</set>
+		where MCLUSTER_ID=#{mclusterId} and STATUS='building'
+	</update>
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="build">
+		delete from WEBPORTAL_BUILD where ID = #{id}
+	</update>
+	
+	<!-- 根据mclusterId查询-->
+	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
+	</select>
+	
+	<!-- 根据dbId查询-->
+	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_BUILD where DB_ID = #{dbId} ORDER BY STEP
+	</select>
+	
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_BUILD
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+</mapper>   

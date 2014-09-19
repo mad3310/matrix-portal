@@ -19,6 +19,7 @@ public class DbModel extends BaseModel {
 	private MclusterModel cluster; //所属cluster
 
 	private String status; //状态
+	private String auditInfo; //状态
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
@@ -30,10 +31,11 @@ public class DbModel extends BaseModel {
 		this.id = id;
 		this.status = status;
 	}
-	public DbModel(String id,String status,String clusterId){
+	public DbModel(String id,String status,String clusterId,String auditInfo){
 		this.id = id;
 		this.status = status;
 		this.clusterId = clusterId;
+		this.auditInfo = auditInfo;
 	}
 	
 	public String getId() {
@@ -97,6 +99,13 @@ public class DbModel extends BaseModel {
 	}
 	public void setCluster(MclusterModel cluster) {
 		this.cluster = cluster;
+	}
+	
+	public String getAuditInfo() {
+		return auditInfo;
+	}
+	public void setAuditInfo(String auditInfo) {
+		this.auditInfo = auditInfo;
 	}
 	@Override
 	public String toString() {

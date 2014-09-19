@@ -17,6 +17,7 @@
         <typeAlias alias="Host" type="com.letv.portal.model.HostModel" />
         <typeAlias alias="IpResource" type="com.letv.portal.model.IpResourceModel" />
         <typeAlias alias="DbUser" type="com.letv.portal.model.DbUserModel" />
+        <typeAlias alias="build" type="com.letv.portal.model.BuildModel" />
         
         
         

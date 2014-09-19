@@ -14,13 +14,13 @@
     <import resource="classpath*:data-service-applicationContext.xml" />
     <import resource="classpath*:transactional-applicationContext.xml" />
     <import resource="classpath*:email-applicationContext.xml" />
+    <import resource="classpath*:freemarker-applicationContext.xml" />
     
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath*:jdbc.properties</value>
-                <value>classpath:config.properties</value>
-               <!--  <value>classpath:ApproveRule.properties</value> -->
+                <value>classpath*:config.properties</value>
             </list>
         </property>
     </bean>

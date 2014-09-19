@@ -6,9 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
@@ -19,9 +17,9 @@ import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.dao.IMclusterDao;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.Result;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
@@ -44,6 +42,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	
 	@Resource
 	private IIpResourceDao ipResourceDao;
+	
 	@Resource
 	private IHostService hostService;
 	
@@ -71,36 +70,6 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		page.setTotalRecords(this.mclusterDao.selectByMapCount(params));
 		return page;
 		
-	}
-
-	@Override
-	public String build(String mclusterId) {
-		
-		MclusterModel mcluster = this.mclusterDao.selectById(mclusterId);
-		//判断是否已创建
-		if("0".equals(mcluster.getStatus())) {
-			
-			List<ContainerModel> containers = this.containerDao.selectByClusterId(mclusterId);
-			String json=null;
-			ObjectMapper mapper = null;
-			RestTemplate  rest = new RestTemplate();
-			try {
-				mapper = new ObjectMapper();
-				json = mapper.writeValueAsString(containers);// 把map或者是list转换成
-				//创建
-				String result = rest.postForObject("", null, String.class);
-			
-				Result r = mapper.readValue(result, Result.class);
-				
-				if(SUCCESS_CODE.equals(r.getCode())){
-					//初始化
-					result = rest.postForObject("", null, String.class);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -153,6 +122,42 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	@Override
 	public void buildNotice(String clusterId,String flag) {
 		this.mclusterDao.audit(new MclusterModel(clusterId,flag));
+	}
+
+	@Override
+	public String build(MclusterModel mclusterModel) {
+		
+		/*
+		 * Mcluster创建过程：
+		 * 1、根据mclusterName创建一条数据，存到数据库
+		 * 2、执行pythonService.createContainer.
+		 * 3、数据库写入mcluster 数据库写入一组container
+		 * 4、循环执行pythonService。checkContainerCreateStatus  检查创建状态
+		 * 5、创建成功后，执行pythonService.initContainer方法
+		 * 6、循环调用pythonService.checkContainerStatus方法 检查节点初始化状态
+		 * 7、mcluster创建成功！
+		 */
+		
+		this.insert(mclusterModel);
+		
+		return null;
+	}
+	
+	@Override
+	public String initContainer(String mclusterId) {
+		
+		return null;
+	}
+
+	@Override
+	public void audit(MclusterModel mclusterModel) {
+		this.mclusterDao.audit(mclusterModel);
+		
+	}
+
+	@Override
+	public List<DbModel> selectByClusterName(String mclusterName) {
+		return this.mclusterDao.selectByClusterName(mclusterName);
 	}
 	
 }

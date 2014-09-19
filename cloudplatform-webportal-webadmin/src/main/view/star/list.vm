@@ -1,0 +1,26 @@
+<table width="90%" align="center" border="1" cellspacing="0" cellpadding="5">
+    <tr>
+        <th>姓名</th>
+        <th>英文名</th>
+        <th>性别</th>
+        <th>描述</th>
+        <th>操作 </th>
+    </tr>
+#foreach($item in $starModelList)
+        <td>$!{item.name}</td>    
+        <td>$!{item.englishname}</td>
+        <td>
+	        #if($!{item.gender} == 1)男
+	        #elseif($!{item.gender} == 2)女
+	        #else 未知
+	        #end
+        </td>
+        <td>
+            $!{item.description}
+        </td>
+        <td>
+            <a href="edit.do?id=$!{item.id}">编辑</a>
+        </td>
+    </tr>
+#end       
+</table>

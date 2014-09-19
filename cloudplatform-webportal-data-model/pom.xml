@@ -115,9 +115,9 @@
             <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-        </dependency>
+		   <groupId>org.apache.httpcomponents</groupId>
+		   <artifactId>httpclient</artifactId>
+		</dependency>
 
         <!-- logger -->
         <dependency>

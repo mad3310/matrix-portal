@@ -36,4 +36,13 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public List<ContainerModel> selectByClusterId(String clusterId);
 	
+	/**Methods Name: selectByClusterId <br>
+	 * Description: 根据clusterId查出节点<br>
+	 * @author name: liuhao1
+	 * @param clusterId
+	 * @return
+	 */
+	public List<ContainerModel> selectNormalByClusterId(String clusterId);
+	
+	
 }

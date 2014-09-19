@@ -76,7 +76,7 @@
 	<select id="selectByClusterId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER where CLUSTER_ID = #{clusterId}
+		from WEBPORTAL_CONTAINER where CLUSTER_ID = #{clusterId} ORDER BY TYPE,ZOOKEEPER_ID
 	</select>
 	
 </mapper>   

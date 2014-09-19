@@ -48,7 +48,7 @@ public class DbApplyStandardServiceImpl extends BaseServiceImpl<DbApplyStandardM
 		
 		String uuid = UUID.randomUUID().toString();
 		DbModel dbModel = new DbModel();
-		dbModel.setDbName(t.getApplyName());
+		dbModel.setDbName(t.getApplyCode());
 		dbModel.setClusterId(t.getClusterId());
 		dbModel.setCreateUser(t.getCreateUser());
 		dbModel.setId(uuid);

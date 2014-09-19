@@ -7,6 +7,8 @@
 	<resultMap id="BaseResultMap" type="Mcluster" >
 		<result column="ID" property="id" />
 		<result column="MCLUSTER_NAME" property="mclusterName" />
+		<result column="ADMIN_USER" property="adminUser" />
+		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="STATUS" property="status" />
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -17,7 +19,7 @@
 	
 	<!-- WEBPORTAL_MCLUSTER_INFO table all fields -->
 	<sql id="Base_Column_List">
-		ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 
 	
@@ -28,7 +30,7 @@
 			<if test="id != null  ">
 				and ID=#{id}
 			</if>
-			<if test="mclusterName != null  and mclusterName != '' ">
+			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
 				and MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
 			</if>
 			<if test="status != null  ">
@@ -56,14 +58,17 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster">
 		insert into
-		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(#{id},#{mclusterName},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		<if test="id != null">#{id}</if>
+		<if test="id == null">UUID()</if>
+		,#{mclusterName},#{adminUser},#{adminPassword},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
-		ID=#{id},MCLUSTER_NAME=#{mclusterName},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -122,6 +127,12 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO where ID = #{id}
 	</select>
+	
+	<select id="selectByClusterName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_MCLUSTER_INFO WHERE MCLUSTER_NAME = #{mclusterName}
+	</select>
 
 	<!-- 列表总数 -->
 	<select id="selectByModelCount" resultType="java.lang.Integer"
@@ -162,7 +173,7 @@
 			<if test="params != null and params.id !=null  ">
 				and ID=#{params.id}
 			</if>
-			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' ">
+			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
 				and MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
 			</if>
 			<if test="params != null and params.status != null  ">
@@ -193,7 +204,7 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY CREATE_TIME
+		ORDER BY CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

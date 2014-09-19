@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
+<!-- TODO: will enable zabbix later 
+    zapcat, the JMX bridge and Java agent for zabbix 
+    <bean id="zabbixAgent" class="org.kjkoster.zapcat.zabbix.ZabbixAgent" destroy-method="stop" lazy-init="false">
+         'null' to listen on any available address 
+        <constructor-arg index="0"><null/></constructor-arg>
+         the port listen on, default is '10052' 
+        <constructor-arg index="1" value="${zapcat.port}"/>
+    </bean>-->
+    
+    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+        <property name="assembler" ref="assembler"/>
+        <property name="namingStrategy" ref="namingStrategy"/>
+        <property name="autodetect" value="true"/>
+        <property name="beans">
+            <util:map>
+                <entry key="common.monitor:name=serverMonitorMXBeanImpl" value-ref="serverMonitorMXBeanImpl"/>
+                <entry key="common.monitor:name=jvmMonitorMXBean" value-ref="jvmMonitorMXBean"/>
+                <entry key="common.monitor:name=methodInvocationMonitorMXBean" value-ref="methodInvocationMonitorMXBean"/>
+                <entry key="common.monitor:name=hibernateMonitorMBean" value-ref="hibernateMonitorMBean"/>
+                <entry key="common.monitor:name=tvosDataBaseDependencyMonitorMXBean" value-ref="dataBaseDependencyMonitorMXBean"/>
+                <entry key="common.monitor:name=ucHttpDependencyMonitorMXBean" value-ref="ucHttpDependencyMonitorMXBean"/>
+            </util:map>
+        </property>
+    </bean>
+    
+    <bean id="jmxAttributeSource" class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource"/>
+
+    <bean id="namingStrategy" class="org.springframework.jmx.export.naming.MetadataNamingStrategy">
+        <property name="attributeSource" ref="jmxAttributeSource"/>
+    </bean>
+
+    <bean id="assembler" class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
+        <property name="attributeSource" ref="jmxAttributeSource" />
+    </bean>
+    
+    
+    <!-- database dependency -->
+    <bean id="dataBaseDependencyMonitorMXBean" class="com.letv.common.monitor.DataBaseDependencyMonitorMXBeanImpl">
+        <property name="dataSource" ref="dataSource2" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/aftersale?useUnicode=true&amp;characterEncoding=UTF-8"/> 
+        <property name="timeout" value="50000"/>
+        <property name="name" value="tvosDB"/>
+    </bean>
+    
+    <!-- only for c3p0 data source -->
+    <!-- <bean id="tvosC3P0PooledDataSourceMonitorMXBean" class="common.monitor.C3P0PooledDataSourceMonitorMXBean" >
+        <constructor-arg index="0" ref="dataSource2"/>
+    </bean> -->
+     <!-- Hibernate in side -->
+    <bean id="hibernateMonitorMBean" class="com.letv.common.monitor.JsonableHibernateStatisticsServiceImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <!-- Server information -->
+    <!-- 都谁连上来过，记录其ip，端口号和时间，以及是否由于连接过多被拉入黑名单 -->
+    <bean id="serverMonitorMXBeanImpl" class="com.letv.common.monitor.ServerMonitorMXBeanImpl"/>
+    
+    
+    <!-- JVM information -->
+    <!-- 查看我们的jvm情况，主要是内容使用情况 -->
+    <bean id="jvmMonitorMXBean" class="com.letv.common.monitor.JvmMonitorMXBeanImpl"/>
+    
+
+    <!-- method invocation statistics -->
+    <!-- 监视各service方法的执行时间，以及执行次数。 -->
+    <bean id="methodInvocationMonitorMXBean" class="com.letv.common.monitor.MethodInvocationMonitorMXBeanImpl" >
+    </bean>
+
+    <bean id="methodInvocationInterceptor" class="com.letv.common.monitor.MethodInvocationInterceptor">
+        <constructor-arg index="0" ref="methodInvocationMonitorMXBean"/>
+    </bean>
+
+   <!-- dependency outer url or http api -->
+   <!-- 如果我们需要外部的http请求的数据，比如google api之类的，我们就需要对这个接口进行监视，看其是否畅通 -->
+    <bean id="ucHttpDependencyMonitorMXBean" class="com.letv.common.monitor.HttpDependencyMonitorMXBean">
+        <property name="url" value="http://www.baidu.com"/> 
+        <property name="timeout" value="11000"/>
+        <property name="name" value="outerHttp"/>
+    </bean>
+    
+    
+    
+    <aop:config proxy-target-class="true">
+        <!-- below are service from data-model -->
+        <aop:advisor advice-ref="methodInvocationInterceptor" pointcut="execution(public * com.letv.yuanxian.service..*(..))"/>
+    </aop:config>
+
+    <bean id="monitorImpl" class="com.letv.common.monitor.MonitorImpl">
+        <property name="statistics">
+            <set value-type="common.monitor.Statistic">
+                <ref bean="methodInvocationMonitorMXBean" />
+                <ref bean="jvmMonitorMXBean" />
+                <ref bean="serverMonitorMXBeanImpl" />
+                <ref bean="hibernateMonitorMBean" />
+                <ref bean="dataBaseDependencyMonitorMXBean" />
+                <ref bean="ucHttpDependencyMonitorMXBean" />
+            </set>                
+        </property>
+    </bean>  
+    
+    <bean id="monitorPersistenceScheduler" class="com.letv.common.monitor.MonitorPersistenceScheduler">
+        <property name="monitor" ref="monitorImpl"/>
+    </bean>
+    
+     <bean id="throttleFilter" class="com.letv.common.security.ThrottleFilter">
+        <property name="enable" value="false"/>        
+        <property name="maxConcurrentRequests" value="10"/>
+    </bean>
+   
+   
+</beans>

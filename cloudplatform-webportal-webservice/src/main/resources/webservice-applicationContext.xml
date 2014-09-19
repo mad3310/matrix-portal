@@ -22,7 +22,14 @@
 	<import resource="classpath*:data-applicationContext.xml"/>
 	
 	<context:component-scan base-package="com.letv" />
-	<util:properties id="settings" location="classpath:config.properties" />
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="locations">
+		    <list> 
+			    <value>classpath:jdbc.properties</value>
+			    <value>classpath:config.properties</value> 
+		    </list> 
+	    </property>
+    </bean>
 
 
      <!-- 异常处理 -->
@@ -30,11 +37,26 @@
     
     
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>  
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 	
 	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="jsonView"
+	    class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" >
+	    <property name="contentType" value="application/json;charset=UTF-8"/>
+	</bean>
+	
+	<!-- Register JSON Converter for RESTful Web Service -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <bean
+	                class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+	            </bean>
+	        </list>
+	    </property>
 	</bean>
 
 	<!--  
@@ -57,9 +79,15 @@
 		</property>
 	</bean>
  -->
+ 
+ <!-- 配置RestTemplate -->
+     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
+     	<property name="messageConverters">
+     		<list>
+     			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+   			</list>
+   		</property>
+     </bean>
 </beans>
-
-
-
-
-

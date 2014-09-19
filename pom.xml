@@ -15,7 +15,7 @@
         <module>cloudplatform-webportal-common</module>
         <module>cloudplatform-webportal-data-model</module>
         <module>cloudplatform-webportal-webapp</module>
-        <module>cloudplatform-webportal-webservice</module>
+        <module>cloudplatform-webportal-webadmin</module>
   </modules>
 
 
@@ -37,7 +37,7 @@
     <c3p0.version>0.9.1.2</c3p0.version>
     <jackson.version>1.8.3</jackson.version>
     <joda-time.version>1.6.2</joda-time.version>
-    <httpclient.version>3.1</httpclient.version>
+    <httpclient.version>4.3.3</httpclient.version>
     <aspectj.version>1.6.8</aspectj.version>
   </properties>
 
@@ -182,6 +182,11 @@
                 <artifactId>jackson-mapper-asl</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>joda-time</groupId>
@@ -189,10 +194,10 @@
                 <version>${joda-time.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
+			   <groupId>org.apache.httpcomponents</groupId>
+			   <artifactId>httpclient</artifactId>
+			   <version>${httpclient.version}</version>
+			</dependency>
 
             <!-- logger -->
             <dependency>
@@ -201,11 +206,6 @@
                 <version>1.6.1</version>
             </dependency>
 
-    <!--         <dependency> -->
-    <!--             <groupId>org.slf4j</groupId> -->
-    <!--             <artifactId>slf4j-log4j12</artifactId> -->
-    <!--             <version>1.6.1</version> -->
-    <!--         </dependency> -->
     <!--         <dependency> -->
     <!--             <groupId>log4j</groupId> -->
     <!--             <artifactId>log4j</artifactId> -->
@@ -240,9 +240,7 @@
                 <version>2.5</version>
                 <scope>provided</scope>
             </dependency>
-
-
-             <dependency>
+            <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>1.7</version>
@@ -263,13 +261,11 @@
                 <version>${aspectj.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>2.2.2</version>
             </dependency>
-
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
@@ -280,7 +276,6 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.1.20</version>
             </dependency>
-
             <dependency>
               <groupId>commons-dbcp</groupId>
               <artifactId>commons-dbcp</artifactId>
@@ -310,6 +305,44 @@
             	<groupId>org.springframework.retry</groupId>
             	<artifactId>spring-retry</artifactId>
             	<version>1.0.2.RELEASE</version>
+            	<type>jar</type>
+            	<scope>compile</scope>
+            </dependency>
+	        <dependency>
+			  <groupId>janino</groupId>
+			  <artifactId>janino</artifactId>
+			  <version>2.5.10</version>
+			</dependency>
+			<!-- SECURITY begin -->
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-ehcache</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			<!-- SECURITY end -->
+			
+			<dependency>
+				<groupId>opensymphony</groupId>
+				<artifactId>sitemesh</artifactId>
+				<version>2.4.2</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+	        	<groupId>org.mockito</groupId>
+	        	<artifactId>mockito-all</artifactId>
+	        	<version>1.9.5</version>
+	        	<type>jar</type>
+	        	<scope>compile</scope>
+        	</dependency>
+			<dependency>
+            	<groupId>org.freemarker</groupId>
+            	<artifactId>freemarker</artifactId>
+            	<version>2.3.19</version>
             	<type>jar</type>
             	<scope>compile</scope>
             </dependency>
@@ -483,9 +516,16 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.58.166.19:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>yaokuo</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>000000</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                <webportal.cas.local.http>http://127.0.0.1:8081</webportal.cas.local.http>
+                
+                <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
+
+                <webportal.log.path>D:</webportal.log.path>
             </properties>
         </profile>
 
@@ -498,9 +538,16 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                 <webportal.cas.local.http>http://10.200.94.203:8081</webportal.cas.local.http>
+                
+                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
             </properties>
         </profile>
 
@@ -516,6 +563,13 @@
                 <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                 <webportal.cas.local.http>http://127.0.0.1:8081</webportal.cas.local.http>
+                
+                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
             </properties>
         </profile>
 

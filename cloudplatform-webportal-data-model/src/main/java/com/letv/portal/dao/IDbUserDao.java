@@ -1,6 +1,7 @@
 package com.letv.portal.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.portal.model.DbUserModel;
 
@@ -20,4 +21,21 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @return
 	 */
 	public List<DbUserModel> selectByDbId(String dbId);
+	
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建dbUser相关参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	public Map<String,String> selectCreateParams(String id);
+	
+	/**Methods Name: updateStatus <br>
+	 * Description: 更新数据库用户状态<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 */
+	public void updateStatus(DbUserModel dbUserModel);
+
+	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
 }

@@ -8,7 +8,7 @@
         <title>API SERVICE STARTED</title>
     </head>
     <body>
-        <h1>Hello, welcome to MMS API Platform!</h1>
+        <h1>Hello, welcome to cloudplateform API Platform!</h1>
         
         
     </body>

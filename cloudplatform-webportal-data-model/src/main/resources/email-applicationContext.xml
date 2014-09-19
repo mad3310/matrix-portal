@@ -16,22 +16,22 @@
     
     <bean id="simpleTextEmailService" class="com.letv.common.email.SimpleTextEmailSenderImpl">
         <property name="mailSender" ref="mailSender"/>
-        <property name="mailFrom" value="liuhao1@letv.com"/>
+        <property name="mailFrom" value="${smtp.from}"/>
     </bean>
     
     <!-- MailSender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="username" value="liuhao1" />
-        <property name="password" value="Passw0rd" />
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.user">liuhao1@letv.com</prop>
-                <prop key="mail.smtp.password">Passw0rd</prop>
-                <prop key="mail.smtp.host">mail.letv.com</prop>
-                <prop key="mail.smtp.port">25</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <!--<prop key="mail.smtp.starttls.enable">true</prop>-->
-            </props>
-        </property>
-    </bean>
+		<property name="host" value="${smtp.host}" />
+		<property name="port" value="${smtp.port}" />
+		<property name="username" value="${smtp.username}" />
+		<property name="password" value="${smtp.password}" />
+		<property name="defaultEncoding" value="${smtp.defaultEncoding}" />
+		<property name="protocol" value="${smtp.protocol}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${smtp.timeout}</prop>
+			</props>
+		</property>
+	</bean>
 </beans>

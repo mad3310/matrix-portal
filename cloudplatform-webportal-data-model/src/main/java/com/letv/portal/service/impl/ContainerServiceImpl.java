@@ -59,6 +59,10 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public List<ContainerModel> selectByClusterId(String clusterId) {
 		return this.containerDao.selectByClusterId(clusterId);
 	}
-	
-	
+
+	@Override
+	public List<ContainerModel> selectNormalByClusterId(String clusterId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

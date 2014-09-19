@@ -1,5 +1,8 @@
 package com.letv.portal.dao;
 
+import java.util.List;
+
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 
 
@@ -18,5 +21,13 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 * @param mclusterModel
 	 */
 	void audit(MclusterModel mclusterModel);
+
+	/**Methods Name: selectByClusterName <br>
+	 * Description: 根据mcluster名查询数据：用于验证mcluster名是否重复<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	List<DbModel> selectByClusterName(String mclusterName);
 	
 }

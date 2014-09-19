@@ -1,0 +1,37 @@
+<table width="90%" align="center" border="1" cellspacing="0" cellpadding="5">
+    <tr>
+        <th>分类名称</th>
+        <th>分类CODE</th>
+        <th>分类类型</th>
+        <th>分类层级</th>
+        <th>是否删除</th>
+        <th>是否引用外部结构</th>
+        <th>外部数据结构</th>
+        <th>操作</th>
+    </tr>
+#foreach($item in $resultList)
+        <td>$!{item.name}</td>    
+        <td>$!{item.code}</td>
+        <td>$!{item.type}</td>
+        <td>$!{item.level}</td>
+        <td>
+	        #if($!{item.ifDelete} == 0)删除
+	        #elseif($!{item.gender} == 1)正常
+	        #else 未知
+	        #end
+        </td>
+        <td>
+            #if($!{item.ifReference} == 0)未使用
+            #elseif($!{item.ifReference} == 1)使用
+            #else 未知
+            #end
+        </td>
+        <td>
+            $!{item.dataStructure}
+        </td>
+        <td>
+            <a href="edit.do?id=$!{item.id}">编辑</a>
+        </td>
+    </tr>
+#end       
+</table>

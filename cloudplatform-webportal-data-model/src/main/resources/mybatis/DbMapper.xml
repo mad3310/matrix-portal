@@ -9,6 +9,7 @@
 		<result column="DB_NAME" property="dbName" />
 		<result column="CLUSTER_ID" property="clusterId" />
 		<result column="STATUS" property="status" />
+		<result column="AUDIT_INFO" property="auditInfo" />
 		
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -22,12 +23,18 @@
 		
 	</resultMap>
 	
+	<resultMap id="createParams" type="java.util.Map">
+		<result column="DB_NAME" property="dbName" />
+		<result column="IP_ADDR" property="nodeIp" />
+		<result column="ADMIN_USER" property="username" />
+		<result column="ADMIN_PASSWORD" property="password" />
+	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,DB_NAME,CLUSTER_ID,STATUS,AUDIT_INFO,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	<sql id="Base_Column_List_add_cluster">
-		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.CLUSTER_ID,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.IS_DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
+		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.CLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.IS_DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
 	</sql>
 
 	
@@ -38,7 +45,7 @@
 			<if test="id != null  ">
 				and ID=#{id}
 			</if>
-			<if test="dbName != null  and dbName != '' ">
+			<if test="dbName != null  and dbName != ''  and dbName != 'null'">
 				and DB_NAME like CONCAT('%','${dbName}','%')
 			</if>
 			<if test="clusterId != null  ">
@@ -138,6 +145,9 @@
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo},
+			</if>
 			<if test="clusterId != null  ">
 				CLUSTER_ID=#{clusterId}
 			</if>
@@ -151,7 +161,19 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB where ID = #{id}
 	</select>
+	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB WHERE DB_NAME = #{dbName}
+	</select>
 
+	<!-- 查询创建用户所需参数-->
+	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.String">
+		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD
+		from WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
+		where
+		DB.CLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.CLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND DB.ID=#{id}
+	</select>
 	<!-- 列表总数 -->
 	<select id="selectByModelCount" resultType="java.lang.Integer"
 		parameterType="Db">
@@ -191,7 +213,7 @@
 			<if test="params != null and params.id !=null  ">
 				and WEBPORTAL_DB.ID=#{params.id}
 			</if>
-			<if test="params != null and params.dbName != null  and params.dbName != ''">
+			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
 				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
 			<if test="params != null and params.clusterId != null  ">
@@ -226,7 +248,7 @@
 		from WEBPORTAL_DB left join WEBPORTAL_MCLUSTER_INFO 
 		on WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.CLUSTER_ID
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY WEBPORTAL_DB.CREATE_TIME
+		ORDER BY WEBPORTAL_DB.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

@@ -1,0 +1,26 @@
+<form name="editForm" action="editSubmit.do">
+    <input type="hidden" name="id" value=$!{star.id} />
+    <table widtd="90%" align="center" border="1" cellspacing="0" cellpadding="5">
+        <tr>
+            <td>姓名</td>
+            <td><input type="text" name="name" value=$!{star.name}  /></td>
+        </tr>
+        <tr>
+            <td>英文名</td>
+            <td><input type="text" name="englishname" value=$!{star.englishname} /></td>
+        </tr>
+        <tr>
+            <td>性别</td>
+            <td><input type="text" name="gender" value=$!{star.gender} /></td>
+        </tr>
+            <td>描述</td>    
+            <td>
+                <input type="text" name="description" value=$!{star.description} />
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="提交" /></td>
+             <td></td>
+        </tr>
+    </table>
+</form>

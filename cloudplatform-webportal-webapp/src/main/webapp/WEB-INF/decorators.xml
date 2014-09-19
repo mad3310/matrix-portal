@@ -5,10 +5,7 @@
 		<pattern>/account/login</pattern>
 		
 		<!-- 异步请求 -->
-		<pattern>/db/list/data*</pattern>
-		<pattern>/db/list/dbApplyInfo*</pattern>
-		<pattern>/mcluster/list/mgrData*</pattern>
-		<pattern>/db/list/mgrMclusterInfo*</pattern>
+		<!-- <pattern>/db/list/*</pattern> -->
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

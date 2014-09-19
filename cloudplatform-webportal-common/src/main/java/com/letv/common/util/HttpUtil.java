@@ -160,13 +160,12 @@ public final class HttpUtil {
 	 * @param extraParams
 	 * @return
 	 */
-	public static Map<String, Object> requestParam2Map(HttpServletRequest request,Map<String,String> extraParams){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public static Map<String, String> requestParam2Map(HttpServletRequest request,Map<String,String> extraParams){
+		Map<String, String> map = new HashMap<String, String>();
 		Enumeration enume = request.getParameterNames();
 		while(enume.hasMoreElements()){
 			Object item = enume.nextElement();
 			String paramName = item.toString();
-			System.out.println(paramName + "..........." +request.getParameter(paramName) );
 			String value = request.getParameter(paramName);
 			String[] values = request.getParameterValues(paramName);
 			if(values.length>1){
@@ -178,9 +177,18 @@ public final class HttpUtil {
 			}
 			map.put(paramName, value);
 		}
-		map.putAll(extraParams);
+		if(null != extraParams) {
+			map.putAll(extraParams);
+		}
 		return map;
 	}
+	
+	/**Methods Name: requestParamtoString <br>
+	 * Description: 将request中param转为字符串<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @return
+	 */
 	public static String requestParamtoString(HttpServletRequest request){
 		
 		StringBuffer buffer = new StringBuffer("?");
@@ -222,19 +230,19 @@ public final class HttpUtil {
 		return buffer.toString();
 	}
 	
-	public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
+	/*public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
 		RestTemplate restTemplate = new RestTemplate();
 		String message = restTemplate.postForObject(getAPIUrl(request,apiName,extraParams), null,String.class);
 		return message;
-	}
-	/*public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
-		RestTemplate restTemplate = new RestTemplate();
-		
-		String message = restTemplate.postForObject(getAPIUrl(apiName),
-													null,
-													String.class,
-													requestParam2Map(request, extraParams));
-		return message;
 	}*/
+	public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
+		Map<String,String> map = requestParam2Map(request, extraParams);
+		RestTemplate restTemplate = new RestTemplate();
+		String message = restTemplate.postForObject(getAPIUrl(apiName),
+													requestParam2Map(request, extraParams),
+													String.class
+													);
+		return message;
+	}
 }
 

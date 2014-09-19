@@ -37,24 +37,6 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
 
-	/**Methods Name: build <br>
-	 * Description: 创建db<br>
-	 * @author name: liuhao1
-	 * @param dbModel
-	 * @return
-	 */
-	public String build(DbModel dbModel);
-	
-	/**Methods Name: build <br>
-	 * Description: 创建db<br>
-	 * @author name: liuhao1
-	 * @param auditType
-	 * @param mclusterId
-	 * @param dbId
-	 * @param dbApplyStandardId
-	 * @param auditUser
-	 */
-	public void build(String auditType, String mclusterId, String dbId,String dbApplyStandardId,String auditUser);
 	
 	/**Methods Name: buildNotice <br>
 	 * Description: 手动创建完成后，通知<br>
@@ -63,4 +45,21 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @param buildFlag
 	 */
 	public void buildNotice(String dbId,String buildFlag);
+	
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建dbUser相关参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	public Map<String,String> selectCreateParams(String id);
+
+	/**Methods Name: selectByDbName <br>
+	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
+	 * @author name: liuhao1
+	 * @param applyCode
+	 * @return
+	 */
+	public List<DbModel> selectByDbName(String dbName);
+
 }
