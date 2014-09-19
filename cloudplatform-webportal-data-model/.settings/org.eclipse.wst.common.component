@@ -4,4 +4,4 @@
     <wb-resource deploy-path="/" source-path="src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/resources"/>
   </wb-module>
-</project-modules>
+</project-modules> 
