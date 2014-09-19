@@ -2,10 +2,6 @@
   <wb-module deploy-name="webportal-data-model">
     <wb-resource deploy-path="/" source-path="src/main/java"/>
     <wb-resource deploy-path="/" source-path="src/main/resources"/>
-        <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/resources"/>
-        <dependent-module archiveName="webportal-common.jar" deploy-path="/" handle="module:/resource/webportal-common/webportal-common">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
   </wb-module>
 </project-modules>
