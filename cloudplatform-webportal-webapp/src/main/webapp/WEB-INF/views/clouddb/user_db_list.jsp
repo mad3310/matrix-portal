@@ -38,7 +38,10 @@
 			</div>
 		</div>
 	</div>
-	<div id="pageControlBar">
+	<div class="col-xs-3">
+	<small>*注：点击数据库名可查看数据库详情.</small>
+	</div>
+	<div id="pageControlBar" class="col-xs-6">
 		<input type="hidden" id="totalPage_input" />
 		<ul class="pager">
 			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
@@ -240,14 +243,7 @@ var currentSelectedLineDbName = 1;
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$.gritter.add({
-					title: '警告',
-					text: errorThrown,
-					sticky: false,
-					time: '5',
-					class_name: 'gritter-warning'
-				});
-		
+				error(errorThrown,1000);
 				return false;
 			}
 		});
