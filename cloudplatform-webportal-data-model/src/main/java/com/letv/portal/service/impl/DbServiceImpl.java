@@ -5,17 +5,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
-import com.letv.common.util.ConfigUtil;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
@@ -23,8 +19,6 @@ import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.IpResourceModel;
-import com.letv.portal.model.Result;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
 
@@ -33,8 +27,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		IDbService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbServiceImpl.class);
-	
-	private static final String DB_CREATE_TYPE = ConfigUtil.getString("db.create.type");
 	
 	@Resource
 	private IDbDao dbDao;

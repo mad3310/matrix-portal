@@ -25,26 +25,6 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	
-	
-	/**Methods Name: build <br>
-	 * Description: 创建mcluster<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 * @return
-	 */
-	public String build(MclusterModel mclusterModel);
-	
-	
-	/**Methods Name: initContainer <br>
-	 * Description: 初始化mcluster的container<br>
-	 * @author name: liuhao1
-	 * @param mclusterId
-	 * @return
-	 */
-	public String initContainer(String mclusterId);
-	
-
 	/**Methods Name: insert <br>
 	 * Description: 创建完整mcluster<br>
 	 * @author name: liuhao1
