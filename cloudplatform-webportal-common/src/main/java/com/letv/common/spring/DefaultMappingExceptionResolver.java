@@ -10,8 +10,10 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,13 +23,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -50,26 +48,36 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	@Autowired
 	private SessionManager sessionManager;
+	
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
-		if (e instanceof ValidateException) {
-			responseJson(req, res, e.getMessage());
-            return null;
-		}
-		
-		if(Boolean.valueOf(ERROR_MAIL_ENABLED))
+    	
+    	if(Boolean.valueOf(ERROR_MAIL_ENABLED))
 		{
-//			String stackTraceStr = this.getStackTrace(e);
 			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
 			String exceptionMessage = e.getMessage();
 			sendErrorMail(req,exceptionMessage,stackTraceStr);
 		}
+    	logger.error(ERROR_SYSTEM_ERROR, e);
+    	
+    	String viewName = determineViewName(e, req);
+		if (viewName != null) {// JSP格式返回
+			if (!(req.getHeader("accept").indexOf("application/json") > -1 || (req.getHeader("X-Requested-With") != null && req.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))) {
+				Integer statusCode = determineStatusCode(req, viewName);
+				if (statusCode != null) {
+					applyStatusCodeIfPossible(req, res, statusCode);
+				}
+				return getModelAndView(viewName, e, req);
+			} else {
+				responseJson(req,res,e.getMessage());
+				return null;
+			}
+		} else {
+			return null;
+		}
 		
-		responseJson(req, res, e.getMessage());
-		logger.error(ERROR_SYSTEM_ERROR, e);
-        return null;
     }
 
 	/**
@@ -94,7 +102,6 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		out.print(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
 		out.close();
-
 	}
 	
 	private void sendErrorMail(HttpServletRequest request,String exceptionMessage,String stackTraceStr)
