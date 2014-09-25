@@ -163,11 +163,11 @@ public class DbController {
 		
 	}
 	
-	
 	/*@RequestMapping("/build/notice/{buildFlag}/{dbId}")   //http://localhost:8080/api/db/build/notice/{success/fail}/{dbId}
 	public ResultObject notice(@PathVariable String buildFlag,@PathVariable String dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.dbService.buildNotice(dbId,buildFlag);
 		return obj;
-	}*/
+	}
+	*/
 }

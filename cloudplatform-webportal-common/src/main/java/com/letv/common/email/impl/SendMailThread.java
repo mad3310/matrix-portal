@@ -27,6 +27,7 @@ public class SendMailThread implements Runnable{
 	    try {
 	        sender.send(mimes);
 	    } catch (Exception e) {
+	    	e.printStackTrace();
 	        retry(0);
 	    }
 	}
@@ -43,8 +44,9 @@ public class SendMailThread implements Runnable{
                 StringBuilder sb = new StringBuilder();
                 try {
 					sb.append("from: " + mm.getFrom().toString() + ", ");
-					sb.append("to: " + mm.getSender().toString() + ", ");
-	                sb.append("reply: " + mm.getReplyTo().toString() + ",");
+					//构建mm过程中并未赋值sender，此处append会报空指针异常
+//					sb.append("to: " + mm.getSender().toString() + ", ");
+//	                sb.append("reply: " + mm.getReplyTo().toString() + ",");
 					sb.append("" + mm.getContent().toString() + "");
 				} catch (MessagingException e) {
 	                logger.error("邮件信息取值异常" + e.getMessage());

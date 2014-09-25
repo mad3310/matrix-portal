@@ -6,7 +6,7 @@
 				<div class="footer-content">
 					<span class="bigger-120"> 
 						<span class="blue bolder">Letv</span>
-						PAAS云开发团队 &copy; 2013-2014
+						webportal-team &copy; 2013-2014
 				</div>
 
 				<!-- /section:basics/footer -->

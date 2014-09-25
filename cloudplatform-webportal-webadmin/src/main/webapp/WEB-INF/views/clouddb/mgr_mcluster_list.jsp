@@ -49,10 +49,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-3">
-			<small>*注：点击集群名可查看集群详情.</small>
-		</div>
-		<div id="pageControlBar" class="col-xs-6">
+		<div id="pageControlBar">
 			<input type="hidden" id="totalPage_input" />
 			<ul class="pager">
 				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
@@ -278,7 +275,14 @@ function queryByPage(currentPage,recordsPerPage) {
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(errorThrown,1000);
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
 			return false;
 		}
 	});
@@ -460,7 +464,13 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(errorThrown,1000);
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
 			return false;
 		}
 	});

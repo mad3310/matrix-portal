@@ -46,8 +46,6 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	@Resource
 	private IHostService hostService;
 	
-	private static final String PYTHON_URL = "";
-	private static final String SUCCESS_CODE = "";
 	private static final String LETV_MCLUSTER_NAME_PREFIX = ConfigUtil.getString("letv_mcluster_name_prefix");		
 	private static final String LETV_MCLUSTER_MOUNTDIRS_PREFIX = ConfigUtil.getString("letv_mcluster_mountDirs_prefix");		
 	private static final String LETV_MCLUSTER_MOUNTDIRS_SUFFIX = ConfigUtil.getString("letv_mcluster_mountDirs_suffix");		
@@ -125,34 +123,8 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public String build(MclusterModel mclusterModel) {
-		
-		/*
-		 * Mcluster创建过程：
-		 * 1、根据mclusterName创建一条数据，存到数据库
-		 * 2、执行pythonService.createContainer.
-		 * 3、数据库写入mcluster 数据库写入一组container
-		 * 4、循环执行pythonService。checkContainerCreateStatus  检查创建状态
-		 * 5、创建成功后，执行pythonService.initContainer方法
-		 * 6、循环调用pythonService.checkContainerStatus方法 检查节点初始化状态
-		 * 7、mcluster创建成功！
-		 */
-		
-		this.insert(mclusterModel);
-		
-		return null;
-	}
-	
-	@Override
-	public String initContainer(String mclusterId) {
-		
-		return null;
-	}
-
-	@Override
 	public void audit(MclusterModel mclusterModel) {
 		this.mclusterDao.audit(mclusterModel);
-		
 	}
 
 	@Override

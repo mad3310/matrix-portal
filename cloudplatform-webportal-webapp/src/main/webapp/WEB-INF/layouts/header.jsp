@@ -21,9 +21,10 @@
 		<div class="navbar-header pull-left">
 			<!-- #section:basics/navbar.layout.brand -->
 			<a href="#" class="navbar-brand"> 
-					<img src="${ctx}/static/image/site.logo.png"  alt="paas云管理平台" style="max-width:150px; margin-top: -5px;"/>
-					<b><small>PAAS portal</small></b>
-					<tt><small style="font-size:25%;">beta</small></tt>
+				<small>
+					<i class="fa fa-leaf"></i>
+					webportal
+				</small>
 			</a>
 			<!-- /section:basics/navbar.layout.brand -->
 			<!-- #section:basics/navbar.toggle -->
