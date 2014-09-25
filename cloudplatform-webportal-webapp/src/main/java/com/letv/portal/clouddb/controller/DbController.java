@@ -71,9 +71,6 @@ public class DbController {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
-		if(true) {
-			throw new RuntimeException("系统出错");
-		}
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbName", dbName);
@@ -113,9 +110,6 @@ public class DbController {
 	 */
 	@RequestMapping(value="/detail/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
 	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request) {
-		if(true) {
-			throw new RuntimeException("系统出错");
-		}
 		DbModel dbModel = this.dbService.selectById(dbId);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
