@@ -44,12 +44,21 @@
 										<td>${db.createTime}</td>
 									</tr>
 									<c:forEach items="${containers}" var="container">
-										<tr>
-											<td>${container.clusterNodeName}</td>
-											<td>${container.ipAddr}</td>
-										</tr>
+										<c:if test="${container.zookeeperId eq null}">
+											<tr>
+												<td>${container.clusterNodeName}</td>
+												<td>${container.ipAddr}</td>
+											</tr>
+										</c:if> 
+										<c:if test="${container.zookeeperId ne null}">
+											<tr>
+												<td>${container.clusterNodeName}</td>
+												<td><b>${container.ipAddr}</b></td>
+											</tr>
+										</c:if> 
 									</c:forEach>
 								</table>
+								<small>*注:请用高亮IP连接数据库.</small>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane active">
@@ -194,7 +203,7 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" placeholder="" />
+											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" value="2:1" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入读写比例，建议值'2:1'" style="cursor:pointer; text-decoration:none;">
@@ -205,7 +214,7 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" placeholder=""/>
+											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" value="50"/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入每秒最大并发量.建议值'50'" style="cursor:pointer; text-decoration:none;">

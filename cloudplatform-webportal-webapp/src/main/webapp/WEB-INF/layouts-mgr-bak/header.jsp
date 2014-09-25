@@ -1,6 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@page import="com.mysql.jdbc.StringUtils" %>
+<%
+	if(StringUtils.isNullOrEmpty((String)request.getSession().getAttribute("loginName"))) {
+		out.println("<script>window.location='/account/login';</script>");
+	}
+%>
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default">
 	<script type="text/javascript">
@@ -21,9 +26,10 @@
 		<div class="navbar-header pull-left">
 			<!-- #section:basics/navbar.layout.brand -->
 			<a href="#" class="navbar-brand"> 
-					<img src="${ctx}/static/image/site.logo.png"  alt="paas云管理平台" style="max-width:150px; margin-top: -5px;"/>
-					<b><small>PAAS portal</small></b>
-					<tt><small style="font-size:25%;">beta</small></tt>
+				<small>
+					<i class="fa fa-leaf"></i>
+					webportal
+				</small>
 			</a>
 			<!-- /section:basics/navbar.layout.brand -->
 			<!-- #section:basics/navbar.toggle -->
@@ -34,9 +40,10 @@
 				<!-- #section:basics/navbar.user_menu -->
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
+						<img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" /> 
 						<span class="user-info"> 
 							<small>欢迎会员,</small> 
-							${sessionScope.username}
+							${sessionScope.loginName}
 						</span>
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>
