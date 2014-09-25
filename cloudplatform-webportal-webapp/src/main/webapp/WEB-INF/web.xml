@@ -229,6 +229,14 @@
 	</filter-mapping>
  -->
  	<session-config>
-         <session-timeout>15</session-timeout>
+         <session-timeout>600</session-timeout>
     </session-config>
+    
+    	<!-- 出错页面定义 -->
+	 <error-page>
+		<error-code>404</error-code>
+		<location>/404</location>
+	</error-page>
+
+    
 </web-app>   

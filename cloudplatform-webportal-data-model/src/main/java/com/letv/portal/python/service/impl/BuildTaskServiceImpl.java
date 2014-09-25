@@ -107,9 +107,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(!StringUtils.isNullOrEmpty(dbId)) {
 				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
 			}
-			this.buildResultToMgr("mcluster集群", "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
+		this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
 		if(nextStep && !StringUtils.isNullOrEmpty(dbId)) {
 			this.buildDb(dbId);
 		}
@@ -146,8 +147,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
+					if(!StringUtils.isNullOrEmpty(dbId)) {
+						this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+					}
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
-					this.buildResultToMgr("mcluster集群", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -186,7 +190,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
 				status = Constant.STATUS_OK;
-				this.buildResultToUser("DB数据库", params.get("createUser"));
+				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
 			} else {
 				resultMsg = "失败";
 				status = Constant.STATUS_BUILD_FAIL;
@@ -195,7 +199,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			resultMsg = "失败";
 			status = Constant.STATUS_BUILD_FAIL;
 		} finally {
-			this.buildResultToMgr("DB数据库", resultMsg, null, ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, null, ERROR_MAIL_ADDRESS);
 			this.dbService.updateBySelective(new DbModel(dbId,status));
 		}
 	}
@@ -208,13 +212,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(id);
+			Map<String,String> params = this.dbUserService.selectCreateParams(id);
 			try {
-				Map<String,String> params = this.dbUserService.selectCreateParams(id);
 				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(Constant.STATUS_OK);
-					this.buildResultToUser("DB数据库用户", params.get("createUser"));
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
@@ -223,7 +227,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				resultMsg="失败";
 				dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
 			} finally {
-				this.buildResultToMgr("DB数据库用户", resultMsg, null, ERROR_MAIL_ADDRESS);
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
 				this.dbUserService.updateStatus(dbUserModel);
 			}
 		}
@@ -329,8 +333,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
+					if(!StringUtils.isNullOrEmpty(dbId)) {
+						this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+					}
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
-					this.buildResultToMgr("mcluster集群", "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));

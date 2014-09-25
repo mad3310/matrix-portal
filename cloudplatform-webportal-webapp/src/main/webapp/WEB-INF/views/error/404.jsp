@@ -12,7 +12,6 @@
 						<i class="ace-icon fa fa-sitemap"></i>
 						404
 					</span>
-					页面错误
 				</h1>
 
 				<hr>
@@ -36,18 +35,6 @@
 
 				<hr>
 				<div class="space"></div>
-
-				<div class="center">
-					<a href="javascript:history.back()" class="btn btn-grey">
-						<i class="ace-icon fa fa-arrow-left"></i>
-						返回
-					</a>
-
-					<a href="${ctx}/mcluster/list" class="btn btn-primary">
-						<i class="ace-icon fa fa-tachometer"></i>
-						首页
-					</a>
-				</div>
 			</div>
 		</div>
 
