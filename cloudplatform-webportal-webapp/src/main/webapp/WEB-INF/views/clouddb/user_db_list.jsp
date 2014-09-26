@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="col-xs-3">
-	<small>*注：点击数据库名可查看数据库详情.</small>
+		<small><font color="gray">*注：点击数据库名可查看数据库详情.</font></small>
 	</div>
 	<div id="pageControlBar" class="col-xs-6">
 		<input type="hidden" id="totalPage_input" />

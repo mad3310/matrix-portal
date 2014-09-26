@@ -58,7 +58,7 @@
 										</c:if> 
 									</c:forEach>
 								</table>
-								<small>*注:请用高亮IP连接数据库.</small>
+								<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane active">
