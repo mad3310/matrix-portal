@@ -211,14 +211,7 @@ var currentSelectedLineDbName = 1;
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$.gritter.add({
-					title: '警告',
-					text: errorThrown,
-					sticky: false,
-					time: '5',
-					class_name: 'gritter-warning'
-				});
-		
+				error(XMLHttpRequest);
 				return false;
 			}
 		});

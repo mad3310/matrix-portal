@@ -51,13 +51,24 @@
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
 <script type="text/javascript">
 function error(errorThrown,time) {
-		$.gritter.add({
-			title: '错误',
-			text: errorThrown,
-			sticky: false,
-			time: time,
-			class_name: 'gritter-error'
-		});
+	if(time == "null"){
+		time == 1000;
+	}
+	
+	var errorText = null;
+	if(errorThrown.status == 500){
+		errorText = "服务器出现异常,请稍后重试.";
+	}else{
+		errorText = "内部错误,请稍后重试.";
+	}
+	
+	$.gritter.add({
+		title: '错误',
+		text: errorText,
+		sticky: false,
+		time: time,
+		class_name: 'gritter-error'
+	});
 }
 </script>
 

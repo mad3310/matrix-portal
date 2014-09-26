@@ -275,14 +275,7 @@ function queryByPage(currentPage,recordsPerPage) {
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
-	
+			error(XMLHttpRequest);
 			return false;
 		}
 	});
@@ -464,13 +457,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
+			error(XMLHttpRequest);
 			return false;
 		}
 	});
