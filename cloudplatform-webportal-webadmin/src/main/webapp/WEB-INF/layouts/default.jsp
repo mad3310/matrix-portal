@@ -49,6 +49,17 @@
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+<script type="text/javascript">
+function error(errorThrown,time) {
+		$.gritter.add({
+			title: '错误',
+			text: errorThrown,
+			sticky: false,
+			time: time,
+			class_name: 'gritter-error'
+		});
+}
+</script>
 
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
