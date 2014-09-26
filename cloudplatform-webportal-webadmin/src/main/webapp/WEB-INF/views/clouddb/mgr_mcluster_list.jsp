@@ -49,7 +49,10 @@
 				</div>
 			</div>
 		</div>
-		<div id="pageControlBar">
+		<div class="col-xs-3">
+			<small><font color="gray">*注：点击集群名可查看集群详情.</font></small>
+		</div>
+		<div id="pageControlBar" class="col-xs-6">
 			<input type="hidden" id="totalPage_input" />
 			<ul class="pager">
 				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
