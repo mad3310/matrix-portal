@@ -57,9 +57,9 @@ public interface IDbService extends IBaseService<DbModel> {
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
 	 * @author name: liuhao1
-	 * @param applyCode
+	 * @param map
 	 * @return
 	 */
-	public List<DbModel> selectByDbName(String dbName);
+	public List<DbModel> selectByDbName(Map<String,Object> map);
 
 }

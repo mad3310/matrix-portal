@@ -84,8 +84,8 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public List<DbModel> selectByDbName(String dbName) {
-		return this.dbDao.selectByDbName(dbName);
+	public List<DbModel> selectByDbName(Map<String,Object> map) {
+		return this.dbDao.selectByDbName(map);
 	}
 
 }

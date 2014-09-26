@@ -122,7 +122,10 @@ public class DbController {
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String applyCode,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<DbModel> list = this.dbService.selectByDbName(applyCode);
+		map.put("dbName", applyCode);
+		map.put("createUser", request.getSession().getAttribute("userId"));
+		List<DbModel> list = this.dbService.selectByDbName(map);
+		map.clear();
 		if(list.size()>0) {
 			map.put("valid", false);
 		} else {
