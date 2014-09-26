@@ -53,7 +53,7 @@
 										<c:if test="${container.zookeeperId ne null}">
 											<tr>
 												<td>${container.clusterNodeName}</td>
-												<td><b>${container.ipAddr}</b></td>
+												<td><b><font color="green">${container.ipAddr}</font></b></td>
 											</tr>
 										</c:if> 
 									</c:forEach>
