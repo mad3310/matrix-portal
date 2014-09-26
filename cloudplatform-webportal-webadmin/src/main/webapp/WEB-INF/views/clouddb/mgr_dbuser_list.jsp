@@ -16,7 +16,7 @@
 			<div class="widget-header">
 				<h5 class="widget-title">数据库用户列表</h5>
 				<div class="widget-toolbar no-border">
-					<button id="create_db_user" class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
+					<button id="create_db_user" class="btn btn-white btn-primary btn-xs" type="button" onclick="buildUser()">
 						<i class="ace-icont fa fa-plus"></i>
 						 创建用户
 					</button>

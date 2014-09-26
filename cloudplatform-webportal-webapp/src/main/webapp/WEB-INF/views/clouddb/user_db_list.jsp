@@ -13,7 +13,7 @@
 		<div class="widget-header">
 			<h5 class="widget-title">数据库列表</h5>
 			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#apply-form">
+				<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#apply-form">
 					<i class="ace-icont fa fa-plus"></i>
 					 创建数据库
 				</button>
@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="col-xs-3">
-		<small><font color="gray">*注：点击数据库名可查看数据库详情.</font></small>
+	<small><font color="gray">*注：点击数据库名可查看数据库详情.</font></small>
 	</div>
 	<div id="pageControlBar" class="col-xs-6">
 		<input type="hidden" id="totalPage_input" />

@@ -16,7 +16,7 @@
 			<div class="widget-header">
 				<h5 class="widget-title">集群列表</h5>
 				<div class="widget-toolbar no-border">
-					<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-mcluster-modal">
+					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#create-mcluster-modal">
 						<i class="ace-icont fa fa-plus"></i>
 						 创建集群
 					</button>

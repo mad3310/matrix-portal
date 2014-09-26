@@ -64,7 +64,7 @@
 						<div id="db-detail-user-mgr" class="tab-pane active">
 							<div class="col-xs-10">
 								<div class=" pull-right">
-									<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
+									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
 										<i class="ace-icont fa fa-plus"></i>创建用户
 									</button>
 									<!-- <button type="button" class="btn btn-xs btn-danger bigger disabled">
@@ -180,7 +180,7 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-success addButton btn-sm">
+								            <button type="button" class="btn btn-white btn-primary addButton">
 								                <i class="fa fa-plus"></i>
 								            </button>
 								        </div>
@@ -195,7 +195,7 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-default btn-sm removeButton">
+								            <button type="button" class="btn btn-white btn-primary removeButton">
 								                <i class="fa fa-minus"></i>
 								            </button>
 								        </div>
