@@ -369,6 +369,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			buildModel.setStatus("fail");
 			flag =  false;
 			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
+			if(!StringUtils.isNullOrEmpty(dbId)) {
+				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+			}
 			this.mclusterService.audit(new MclusterModel(mclusterId,Constant.STATUS_BUILD_FAIL));
 		}
 		this.buildService.updateBySelective(buildModel);
