@@ -95,6 +95,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 			if(nextStep) {
 				this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
+				this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
 			}
 		} catch (Exception e) {
 			BuildModel nextBuild = new BuildModel();
@@ -110,7 +111,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
-		this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
 		if(nextStep && !StringUtils.isNullOrEmpty(dbId)) {
 			this.buildDb(dbId);
 		}
