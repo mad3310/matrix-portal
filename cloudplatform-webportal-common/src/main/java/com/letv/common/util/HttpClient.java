@@ -132,6 +132,7 @@ public class HttpClient {
 		Set<String> keySet = params.keySet();
 		for(String key : keySet) {
 			nvps.add(new BasicNameValuePair(key, params.get(key)));
+			logger.info("param-->" + key + ":" + params.get(key));
 		}
 		
 		try {
