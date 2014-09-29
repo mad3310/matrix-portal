@@ -65,4 +65,10 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void deleteByCluster(String clusterId) {
+		this.containerDao.deleteByCluster(clusterId);
+		
+	}
 }

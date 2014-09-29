@@ -66,4 +66,6 @@ public interface IBuildTaskService {
 	 * @param buildType
 	 */
 	public void buildResultToUser(String buildType,String to);
+
+	public void removeMcluster(MclusterModel mcluster);
 }

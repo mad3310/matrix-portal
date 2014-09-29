@@ -119,6 +119,10 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
 	</select>
+	<!-- 物理删除 -->
+	<update id="deleteByCluster" parameterType="java.lang.String">
+		delete from WEBPORTAL_BUILD where MCLUSTER_ID = #{clusterId}
+	</update>
 	
 	<!-- 根据dbId查询-->
 	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">

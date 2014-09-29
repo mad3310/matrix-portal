@@ -78,5 +78,8 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CONTAINER where CLUSTER_ID = #{clusterId} ORDER BY TYPE,ZOOKEEPER_ID
 	</select>
-	
+	<!-- 物理删除 -->
+	<update id="deleteByCluster" parameterType="java.lang.String">
+		delete from WEBPORTAL_CONTAINER where CLUSTER_ID = #{clusterId}
+	</update>	
 </mapper>   

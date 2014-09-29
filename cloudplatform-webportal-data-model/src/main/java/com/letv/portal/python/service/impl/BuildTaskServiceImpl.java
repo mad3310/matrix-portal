@@ -452,4 +452,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			logger.error(e.getMessage());
 		}
 	}
+	@Override
+	public void removeMcluster(MclusterModel mcluster) {
+		this.mclusterService.delete(mcluster);
+		this.containerService.deleteByCluster(mcluster.getId());
+		this.buildService.deleteByCluster(mcluster.getId());
+	}
 }

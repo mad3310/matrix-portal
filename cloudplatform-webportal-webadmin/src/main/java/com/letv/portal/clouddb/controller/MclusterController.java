@@ -115,6 +115,14 @@ public class MclusterController {
 		return "redirect:/mcluster/list";
 	}
 	
+	@RequestMapping(value = "/build/rm/{mclusterId}", method=RequestMethod.GET) 
+	public String build(@PathVariable String  mclusterId,HttpServletRequest request) {
+		this.buildTaskService.removeMcluster(new MclusterModel(mclusterId,null));
+		return "redirect:/mcluster/list";
+	}
+	
+	
+	
 	/**Methods Name: buildStatuslist <br>
 	 * Description: 管理员根据查询条件及分页信息获取分页数据   http://localhost:8080/mcluster/<br>
 	 * @author name: liuhao1
