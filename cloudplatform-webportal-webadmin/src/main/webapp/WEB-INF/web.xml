@@ -114,4 +114,9 @@
 		<url-pattern>/webapp1/*</url-pattern>
 	</filter-mapping>
  -->
+ 	<!-- 出错页面定义 -->
+	 <error-page>
+		<error-code>404</error-code>
+		<location>/404</location>
+	</error-page>
 </web-app>   
