@@ -143,19 +143,30 @@ function createDbOnOldMcluster(){
 	window.location = "${ctx}/db/list";
 }
 function createDbOnNewMcluster(){
-	var isClick = true;
-	$('#create_on_new_cluster_form').bootstrapValidator('revalidateField', 'mclusterName')
-	    .on('success.field.bv', function(e, data) {
-			if(isClick){
-				isClick = false;
+	var mclusterName = $("#mclusterName").val();
+	$.ajax({ 
+		type : "post",
+		url : "${ctx}/mcluster/validate/",
+		data : $('#create_on_new_cluster_form').serialize(),
+		success : function(data) {
+			if(data.valid) {
 				$.ajax({
 					type : "post",
 					url : "${ctx}/db/audit/save",
 					data :$('#create_on_new_cluster_form').serialize()
 				});
 				window.location = "${ctx}/db/list";
+			}else {
+				$.gritter.add({
+					title: '警告',
+					text: '集群名称已存在，请重新填写！',
+					sticky: false,
+					time: 1000,
+					class_name: 'gritter-warning'
+				});
 			}
-	    });
+		}
+	});
 }
 function refuseCreateMcluster(){
 	$.ajax({
