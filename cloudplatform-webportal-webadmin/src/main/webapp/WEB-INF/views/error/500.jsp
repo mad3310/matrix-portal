@@ -12,7 +12,7 @@
 							<i class="ace-icon fa fa-random"></i>
 							500
 						</span>
-						${exception.message}
+						${exception}
 					</h1>
 	
 					<hr>

@@ -63,16 +63,19 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     	logger.error(ERROR_SYSTEM_ERROR, e);
     	
     	String viewName = determineViewName(e, req);
-		if (viewName != null) {// JSP格式返回
-			if (!(req.getHeader("accept").indexOf("application/json") > -1 || (req.getHeader("X-Requested-With") != null && req.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))) {
+		if (viewName != null) {
+			boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
+			if (isAjaxRequest) {
+				responseJson(req,res,e.getMessage());
+				return null;
+			} else {
 				Integer statusCode = determineStatusCode(req, viewName);
 				if (statusCode != null) {
 					applyStatusCodeIfPossible(req, res, statusCode);
 				}
-				return getModelAndView(viewName, e, req);
-			} else {
-				responseJson(req,res,e.getMessage());
-				return null;
+				ModelAndView mav =  getModelAndView(viewName, e, req);
+				mav.addObject("exception", ERROR_SYSTEM_ERROR);
+				return mav;
 			}
 		} else {
 			return null;
@@ -90,18 +93,15 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
     	PrintWriter out = null;
 		try {
-//			res.setCharacterEncoding("UTF-8");
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-//			logger.error("在取得PrintWriter时出现异常",e1);
 		}
 		ResultObject resultObject = new ResultObject(0);
-		resultObject.addMsg(message);
-		out.print(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
+		resultObject.addMsg(ERROR_SYSTEM_ERROR);
+		out.append(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
-		out.close();
 	}
 	
 	private void sendErrorMail(HttpServletRequest request,String exceptionMessage,String stackTraceStr)

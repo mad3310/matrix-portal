@@ -42,12 +42,12 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		
 		if(request.getSession().getAttribute("loginName") == null ) {
 			logger.debug("please login");
+			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
 			
-			
-			if (!(request.getHeader("accept").indexOf("application/json") > -1 || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))) {
-				response.sendRedirect("/account/login");
-			} else {
+			if (isAjaxRequest) {
 				responseJson(request,response,"长时间未操作，请重新登录");
+			} else {
+				response.sendRedirect("/account/login");
 			}
 			return false;
 		}
@@ -69,18 +69,15 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
     	PrintWriter out = null;
 		try {
-//			res.setCharacterEncoding("UTF-8");
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-//			logger.error("在取得PrintWriter时出现异常",e1);
 		}
 		ResultObject resultObject = new ResultObject(0);
 		resultObject.addMsg(message);
-		out.print(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
+		out.append(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
-		out.close();
 	}
 
 }

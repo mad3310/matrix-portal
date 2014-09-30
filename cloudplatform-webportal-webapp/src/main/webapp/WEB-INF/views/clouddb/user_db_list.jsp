@@ -160,6 +160,7 @@ var currentSelectedLineDbName = 1;
 			url : "${ctx}/db/list/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			success : function(data) {
+				error(data);
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;
@@ -241,10 +242,6 @@ var currentSelectedLineDbName = 1;
 					$("#totalRows").html(data.data.totalRecords);
 					$("#totalPage").html(totalPages);
 				}
-			},
-			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				error(errorThrown,1000);
-				return false;
 			}
 		});
     }

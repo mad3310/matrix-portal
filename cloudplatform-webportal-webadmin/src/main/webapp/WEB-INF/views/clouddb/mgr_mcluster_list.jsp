@@ -198,6 +198,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		url : "${ctx}/mcluster/list/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -276,10 +277,6 @@ function queryByPage(currentPage,recordsPerPage) {
 				$("#totalRows").html(data.data.totalRecords);
 				$("#totalPage").html(totalPages);
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(XMLHttpRequest);
-			return false;
 		}
 	});
    }
@@ -392,6 +389,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 		url : "${ctx}/mcluster/build/status/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
 			
@@ -458,10 +456,6 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 					build_status_tby.find("tr:eq("+i+")").html(tr.html());
 				}
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(XMLHttpRequest);
-			return false;
 		}
 	});
  }

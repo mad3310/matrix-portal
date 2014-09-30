@@ -18,7 +18,4 @@ public class BaseController {
 	public String notFound(HttpServletRequest request,HttpServletResponse response) {
 		return "/error/404";
 	}
-	
-	
-
 }
