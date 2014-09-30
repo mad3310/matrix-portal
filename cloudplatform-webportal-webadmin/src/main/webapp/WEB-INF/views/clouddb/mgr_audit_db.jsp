@@ -143,12 +143,19 @@ function createDbOnOldMcluster(){
 	window.location = "${ctx}/db/list";
 }
 function createDbOnNewMcluster(){
-	$.ajax({
-		type : "post",
-		url : "${ctx}/db/audit/save",
-		data :$('#create_on_new_cluster_form').serialize()
-	});
-	window.location = "${ctx}/db/list";
+	var isClick = true;
+	$('#create_on_new_cluster_form').bootstrapValidator('revalidateField', 'mclusterName')
+	    .on('success.field.bv', function(e, data) {
+			if(isClick){
+				isClick = false;
+				$.ajax({
+					type : "post",
+					url : "${ctx}/db/audit/save",
+					data :$('#create_on_new_cluster_form').serialize()
+				});
+				window.location = "${ctx}/db/list";
+			}
+	    });
 }
 function refuseCreateMcluster(){
 	$.ajax({
@@ -203,8 +210,10 @@ function formValidate() {
          	}	
          }
      }).on('error.field.bv', function(e, data) {
+    	 $("#validate").val("");
     	 $('#create-mcluster-botton').addClass("disabled");
      }).on('success.field.bv', function(e, data) {
+    	 $("#validate").val("true");
     	 $('#create-mcluster-botton').removeClass("disabled");
      });
 	
