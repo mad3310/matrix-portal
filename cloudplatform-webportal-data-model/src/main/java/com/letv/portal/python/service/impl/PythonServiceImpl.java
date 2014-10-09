@@ -143,7 +143,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dbName", dbName);
 		map.put("userName", dbUser.getUsername());
 		map.put("user_password", dbUser.getPassword());
-		map.put("p_address", dbUser.getAcceptIp());
+		map.put("ip_address", dbUser.getAcceptIp());
 		map.put("max_queries_per_hour", String.valueOf(dbUser.getMaxQueriesPerHour()));
 		map.put("max_updates_per_hour", String.valueOf(dbUser.getMaxUpdatesPerHour()));
 		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
