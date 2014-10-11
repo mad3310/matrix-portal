@@ -26,8 +26,9 @@
 									<span class="lbl"></span>
 								</label>
 							</th>
-							<th>DB名称</th>
+							<th>数据库名称</th>
 							<th>所属Mcluster</th>
+							<th>所属用户</th>
 							<th>
 								创建时间 
 							</th>
@@ -40,6 +41,22 @@
 					</table>
 				</div>
 			</div>
+		</div>
+		<div id="pageControlBar">
+			<input type="hidden" id="totalPage_input" />
+			<ul class="pager">
+				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+	
+				<li>共<lable id="totalPage"></lable>页
+				</li>
+				<li>第<lable id="currentPage"></lable>页
+				</li>
+				<li>共<lable id="totalRows"></lable>条记录
+				</li>
+			</ul>
 		</div>
 		<div class="modal fade bs-example-modal-lg"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-lg">
@@ -130,6 +147,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			error(data);
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -178,22 +196,25 @@ function queryByPage(currentPage,recordsPerPage) {
 					var td3 = $("<td> </td>");
 				}
 				var td4 = $("<td>"
+						+ array[i].createUser
+						+ "</td>");
+				var td5 = $("<td>"
 						+ array[i].createTime
 						+ "</td>");
 				if(array[i].status == 4){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\""+ array[i].auditInfo + "\" style=\"cursor:pointer; text-decoration:none;\">"
 							+ translateStatus(array[i].status)
 							+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 2){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
 							+"创建中...</a>"
 							+ "</td>");
 				}else{
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
 				}
@@ -252,7 +273,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);//.append(td6);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 				
 				$('[name = "dbRefuseStatus"]').popover();
@@ -267,17 +288,6 @@ function queryByPage(currentPage,recordsPerPage) {
 				$("#totalRows").html(data.data.totalRecords);
 				$("#totalPage").html(totalPages);
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
-	
-			return false;
 		}
 	});
    }
@@ -343,6 +353,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 		url : "${ctx}/mcluster/build/status/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
 			
@@ -409,16 +420,6 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 					build_status_tby.find("tr:eq("+i+")").html(tr.html());
 				}
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
-			return false;
 		}
 	});
  }

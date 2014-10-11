@@ -43,6 +43,8 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerModel> selectNormalByClusterId(String clusterId);
+
+	public void deleteByCluster(String clusterId);
 	
 	
 }

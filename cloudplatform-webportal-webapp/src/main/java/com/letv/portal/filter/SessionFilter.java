@@ -42,11 +42,6 @@ public class SessionFilter implements Filter {
             session.setAttribute("userId", username);
             session.setAttribute("role", "user");
         }
-        if(principal != null) {
-        	logger.debug("AssertionHolder.getAssertion().getPrincipal().getName()==>" +AssertionHolder.getAssertion().getPrincipal().getName());
-        	logger.debug("principal===>" + principal.getName());
-        	logger.debug("req.getRemoteUser===>" + req.getRemoteUser());
-        }
         chain.doFilter(req, res);
     } 
     public void destroy() { 

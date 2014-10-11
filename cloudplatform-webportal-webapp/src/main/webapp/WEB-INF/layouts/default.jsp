@@ -46,6 +46,27 @@
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
 
+<!-- warning box -->
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
+<script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+<script type="text/javascript">
+function error(errorThrown,time) {
+	if(errorThrown.msgs !='') {
+		if(!time){
+			time = 1000;
+		}
+		$.gritter.add({
+			title: '错误',
+			text: errorThrown.msgs,
+			sticky: false,
+			time: time,
+			class_name: 'gritter-error'
+		});
+		return;
+	}
+}
+</script>
+
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
 <!--[if lte IE 8]>

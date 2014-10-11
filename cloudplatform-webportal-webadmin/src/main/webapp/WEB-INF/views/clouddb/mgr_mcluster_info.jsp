@@ -40,3 +40,9 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(function(){
+	//隐藏搜索框
+	$('#nav-search').addClass("hidden");
+})
+</script>

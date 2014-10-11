@@ -58,5 +58,10 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 		
 	}
 
+	@Override
+	public void deleteByCluster(String clusterId) {
+		this.buildDao.deleteByCluster(clusterId);
+	}
+
 
 }

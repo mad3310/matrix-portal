@@ -26,6 +26,7 @@
 	<resultMap id="createParams" type="java.util.Map">
 		<result column="DB_NAME" property="dbName" />
 		<result column="IP_ADDR" property="nodeIp" />
+		<result column="CREATE_USER" property="createUser" />
 		<result column="ADMIN_USER" property="username" />
 		<result column="ADMIN_PASSWORD" property="password" />
 	</resultMap>
@@ -161,15 +162,15 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB where ID = #{id}
 	</select>
-	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB WHERE DB_NAME = #{dbName}
+		from WEBPORTAL_DB WHERE DB_NAME = #{dbName} and CREATE_USER=#{createUser}
 	</select>
 
 	<!-- 查询创建用户所需参数-->
 	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.String">
-		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD
+		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,DB.CREATE_USER
 		from WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
 		where
 		DB.CLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.CLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND DB.ID=#{id}

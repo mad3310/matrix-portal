@@ -21,4 +21,6 @@ public interface IBuildService extends IBaseService<BuildModel> {
 	public void initStatus(String mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);
+
+	public void deleteByCluster(String clsuterId);
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
@@ -62,6 +63,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	
+	@Resource
+	private SimpleTextEmailSender simpleTextEmailSender;
+	
 	@Value("${error.email.enabled}")
 	private Boolean ERROR_MAIL_ENABLED;
 	
@@ -84,12 +88,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
 			}
-			Thread.sleep(PYTHON_CREATE_INTERVAL_INIT_TIME);
+			//remove python_create_interval_init_time
+//			Thread.sleep(PYTHON_CREATE_INTERVAL_INIT_TIME);
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
 			}
 			if(nextStep) {
 				this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
+				this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
 			}
 		} catch (Exception e) {
 			BuildModel nextBuild = new BuildModel();
@@ -102,9 +108,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(!StringUtils.isNullOrEmpty(dbId)) {
 				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
 			}
+			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
-		if(nextStep || !StringUtils.isNullOrEmpty(dbId)) {
+		if(nextStep && !StringUtils.isNullOrEmpty(dbId)) {
 			this.buildDb(dbId);
 		}
 		
@@ -140,7 +147,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
+					if(!StringUtils.isNullOrEmpty(dbId)) {
+						this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+					}
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -171,19 +182,24 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public void buildDb(String dbId) {
 		String status = "";
+		String resultMsg = "";
 		Map<String,String> params = this.dbService.selectCreateParams(dbId);
 		try {
 			String result = this.pythonService.createDb(params.get("nodeIp"), params.get("dbName"), params.get("dbName"), null, params.get("username"), params.get("password"));
 			
 			if(analysisResult(transResult(result))) {
+				resultMsg = "成功";
 				status = Constant.STATUS_OK;
+				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
 			} else {
+				resultMsg = "失败";
 				status = Constant.STATUS_BUILD_FAIL;
 			}
 		} catch (Exception e) {
+			resultMsg = "失败";
 			status = Constant.STATUS_BUILD_FAIL;
 		} finally {
-			//保存用户创建成功状态
+			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, null, ERROR_MAIL_ADDRESS);
 			this.dbService.updateBySelective(new DbModel(dbId,status));
 		}
 	}
@@ -192,21 +208,26 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
+		String resultMsg = "";
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(id);
+			Map<String,String> params = this.dbUserService.selectCreateParams(id);
 			try {
-				Map<String,String> params = this.dbUserService.selectCreateParams(id);
 				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 				if(analysisResult(transResult(result))) {
+					resultMsg="成功";
 					dbUserModel.setStatus(Constant.STATUS_OK);
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
 				} else {
+					resultMsg="失败";
 					dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
 				}
 			} catch (Exception e) {
+				resultMsg="失败";
 				dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
 			} finally {
-				//保存用户创建成功状态
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
 				this.dbUserService.updateStatus(dbUserModel);
 			}
 		}
@@ -312,9 +333,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
+					if(!StringUtils.isNullOrEmpty(dbId)) {
+						this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+					}
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
-					
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
 			}
@@ -344,7 +368,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			buildModel.setMsg((String)meta.get("errorDetail"));
 			buildModel.setStatus("fail");
 			flag =  false;
-			
+			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
+			if(!StringUtils.isNullOrEmpty(dbId)) {
+				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+			}
 			this.mclusterService.audit(new MclusterModel(mclusterId,Constant.STATUS_BUILD_FAIL));
 		}
 		this.buildService.updateBySelective(buildModel);
@@ -399,13 +426,36 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return flag;
 	}
 	
-	
-	public void sendMessage(){
-		MailMessage mailMessage = new MailMessage("乐视云平台web-porta系统", ERROR_MAIL_ADDRESS,"mcluster-db创建结果","build.ftl",null);
+	@Override
+	public void buildResultToMgr(String buildType,String result,String detail,String to){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("buildType", buildType);
+		map.put("buildResult", result);
+		map.put("errorDetail", detail);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		try {
 			defaultEmailSender.sendMessage(mailMessage);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
+	}
+	@Override
+	public void buildResultToUser(String buildType,String to){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("buildType", buildType);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",to,"乐视云平台web-portal系统通知","buildForUser.ftl",map);
+		try {
+			defaultEmailSender.sendMessage(mailMessage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	@Override
+	public void removeMcluster(MclusterModel mcluster) {
+		this.mclusterService.delete(mcluster);
+		this.containerService.deleteByCluster(mcluster.getId());
+		this.buildService.deleteByCluster(mcluster.getId());
 	}
 }

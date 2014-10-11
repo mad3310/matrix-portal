@@ -26,8 +26,14 @@
   <!--  <mvc:annotation-driven /> -->
 	
 	 <!-- 异常处理 -->
-    <bean id="exceptionResolver" class="com.letv.common.spring.DefaultMappingExceptionResolver" />
-    
+	<bean id="exceptionResolver"
+		class="com.letv.common.spring.DefaultMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">error/500</prop>
+			</props>
+		</property>
+	</bean>
     
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>  
 	

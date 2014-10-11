@@ -23,6 +23,10 @@
 				<td>${dbApplyStandard.applyCode}</td>
 			</tr>
 			<tr>
+				<td>所属用户</td>
+				<td>${dbApplyStandard.createUser}</td>
+			</tr>
+			<tr>
 				<td>链接类型</td>
 				<td>${dbApplyStandard.linkType}</td>
 			</tr>
@@ -123,6 +127,9 @@
 
 <script type="text/javascript">
 $(function(){
+	//隐藏搜索框
+	$('#nav-search').addClass("hidden");
+	
 	hostDualListBox();
 	formValidate();
 	$("#pageMessage").hide();
@@ -136,12 +143,30 @@ function createDbOnOldMcluster(){
 	window.location = "${ctx}/db/list";
 }
 function createDbOnNewMcluster(){
-	$.ajax({
+	var mclusterName = $("#mclusterName").val();
+	$.ajax({ 
 		type : "post",
-		url : "${ctx}/db/audit/save",
-		data :$('#create_on_new_cluster_form').serialize()
+		url : "${ctx}/mcluster/validate/",
+		data : $('#create_on_new_cluster_form').serialize(),
+		success : function(data) {
+			if(data.valid) {
+				$.ajax({
+					type : "post",
+					url : "${ctx}/db/audit/save",
+					data :$('#create_on_new_cluster_form').serialize()
+				});
+				window.location = "${ctx}/db/list";
+			}else {
+				$.gritter.add({
+					title: '警告',
+					text: '集群名称已存在，请重新填写！',
+					sticky: false,
+					time: 1000,
+					class_name: 'gritter-warning'
+				});
+			}
+		}
 	});
-	window.location = "${ctx}/db/list";
 }
 function refuseCreateMcluster(){
 	$.ajax({
@@ -196,8 +221,10 @@ function formValidate() {
          	}	
          }
      }).on('error.field.bv', function(e, data) {
+    	 $("#validate").val("");
     	 $('#create-mcluster-botton').addClass("disabled");
      }).on('success.field.bv', function(e, data) {
+    	 $("#validate").val("true");
     	 $('#create-mcluster-botton').removeClass("disabled");
      });
 	

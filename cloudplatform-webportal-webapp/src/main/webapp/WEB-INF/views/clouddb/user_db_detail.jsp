@@ -44,18 +44,27 @@
 										<td>${db.createTime}</td>
 									</tr>
 									<c:forEach items="${containers}" var="container">
-										<tr>
-											<td>${container.clusterNodeName}</td>
-											<td>${container.ipAddr}</td>
-										</tr>
+										<c:if test="${container.zookeeperId eq null}">
+											<tr>
+												<td>${container.clusterNodeName}</td>
+												<td>${container.ipAddr}</td>
+											</tr>
+										</c:if> 
+										<c:if test="${container.zookeeperId ne null}">
+											<tr>
+												<td>${container.clusterNodeName}</td>
+												<td><b><font color="green">${container.ipAddr}</font></b></td>
+											</tr>
+										</c:if> 
 									</c:forEach>
 								</table>
+								<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane active">
 							<div class="col-xs-10">
 								<div class=" pull-right">
-									<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
+									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
 										<i class="ace-icont fa fa-plus"></i>创建用户
 									</button>
 									<!-- <button type="button" class="btn btn-xs btn-danger bigger disabled">
@@ -135,7 +144,7 @@
 											<input class="form-control" name="username" id="username" type="text" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请按数据库规范输入，用户名为字母数字或下划线" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',用户名不能以数字开头." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -146,7 +155,7 @@
 											<input class="form-control" name="password" id="password" type="password" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="密码请自己保管好!" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="密码请妥善保管!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -171,12 +180,12 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-success addButton btn-sm">
+								            <button type="button" class="btn btn-white btn-primary addButton">
 								                <i class="fa fa-plus"></i>
 								            </button>
 								        </div>
 								        <label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -186,7 +195,7 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-default btn-sm removeButton">
+								            <button type="button" class="btn btn-white btn-primary removeButton">
 								                <i class="fa fa-minus"></i>
 								            </button>
 								        </div>
@@ -194,10 +203,10 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" placeholder="" />
+											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" value="2:1" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入读写比例.如  1:2 ,如有疑问请联系管理员" style="cursor:pointer; text-decoration:none;">
+											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入读写比例，建议值'2:1'" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -205,10 +214,10 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" placeholder=""/>
+											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" value="50"/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入每秒最大并发量.如  50 ,第一次使用建议咨询管理员" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入每秒最大并发量.建议值'50'" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -232,6 +241,9 @@
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	//隐藏搜索框
+	$('#nav-search').addClass("hidden");
+	
 	pageinit();
 	$('[name = "popoverHelp"]').popover();
 	
@@ -343,6 +355,8 @@ $(function(){
 	                    $('#db_user_apply_form').find('.addButton').removeAttr('disabled');
 	                }
 	            }
+	        }).on('keyup', '[name="username"]', function() {
+	                $('#db_user_apply_form').bootstrapValidator('revalidateField', 'acceptIp');
 	        });
 });
 

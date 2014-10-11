@@ -5,7 +5,14 @@
 		<pattern>/account/login*</pattern>
 		
 		<!-- 异步请求 -->
-		<!-- <pattern>/db/list/*</pattern> -->
+		<pattern>/db/list/*</pattern>
+		
+		<pattern>/db/user/list/*</pattern>
+		<pattern>/db/user/build/*</pattern>
+		
+		<pattern>/mcluster/build/status/*</pattern>
+		<pattern>/mcluster/list/*</pattern>
+		
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

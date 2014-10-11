@@ -544,8 +544,9 @@
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
                  <webportal.cas.local.http>http://10.200.94.203:8081</webportal.cas.local.http>
-                
-                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;wujun@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>

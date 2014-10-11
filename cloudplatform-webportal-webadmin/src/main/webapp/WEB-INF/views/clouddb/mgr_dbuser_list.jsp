@@ -16,7 +16,7 @@
 			<div class="widget-header">
 				<h5 class="widget-title">数据库用户列表</h5>
 				<div class="widget-toolbar no-border">
-					<button id="create_db_user" class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
+					<button id="create_db_user" class="btn btn-white btn-primary btn-xs" type="button" onclick="buildUser()">
 						<i class="ace-icont fa fa-plus"></i>
 						 创建用户
 					</button>
@@ -114,6 +114,7 @@ var currentSelectedLineDbName = 1;
 				url : "${ctx}/db/user/build/"+ str,
 				dataType : "json",
 				success : function(data) {
+					error(data);
 					if(data.result == 1) {
 						$("#titleCheckbox").attr("checked", false);
 						queryByPage(currentPage,recordsPerPage);
@@ -144,6 +145,7 @@ var currentSelectedLineDbName = 1;
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
+				error(data);
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;
@@ -209,17 +211,6 @@ var currentSelectedLineDbName = 1;
 					$("#totalRows").html(data.data.totalRecords);
 					$("#totalPage").html(totalPages);
 				}
-			},
-			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$.gritter.add({
-					title: '警告',
-					text: errorThrown,
-					sticky: false,
-					time: '5',
-					class_name: 'gritter-warning'
-				});
-		
-				return false;
 			}
 		});
     }

@@ -50,4 +50,22 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public boolean initContainer(MclusterModel mclusterModel,String dbId);
+	
+	/**Methods Name: buildResultToMgr <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param buildType
+	 * @param result
+	 * @param detail
+	 */
+	public void buildResultToMgr(String buildType,String result,String detail,String to);
+	
+	/**Methods Name: buildResultToUser <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param buildType
+	 */
+	public void buildResultToUser(String buildType,String to);
+
+	public void removeMcluster(MclusterModel mcluster);
 }
