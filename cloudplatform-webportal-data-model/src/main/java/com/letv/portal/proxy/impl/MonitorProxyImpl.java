@@ -57,13 +57,23 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId, Integer strategy) {
 		return this.monitorService.getMonitorViewData(mclusterId, chartId, strategy);
 	}
+	
 	@Override
 	public List<MonitorViewYModel> getDbConnMonitor(Long mclusterId,Long chartId, Integer strategy) {
+		Date start = new Date();
+		logger.debug("get data start" + start);
+		logger.debug("get data prepare" + start);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mclusterId", mclusterId);
 		map.put("type", "mclusternode");
 		List<ContainerModel> containers = this.containerService.selectByMap(map);	
-		return this.monitorService.getDbConnMonitor(containers.get(0).getIpAddr(), chartId, strategy);
+		Date prepare = new Date();
+		logger.debug("get data prepare" + (prepare.getTime()-start.getTime())/1000);
+		List<MonitorViewYModel> data = this.monitorService.getDbConnMonitor(containers.get(0).getIpAddr(), chartId, strategy);
+		Date end = new Date();
+		
+		logger.debug("get data end" + (end.getTime()-prepare.getTime())/1000);
+		return data;
 	}
 
 }

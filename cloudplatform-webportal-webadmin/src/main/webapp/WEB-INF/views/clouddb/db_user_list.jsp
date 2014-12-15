@@ -164,11 +164,18 @@ function buildUser() {
 					var td3 = $("<td>"
 							+ "<a href=\"${ctx}/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 							+ "</td>");
-					if(array[i].type == "3")
-					{
-						var td4 = $("<td>读写</td>");
+					if(array[i].type == 1){
+						var td4 = $("<td>"
+								    + "管理员"
+								    + "</td>");
+					}else if(array[i].type == 2){
+						var td4 = $("<td>"
+							    + "只读用户"
+							    + "</td>");
 					}else{
-						var td4 = $("<td>管理员</td>");
+						var td4 = $("<td>"
+								    + "读写用户"
+								    + "</td>");
 					}
 					var td5 = $("<td>"
 							+ array[i].acceptIp

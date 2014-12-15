@@ -141,6 +141,7 @@
 											<select class="form-control" name="type" id="type">
 												<option value="3">读写用户</option>
 												<option value="1">管理员</option>
+												<option value="2">只读用户</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -240,6 +241,7 @@
 												<select class="form-control" name="type" id="editType">
 													<option value="3">读写用户</option>
 													<option value="1">管理员</option>
+													<option value="2">只读用户</option>
 												</select>
 											</fieldset>
 											<input class="hidden" name="type" id="editTypeInput" type="text"/>
@@ -484,7 +486,7 @@ function queryDbUser(){
 							    + "</td>");
 				}else if(array[i].type == 2){
 					var td3 = $("<td name=\"db_user_type\">"
-						    + "读用户"
+						    + "只读用户"
 						    + "</td>");
 				}else{
 					var td3 = $("<td name=\"db_user_type\">"

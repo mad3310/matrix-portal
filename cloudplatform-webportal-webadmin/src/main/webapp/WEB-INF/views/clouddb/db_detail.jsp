@@ -226,7 +226,7 @@ function queryDbUser(){
 							    + "</td>");
 				}else if(array[i].type == 2){
 					var td3 = $("<td>"
-						    + "读用户"
+						    + "只读用户"
 						    + "</td>");
 				}else{
 					var td3 = $("<td>"
