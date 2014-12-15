@@ -24,6 +24,7 @@ public class MonitorIndexModel extends BaseModel{
 	private String yAxisText1;
 	private String yAxisText2;
 	private String yAxisText3;
+	private String monitorPoint;
 	
 	public String getTitleText() {
 		return titleText;
@@ -90,6 +91,12 @@ public class MonitorIndexModel extends BaseModel{
 	}
 	public void setyAxisText3(String yAxisText3) {
 		this.yAxisText3 = yAxisText3;
+	}
+	public String getMonitorPoint() {
+		return monitorPoint;
+	}
+	public void setMonitorPoint(String monitorPoint) {
+		this.monitorPoint = monitorPoint;
 	}
 
 }

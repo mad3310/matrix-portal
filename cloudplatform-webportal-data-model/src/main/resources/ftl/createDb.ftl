@@ -47,7 +47,7 @@ p {
 <br/>
 <table class="gridtable" style="margin: 20px">
 	<tr>
-		<th width="100px">glbance配置文件</th>
+		<th width="100px">gbalancer配置文件</th>
 	</tr>
 	<tr>
 		<td>${glbStr}</td>

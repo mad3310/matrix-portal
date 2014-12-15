@@ -43,11 +43,11 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 1);
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
-		Date data = new Date();
-		logger.info("collectMclusterServiceData start");
+		Date date = new Date();
+		logger.info("collectMclusterServiceData start" + date);
 		for (MonitorIndexModel index : indexs) {
 			for (ContainerModel container : contianers) {
-				this.buildTaskService.getContainerServiceData(container, index,data);
+				this.buildTaskService.getContainerServiceData(container, index,date);
 			}
 		}
 		logger.info("collectMclusterServiceData end");

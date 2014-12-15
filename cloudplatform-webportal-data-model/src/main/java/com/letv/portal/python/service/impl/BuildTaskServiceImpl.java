@@ -268,7 +268,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}
 				glbParams.put("User", "monitor");
 				glbParams.put("Pass", params.get("sstPwd"));
-				glbParams.put("Addr", "0.0.0.0");
+				glbParams.put("Addr", "127.0.0.1");
 				glbParams.put("Port", "3306");
 				glbParams.put("Backend", urlPorts);
 				
@@ -1132,6 +1132,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date) {
+		
 		Map result = transResult(this.pythonService.getMonitorData(container.getIpAddr(), index.getDataFromApi()));
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String, Object>) result.get("response");
@@ -1146,5 +1147,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 this.monitorService.insert(monitorDetail);
 			}
 		}
+		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 	}
 }

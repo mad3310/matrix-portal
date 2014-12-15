@@ -64,6 +64,7 @@ public class Cas20ProxyReceivingTicketValidationFilter extends AbstractTicketVal
     private TimerTask timerTask;
 
     private int millisBetweenCleanUps;
+    private final static String SERVER_NAME = ConfigUtil.getString("cas.local.http");
     
     /**
      * Storage location of ProxyGrantingTickets and Proxy Ticket IOUs.
@@ -90,7 +91,7 @@ public class Cas20ProxyReceivingTicketValidationFilter extends AbstractTicketVal
     }
 
     public void init() {
-    	super.setServerName(ConfigUtil.getString("cas.local.http"));
+    	super.setServerName(SERVER_NAME);
         super.init();
         CommonUtils.assertNotNull(this.proxyGrantingTicketStorage, "proxyGrantingTicketStorage cannot be null.");
 

@@ -18,11 +18,12 @@
         <result column="Y_AXIS_TEXT_1" property="yAxisText1" />
         <result column="Y_AXIS_TEXT_2" property="yAxisText2" />
         <result column="Y_AXIS_TEXT_3" property="yAxisText3" />
+        <result column="MONITOR_POINT" property="monitorPoint" />
 	</resultMap>
 	
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		m.ID,m.TITLE_TEXT,m.SUB_TITLE_TEXT,m.Y_AXIS_TEXT,m.TOOLTIP_SUFFIX,m.FLUSH_TIME,m.DETAIL_TABLE,m.DATA_FROM_API,m.STATUS,m.Y_AXIS_TEXT_1,m.Y_AXIS_TEXT_2,m.Y_AXIS_TEXT_3
+		m.ID,m.TITLE_TEXT,m.SUB_TITLE_TEXT,m.Y_AXIS_TEXT,m.TOOLTIP_SUFFIX,m.FLUSH_TIME,m.DETAIL_TABLE,m.DATA_FROM_API,m.STATUS,m.Y_AXIS_TEXT_1,m.Y_AXIS_TEXT_2,m.Y_AXIS_TEXT_3,m.MONITOR_POINT
 	</sql>
 	
 	<!-- 查询条件 -->
@@ -63,9 +64,9 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="MonitorIndex" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_INDEX_MONITOR(TITLE_TEXT,SUB_TITLE_TEXT,Y_AXIS_TEXT,TOOLTIP_SUFFIX,FLUSH_TIME,DETAIL_TABLE,DATA_FROM_API,STATUS,Y_AXIS_TEXT_1,Y_AXIS_TEXT_2,Y_AXIS_TEXT_3)
+		WEBPORTAL_INDEX_MONITOR(TITLE_TEXT,SUB_TITLE_TEXT,Y_AXIS_TEXT,TOOLTIP_SUFFIX,FLUSH_TIME,DETAIL_TABLE,DATA_FROM_API,STATUS,Y_AXIS_TEXT_1,Y_AXIS_TEXT_2,Y_AXIS_TEXT_3,MONITOR_POINT)
 		values(
-		#{titleText},#{subTitleText},#{yAxisText},#{tooltipSuffix},#{flushTime},#{detailTable},#{dataFromApi},#{status},#{yAxisText1},#{yAxisText2},#{yAxisText3})
+		#{titleText},#{subTitleText},#{yAxisText},#{tooltipSuffix},#{flushTime},#{detailTable},#{dataFromApi},#{status},#{yAxisText1},#{yAxisText2},#{yAxisText3},#{monitorPoint})
 	</insert>
 	
 	<select id="selectById" resultMap="BaseResultMap"

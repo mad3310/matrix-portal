@@ -25,6 +25,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.mysql.jdbc.StringUtils;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -79,7 +80,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
 				mcluster.setMclusterName(mclusterName);
-				mcluster.setHclusterId(hclusterId);
+				mcluster.setHclusterId(hclusterId == null?this.dbService.selectById(dbId).getHclusterId():hclusterId);
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);

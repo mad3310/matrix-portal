@@ -22,6 +22,8 @@ import org.jasig.cas.client.authentication.GatewayResolver;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.validation.Assertion;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import com.letv.common.util.ConfigUtil;
 
@@ -60,7 +62,11 @@ public class AuthenticationFilter extends AbstractCasFilter {
     private boolean gateway = false;
     
     private GatewayResolver gatewayStorage = new DefaultGatewayResolverImpl();
-
+    
+    private final static String SERVER_NAME = ConfigUtil.getString("cas.local.http");
+    private final static String EXCLUDE_URL = ConfigUtil.getString("cas.exclude.url");
+    private String[] arrExcludeFile = null; 
+    
     protected void initInternal(final FilterConfig filterConfig) throws ServletException {
         if (!isIgnoreInitConfiguration()) {
             super.initInternal(filterConfig);
@@ -85,9 +91,13 @@ public class AuthenticationFilter extends AbstractCasFilter {
     }
 
     public void init() {
-    	this.setServerName(ConfigUtil.getString("cas.local.http"));
+    	this.setServerName(SERVER_NAME);
         super.init();
         CommonUtils.assertNotNull(this.casServerLoginUrl, "casServerLoginUrl cannot be null.");
+        
+        if (EXCLUDE_URL != null && EXCLUDE_URL.trim().length() > 0) {  
+            arrExcludeFile = EXCLUDE_URL.split(",");  
+        }  
     }
 
     public final void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
@@ -100,6 +110,23 @@ public class AuthenticationFilter extends AbstractCasFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        
+        String requestStr = request.getRequestURL().toString();
+        PathMatcher matcher = new AntPathMatcher();
+        if(arrExcludeFile != null){
+            for(String excludePath : arrExcludeFile){
+                boolean flag = matcher.match(excludePath, requestStr);
+                if(!flag){
+                    flag = requestStr.indexOf(excludePath) > 0;
+                }
+                if(flag){
+                    this.log.debug("excludePath " + excludePath + " pass sso authentication in validationFilter");
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }
+        }
+
 
         final String serviceUrl = constructServiceUrl(request, response);
         final String ticket = CommonUtils.safeGetParameter(request,getArtifactParameterName());

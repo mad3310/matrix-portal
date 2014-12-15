@@ -12,14 +12,14 @@
     <context:annotation-config />
     <context:component-scan base-package="com.letv.common" />
     
-    <task:executor id="executor" pool-size="10" />
-    <task:scheduler id="scheduler" pool-size="15" />  
+    <task:executor id="executor" pool-size="20" />
+    <task:scheduler id="scheduler" pool-size="30" />  
     <task:annotation-driven executor="executor" scheduler="scheduler" />
     
     <bean id="threadPoolTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="10" />
-		<property name="maxPoolSize" value="15" />
-		<property name="queueCapacity" value="25" />
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="1000" />
+		<property name="queueCapacity" value="100" />
 	</bean>
 </beans>

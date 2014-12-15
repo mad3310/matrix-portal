@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import com.letv.portal.service.IMonitorService;
 @Service("monitorService")
 public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> implements IMonitorService {
 
+	private final static Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
+	
 	@Autowired
 	private IMonitorDao monitorDao;
 	
@@ -53,6 +57,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+		logger.info("get Data-------start");
+		Date start = new Date();
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
@@ -60,20 +66,16 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    List<ContainerModel> containers = this.containerService.selectByMap(map);	  
 	    
 	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-	    String dataTable = monitorIndexModel.getDetailTable();
-	    
-	    Map<String, Object> indexParams = new HashMap<String, Object>();
-	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
-	    
 	    Date end = new Date();
-	   
-	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+	    String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 	    
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put("dbName", monitorIndexModel.getDetailTable());
 		params.put("start", getStartDate(end,strategy));
 		params.put("end", end);
+		Date prepare = new Date();
+		logger.info("get Data-------prepare" + (prepare.getTime()-start.getTime())/1000);
 		
 		for (ContainerModel c : containers) {
 			for (String s : detailNames) {
@@ -94,7 +96,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				ydatas.add(ydata);
 			}
 		}
-
+		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
 	@Override
@@ -102,14 +104,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
 		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-		String dataTable = monitorIndexModel.getDetailTable();
-		
-		Map<String, Object> indexParams = new HashMap<String, Object>();
-		indexParams.put("dbName",monitorIndexModel.getDetailTable());
-		
 		Date end = new Date();
-		
-		List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+		String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
