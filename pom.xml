@@ -674,11 +674,11 @@
                 <fixedpush.url.port>39450</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.post.url>http://zabbix.letv.cn/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
+                <zabbix.template.normal>23187</zabbix.template.normal>
+                <zabbix.template.vip>65134</zabbix.template.vip>
                 
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>
