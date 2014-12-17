@@ -520,7 +520,7 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                 <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.163:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -549,6 +549,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -558,7 +560,7 @@
             <id>dev_test</id>
             <properties>
                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                 <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -574,9 +576,9 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
-                <webportal.cas.local.http>http://10.58.166.19:8081</webportal.cas.local.http>
+                <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
-                <start.timing.jobs>N</start.timing.jobs>
+                <start.timing.jobs>Y</start.timing.jobs>
                  
                 <webportal.log.path>D:</webportal.log.path>
                 
@@ -588,6 +590,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -597,7 +601,7 @@
             <id>test</id>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.163:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -629,6 +633,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>abc123</admin.pwd>
                 
@@ -671,6 +677,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>

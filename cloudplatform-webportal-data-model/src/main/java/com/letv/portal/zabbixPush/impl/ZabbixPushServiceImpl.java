@@ -30,6 +30,8 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static String ZABBIX_POST_URL= ConfigUtil.getString("zabbix.post.url");
 	private final static String ZABBIX_NAME= ConfigUtil.getString("zabbix.name");
 	private final static String ZABBIX_PWD= ConfigUtil.getString("zabbix.pwd");
+	private final static String ZABBIX_TEMPLATE_NORMAL= ConfigUtil.getString("zabbix.template.normal");
+	private final static String ZABBIX_TEMPLATE_VIP= ConfigUtil.getString("zabbix.template.vip");
 	
 	@Autowired
 	private IContainerService containerService;
@@ -43,6 +45,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
 							
 				ZabbixParam params = new ZabbixParam();
+				if("mclusternode".equals(c.getType())) {
+					params = new ZabbixParam(ZABBIX_TEMPLATE_NORMAL);
+					logger.info("mclusternode template:" + ZABBIX_TEMPLATE_NORMAL);
+				} else if("mclustervip".equals(c.getType())) {
+					params = new ZabbixParam(ZABBIX_TEMPLATE_VIP);
+					logger.info("mclustervip template:" + ZABBIX_TEMPLATE_VIP);
+				}
 				params.setHost(c.getContainerName());
 				
 				InterfacesModel interfacesModel = new InterfacesModel();

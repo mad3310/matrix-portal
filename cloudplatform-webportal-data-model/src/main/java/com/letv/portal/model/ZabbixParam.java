@@ -19,6 +19,14 @@ public class ZabbixParam {
     	templates.add(templatesModel);
     }
     
+    //添加构造函数，传入模板id 20141217 by liuhao
+    public ZabbixParam(String templateId){
+    	GroupsModel groupsModel = new GroupsModel();
+    	TemplatesModel templatesModel = new TemplatesModel(templateId);
+    	groups.add(groupsModel);
+    	templates.add(templatesModel);
+    }
+    
 	public String getHost() {
 		return host;
 	}
