@@ -35,7 +35,7 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 			String ip, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT)
-				.append("/containerCluster/status/").append(cbaseClusterName);
+				.append("/containerCluster/createResult/").append(cbaseClusterName);
 		String result = HttpClient.get(url.toString(), username, password);
 		return result;
 	}

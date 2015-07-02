@@ -24,6 +24,7 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String URL_PORT = ":8888";	
 	private final static String OSS_URL_PORT = ":8887";	
 	private final static String GBALANCER_PORT = ":9888";	
+	private final static String URL_CHECK_PORT = ":6666";
 	
 	@Override
 	public String createContainer(String mclusterName,String ip,String username,String password) {
@@ -45,7 +46,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(mclusterName);
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createResult/").append(mclusterName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
@@ -270,7 +271,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkMclusterStatus(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(mclusterName);
+		url.append(URL_HEAD).append(ip).append(URL_CHECK_PORT).append("/containerCluster/status/").append(mclusterName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
@@ -278,7 +279,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkContainerStatus(String containerName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/status/").append(containerName);
+		url.append(URL_HEAD).append(ip).append(URL_CHECK_PORT).append("/container/status/").append(containerName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
@@ -309,7 +310,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkMclusterCount(String hostIp, String name, String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/sync");
+		url.append(URL_HEAD).append(hostIp).append(URL_CHECK_PORT).append("/containerCluster/sync");
 		String result = HttpClient.get(url.toString(),name,password);
 		return result;
 	}
