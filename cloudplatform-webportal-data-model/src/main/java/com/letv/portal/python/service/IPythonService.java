@@ -276,6 +276,7 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String getMonitorData(String ip,String index);
+	public String getClusterMonitorData(String ip, String index);
 
 	/**Methods Name: wholeBackup4Db <br>
 	 * Description: db数据库备份<br>

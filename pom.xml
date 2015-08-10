@@ -564,7 +564,7 @@
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
 
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
@@ -626,7 +626,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                  <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 
                  <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
@@ -684,7 +684,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                  
                  <webportal.local.http>http://rds3.et.letv.com</webportal.local.http>
                 <webportal.admin.http>http://rds2.et.letv.com</webportal.admin.http>
@@ -744,7 +744,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
@@ -802,7 +802,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
@@ -859,7 +859,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                  <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
@@ -916,7 +916,7 @@
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                  <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>

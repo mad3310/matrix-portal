@@ -982,7 +982,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Async
 	public void getClusterServiceData(String clusterName, Long hclusterId,MonitorIndexModel index,Date date) {
 		String ip = this.getHclusterMainIp(hclusterId);
-		Map result = transResult(this.pythonService.getMonitorData(ip, index.getDataFromApi().replace("{0}", clusterName)));
+		Map result = transResult(this.pythonService.getClusterMonitorData(ip, index.getDataFromApi().replace("{0}", clusterName)));
 		if(analysisResult(result)) {
 			List<Map<String,Object>>  data= (List<Map<String,Object>>) ((Map<String,Object>)result.get("response")).get("data");
 			for (Map<String, Object> containerData : data) {
