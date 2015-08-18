@@ -210,24 +210,24 @@
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 											<div class="bk-form-row">
-											<label class="bk-form-row-name">RDS服务：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span></span>
-																	<ul>
-																	<li class="bk-select-option"><a href="javascript:;" selectid="">不进行关联</a></li>
-																	</ul>
-																	<input name="rdsId" type="hidden" value="" />
-																</div>
-														</span>
-														</span> <span class="bk-select-arrow"></span>
+												<label class="bk-form-row-name">RDS服务：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid">
+																	<div class="divselect">
+																		<span></span>
+																		<ul>
+																		<li class="bk-select-option"><a href="javascript:;" selectid="">不进行关联</a></li>
+																		</ul>
+																		<input name="rdsId" type="hidden" value="" />
+																	</div>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">OCS服务：</label>
 											<div class="bk-form-row-cell">
@@ -243,6 +243,26 @@
 																</div>
 														</span>
 														</span> <span class="bk-select-arrow"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">nginx代理：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="bk-buttontab">
+														<input name="isCreateNginx" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary " value="1">
+															<div>
+																<span>创建</span>
+															</div>
+														</button>
+														<button class="bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>不创建</span>
+															</div>
+														</button>
 													</div>
 												</div>
 											</div>

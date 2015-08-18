@@ -62,7 +62,8 @@ define(function(require){
 			ocsId : $("[name = 'ocsId']").val(),
 			rdsId : $("[name = 'rdsId']").val(),
 			memorySize : $("[name = 'memorySize']").val(),
-            type:$("[name = type]").val()
+            type:$("[name = type]").val(),
+            createNginx:$("[name = isCreateNginx]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){
 			createGceData.gceImageName=gceImageName;
