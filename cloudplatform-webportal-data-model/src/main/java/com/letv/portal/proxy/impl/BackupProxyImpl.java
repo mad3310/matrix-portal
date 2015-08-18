@@ -60,6 +60,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Value("${python.db.backup.interval.time}")
 	private long DB_BACKUP_INTERVAL_TIME;
+	@Value("${default.backup.ignore}")
+	private String DEFAULT_BACKUP_IGNORE;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -144,6 +146,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		BackupResultModel backupResult = new BackupResultModel();
 		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
 		String resultMessage = result.getResult();
+		if(DEFAULT_BACKUP_IGNORE.contains(mcluster.getMclusterName())) {
+			backupResult.setStatus(BackupStatus.FAILD);
+			backupResult.setResultDetail("Ignore the backup for current mcluster.");
+			return backupResult;
+		}
 		if(StringUtils.isNullOrEmpty(resultMessage)) {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail("backup api result is null:" + result.getUrl());
