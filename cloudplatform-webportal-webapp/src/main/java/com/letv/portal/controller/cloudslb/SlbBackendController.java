@@ -60,7 +60,7 @@ public class SlbBackendController {
 		return obj;
 	}
 	@RequestMapping( value="/{id}",method=RequestMethod.DELETE)   
-	public @ResponseBody ResultObject save(@PathVariable Long id,ResultObject obj) {
+	public @ResponseBody ResultObject delete(@PathVariable Long id,ResultObject obj) {
 		if(id == null)
 			throw new ValidateException("参数不合法");
 		SlbBackendServer back = this.slbBackendServerService.selectById(id);

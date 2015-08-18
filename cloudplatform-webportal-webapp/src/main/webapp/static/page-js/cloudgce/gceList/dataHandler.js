@@ -186,14 +186,14 @@ define(function(require,exports,module){
 	        }
 	    }
     }
-    function getAccpetAddr(data,type){
+    function getAccpetAddr(data){
         if(data == null || data.length == 0){
             return "-";
         }
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
         	var port = "8001";
-        	if(type == "jetty")
+        	if(data[i].type == "jetty")
         		port = "8080";
             ret = ret
             +"<span class=\"text-success\">"+data[i].ipAddr+"</span>"

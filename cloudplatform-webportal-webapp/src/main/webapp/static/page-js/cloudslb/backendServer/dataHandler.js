@@ -38,7 +38,7 @@ define(function(require,exports,module){
                 var td2=$("<td class='hidden-xs'>-</td>");
                 if(array[i].gceContainers != undefined && array[i].gceContainers != null){
                 	td2 = $("<td class=\"padding-left-32 hidden-xs\">"
-                            + "<span>"+getAccpetAddr(array[i].gceContainers,array[i].type)+"</span>"
+                            + "<span>"+getAccpetAddr(array[i].gceContainers)+"</span>"
                             +"</td>");
                 }else{
                 	td2 = $("<td  class='hidden-xs'>"
@@ -109,7 +109,7 @@ define(function(require,exports,module){
 	                + array[i].gceName
 	                + "</td>");
 	                var td3 = $("<td class=\"padding-left-32 hidden-xs\">"
-                            + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
+	                		 + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
                             +"</td>");
 	                var td4 = $("<td class='hidden-xs'>"
 	                + "<span>经典网路</span>"
@@ -171,14 +171,14 @@ define(function(require,exports,module){
 		        +"<span>:</span>"
 		        +"<span>"+data.frontPort+"</span><br>";
     }
-    function getAccpetAddr(data,type){
+    function getAccpetAddr(data){
         if(data == null || data.length == 0){
             return "-";
         }
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
         	var port = "8001";
-        	if(type == "jetty")
+        	if(data[i].type == "jetty")
         		port = "8080";
             ret = ret
             +"<span class=\"text-success\">"+data[i].ipAddr+"</span>"

@@ -245,7 +245,10 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 						if(SlbBackEndType.RDS.equals(backendServer.getType())) {
 							port="3306";
 						}
+						
 						for (GceContainer gceContainer : gceContainers) {
+							if("jetty".equals(gceContainer.getType()))
+								port="8080";
 							sb.append(gceContainer.getIpAddr()).append(":").append(port).append(",");
 						}
 					}
