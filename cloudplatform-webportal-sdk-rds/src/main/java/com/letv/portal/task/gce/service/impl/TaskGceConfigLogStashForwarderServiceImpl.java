@@ -43,7 +43,7 @@ public class TaskGceConfigLogStashForwarderServiceImpl extends BaseTask4GceServi
 		String logStashIp = logContainers.get(0).getIpAddr();
 		for (GceContainer gceContainer : containers) {
 			map.put("ip", logStashIp);
-			map.put("paths", "/var/log/letv/*\",\"/var/log/nginx/*\",\"var/log/jetty/*");
+			map.put("paths", "/var/log/letv/*\",\"/var/log/nginx/*\",\"var/log/jetty_stdout.log");
 			
 			ApiResultObject resultObject = this.logPythonService.configLogStashForwarder(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(resultObject);
