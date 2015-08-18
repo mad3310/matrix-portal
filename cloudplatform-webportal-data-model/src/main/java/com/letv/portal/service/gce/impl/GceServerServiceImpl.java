@@ -123,7 +123,9 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 			gceServer.setGceContainers(gceContainers);
 			if(GceType.JETTY.equals(gceServer.getType())){
 				GceServer gceServerPorxy = this.selectProxyServerByGce(gceServer);//获取该应用的代理服务
-				
+				if(gceServerPorxy == null) {
+					continue;
+				}
 				List<GceContainer> gceProxyContainers = this.gceContainerService.selectByGceClusterId(gceServerPorxy.getGceClusterId());
 				gceServerPorxy.setGceContainers(gceProxyContainers);
 				

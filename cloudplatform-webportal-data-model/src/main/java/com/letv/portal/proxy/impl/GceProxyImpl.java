@@ -1,14 +1,11 @@
 package com.letv.portal.proxy.impl;
 
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +14,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
-import com.letv.common.exception.MatrixException;
-import com.letv.common.exception.PythonException;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
-import com.letv.portal.constant.Constant;
-import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.enumeration.GceType;
-import com.letv.portal.enumeration.MclusterStatus;
-import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.enumeration.SlbStatus;
-import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.HclusterModel;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
-import com.letv.portal.model.gce.GceContainerExt;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
@@ -110,17 +97,15 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);
 		
-		if(null != rdsId)
-			params.put("rdsId", rdsId);
-		if(null != ocsId)
-			params.put("ocsId", ocsId);
 		
-		if(GceType.JETTY.equals(gceServer.getType())) {
-			if(null !=rdsId ||null !=ocsId) {
-				GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
-				this.gceServerService.saveGceExt(gse);
-			}
-			
+		if(null !=rdsId ||null !=ocsId) {
+			params.put("rdsId", rdsId);
+			params.put("ocsId", ocsId);
+			GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
+			this.gceServerService.saveGceExt(gse);
+		}
+		
+		if(GceType.JETTY.equals(gceServer.getType()) && gceServer.isCreateNginx()) {
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
 			gceServer.setGceImageName("");

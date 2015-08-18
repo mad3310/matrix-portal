@@ -24,6 +24,7 @@ public class GceServer extends BaseModel {
 	private String descn;
 	private GceType type;//container类型：nginx、jetty
 	private Long memorySize;
+	private boolean createNginx;
 	
 	private HclusterModel hcluster;
 	private GceCluster gceCluster;
@@ -126,5 +127,11 @@ public class GceServer extends BaseModel {
 	}
 	public void setMemorySize(Long memorySize) {
 		this.memorySize = memorySize;
+	}
+	public boolean isCreateNginx() {
+		return createNginx;
+	}
+	public void setCreateNginx(boolean createNginx) {
+		this.createNginx = createNginx;
 	}
 }
