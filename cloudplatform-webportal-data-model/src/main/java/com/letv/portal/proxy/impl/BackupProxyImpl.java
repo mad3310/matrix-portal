@@ -144,13 +144,13 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	
 	private BackupResultModel wholeBackup4Db(MclusterModel mcluster,ContainerModel container){
 		BackupResultModel backupResult = new BackupResultModel();
-		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
-		String resultMessage = result.getResult();
 		if(DEFAULT_BACKUP_IGNORE.contains(mcluster.getMclusterName())) {
 			backupResult.setStatus(BackupStatus.FAILD);
-			backupResult.setResultDetail("Ignore the backup for current mcluster.");
+			backupResult.setResultDetail("Ignore  backup on current mcluster.");
 			return backupResult;
 		}
+		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+		String resultMessage = result.getResult();
 		if(StringUtils.isNullOrEmpty(resultMessage)) {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail("backup api result is null:" + result.getUrl());
