@@ -27,7 +27,7 @@
 								<th class="hidden-480">类型</th>
 								<th>版本</th>
 								<th class="hidden-480">下载地址</th>
-								<th class="hidden-480">应用日志地址</th>
+								<th class="hidden-480">网络类型</th>
 								<th>可用性</th>
 								<th class="hidden-480">所属用户</th>
 								<th>操作</th>
@@ -117,12 +117,15 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">网络类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<input class="form-control" name="logUrl" id="logUrl" type="text" />
+									<select class="form-control" name="netType" id="netType" data-placeholder="网络类型">
+										<option value="bridge">bridge</option>
+										<option value="macVlan">macVlan</option>
+									</select>
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的日志地址" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的网络类型" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -234,12 +237,15 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">网络类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<input class="form-control" name="modify-logUrl" id="modify-logUrl" type="text" />
+									<select class="form-control" name="modify-netType" id="modify-netType" data-placeholder="网络类型">
+										<option value="bridge">bridge</option>
+										<option value="macVlan">macVlan</option>
+									</select>
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的日志地址" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的网络类型" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
