@@ -322,7 +322,7 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> 
+													<!-- <span class="bk-number"> 
 														<input type="text" onfocus="this.blur()" class="bk-number-input" name="buyNum" value="2"> 
 														<span class="bk-number-unit">台</span> 
 														<span class="bk-number-control"> 
@@ -333,7 +333,20 @@
 														<span class="bk-number-down"> <i class="bk-number-arrow"></i>
 														</span> 
 													</span>
-													</span>
+													</span> -->
+													<div class="bk-buttontab">
+														<input name="buyNum" type="text" class="hide" value="2">
+														<button class=" bk-button bk-button-primary " value="1">
+															<div>
+																<span>1台</span>
+															</div>
+														</button>
+														<button class="bk-button bk-button-primary bk-button-current" value="2">
+															<div>
+																<span>2台</span>
+															</div>
+														</button>
+													</div>
 												</div>
 												<div class="bk-form-row-txt">目前只支持1台或2台</div>
 											</div>

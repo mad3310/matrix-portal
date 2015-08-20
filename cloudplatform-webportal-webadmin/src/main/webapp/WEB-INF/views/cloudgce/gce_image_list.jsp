@@ -121,7 +121,7 @@
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="form-control" name="netType" id="netType" data-placeholder="网络类型">
 										<option value="bridge">bridge</option>
-										<option value="macVlan">macVlan</option>
+										<option value="ip">ip</option>
 									</select>
 								</div>								
 								<label class="control-label">
@@ -241,7 +241,7 @@
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="form-control" name="modify-netType" id="modify-netType" data-placeholder="网络类型">
 										<option value="bridge">bridge</option>
-										<option value="macVlan">macVlan</option>
+										<option value="ip">ip</option>
 									</select>
 								</div>								
 								<label class="control-label">
@@ -268,7 +268,7 @@
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="form-control chosen-select" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
-									<option></option>
+									<option></option>macVlan
 									</select>
 								</div>
 								<label class="control-label">
