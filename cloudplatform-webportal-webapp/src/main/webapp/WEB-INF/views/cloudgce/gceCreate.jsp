@@ -322,11 +322,16 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> <input type="text" class="bk-number-input" value="2"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
-														</span> <span class="bk-number-up"> <i class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down bk-number-disabled"> <i class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down hide"> <i class="bk-number-arrow"></i>
-														</span>
+													<span class="bk-number"> 
+														<input type="text" class="bk-number-input" name="buyNum" value="2"> 
+														<span class="bk-number-unit">台</span> 
+														<span class="bk-number-control"> 
+															<span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
+														</span> 
+														<span class="bk-number-up"> <i class="bk-number-arrow"></i>
+														</span> 
+														<span class="bk-number-down"> <i class="bk-number-arrow"></i>
+														</span> 
 													</span>
 													</span>
 												</div>

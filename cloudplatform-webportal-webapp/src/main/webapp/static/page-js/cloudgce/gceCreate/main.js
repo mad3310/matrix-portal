@@ -16,6 +16,17 @@ define(function(require){
         })
     }
 
+    $("[name = buyNum]").closest('.bk-number').click(function(e){
+    	e = e? e:window.event;
+		var _target = e.target || e.srcElement;
+		var aTarget = $(_target).parent()[0];
+		var aTargetClassList = aTarget.classList;
+		if(aTargetClassList.contains("action-start")){
+			volStart(aTarget);
+		}else if(aTargetClassList.contains("action-stop")){
+			volStop(aTarget);
+		}
+    })
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
         if(!$(this).hasClass("disabled")){
@@ -63,16 +74,18 @@ define(function(require){
 			rdsId : $("[name = 'rdsId']").val(),
 			memorySize : $("[name = 'memorySize']").val(),
             type:$("[name = type]").val(),
-            createNginx:$("[name = isCreateNginx]").val()
+            createNginx:$("[name = isCreateNginx]").val(),
+            buyNum:$("[name = buyNum]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){
 			createGceData.gceImageName=gceImageName;
 		}
 		cn.RemoveBeforeunloadListener();
 		var url = "/gce";
-		cn.PostData(url, createGceData, function () {
+		console.log(createGceData);
+		/*cn.PostData(url, createGceData, function () {
 			location.href = "/list/gce";
-		});
+		});*/
     });
     /*表单验证 --end*/
 
