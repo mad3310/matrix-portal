@@ -175,6 +175,7 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		gceServerPorxyParams.put("gceName",NGINX4JETTY_CODE+"_" + gce.getGceName());
 		gceServerPorxyParams.put("createUser",gce.getCreateUser());
 		gceServerPorxyParams.put("type",GceType.NGINX_PROXY);
+		gceServerPorxyParams.put("isLike",false);
 		
 		List<GceServer> gceProxyServers =  this.selectByMap(gceServerPorxyParams);
 		if(gceProxyServers.size() > 0){

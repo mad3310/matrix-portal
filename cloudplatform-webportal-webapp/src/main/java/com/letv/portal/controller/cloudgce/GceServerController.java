@@ -74,7 +74,7 @@ public class GceServerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(GceServer gceServer,Long rdsId,Long ocsId,ResultObject obj) {
+	public @ResponseBody ResultObject save(GceServer gceServer,Long rdsId,Long ocsId,int buyNum,ResultObject obj) {
 		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName())){
 			throw new ValidateException("参数不合法");
 		}

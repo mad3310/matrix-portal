@@ -16,6 +16,7 @@ public class GceServer extends BaseModel {
 	private Long gceClusterId;
 	private Long hclusterId;
 	private Long logId;
+	private Long gceImageId;
 
 	private String gceImageName;//gce镜像名称
 	private String ip;
@@ -31,6 +32,8 @@ public class GceServer extends BaseModel {
 	private UserModel createUserModel;
 	private List<GceContainer> gceContainers;
 	private GceServer gceServerProxy;
+	
+	private int buyNum;
 
 	public GceType getType() {
 		return type;
@@ -134,4 +137,17 @@ public class GceServer extends BaseModel {
 	public void setCreateNginx(boolean createNginx) {
 		this.createNginx = createNginx;
 	}
+	public int getBuyNum() {
+		return buyNum;
+	}
+	public void setBuyNum(int buyNum) {
+		this.buyNum = buyNum;
+	}
+	public Long getGceImageId() {
+		return gceImageId;
+	}
+	public void setGceImageId(Long gceImageId) {
+		this.gceImageId = gceImageId;
+	}
+	
 }

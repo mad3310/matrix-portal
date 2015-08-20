@@ -51,8 +51,15 @@
 				and g.ID=#{id}
 			</if>
 			
-			<if test="gceName != null and gceName != '' ">
-				and g.GCE_NAME like CONCAT('%','${gceName}','%') escape '^'
+			<if test="isLike">
+				<if test="gceName != null and gceName != '' ">
+					and g.GCE_NAME like CONCAT('%','${gceName}','%') escape '^'
+				</if>
+			</if>
+			<if test="!isLike">
+				<if test="gceName != null and gceName != '' ">
+					and g.GCE_NAME = #{gceName}
+				</if>
 			</if>
 			
 			<if test="gceClusterId != null  ">

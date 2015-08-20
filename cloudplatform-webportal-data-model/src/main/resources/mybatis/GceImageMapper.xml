@@ -15,6 +15,7 @@
 		<result column="OWNER" property="owner" />
 		<result column="STATUS" property="status" />
 		<result column="DESCN" property="descn" />
+		<result column="NET_TYPE" property="netType" />
 			
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -29,7 +30,7 @@
 	
 	<sql id="Base_Column_List">
 		gi.ID,
-		gi.NAME,gi.URL,gi.TAG,gi.TYPE,gi.OWNER,gi.STATUS,gi.DESCN,gi.LOG_URL,
+		gi.NAME,gi.URL,gi.TAG,gi.TYPE,gi.OWNER,gi.STATUS,gi.DESCN,gi.LOG_URL,gi.NET_TYPE
 		gi.DELETED,gi.CREATE_TIME,gi.CREATE_USER,gi.UPDATE_TIME,gi.UPDATE_USER
 	</sql>
 	
@@ -64,6 +65,9 @@
 			<if test="descn != null and descn != ''  ">
 				and gi.DESCN=#{descn}
 			</if>
+			<if test="netType != null and netType != ''  ">
+				and gi.NET_TYPE=#{netType}
+			</if>
 			
 			<if test="deleted != null  ">
 				and gi.DELETED=#{deleted}
@@ -88,10 +92,10 @@
 	<insert id="insert" parameterType="GceImage" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_GCE_IMAGE(
-			NAME,URL,TAG,TYPE,OWNER,STATUS,DESCN,LOG_URL,
+			NAME,URL,TAG,TYPE,OWNER,STATUS,DESCN,LOG_URL,NET_TYPE,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{name},#{url},#{tag},#{type},#{owner},#{status},#{descn},#{logUrl},
+			#{name},#{url},#{tag},#{type},#{owner},#{status},#{descn},#{logUrl},#{netType},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -125,6 +129,9 @@
 			</if>
 			<if test="descn != null and descn != ''  ">
 				DESCN=#{descn},
+			</if>
+			<if test="netType != null and netType != ''  ">
+				NET_TYPE=#{netType},
 			</if>
 			
 			<if test="deleted != null  ">
@@ -212,6 +219,9 @@
 			</if>
 			<if test="params != null and params.descn != null and params.descn != ''  ">
 				and gi.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.netType != null and params.netType != ''  ">
+				and gi.NET_TYPE=#{params.netType}
 			</if>
 			<if test="params != null and params.deleted != null  ">
 				and gi.DELETED=#{deleted}

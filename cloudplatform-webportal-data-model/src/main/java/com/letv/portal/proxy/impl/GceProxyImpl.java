@@ -21,6 +21,7 @@ import com.letv.portal.enumeration.GceType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
@@ -35,6 +36,7 @@ import com.letv.portal.service.IHostService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerExtService;
 import com.letv.portal.service.gce.IGceContainerService;
+import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogServerService;
 
@@ -50,6 +52,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private IGcePythonService gcePythonService;
 	@Autowired
 	private IGceClusterService gceClusterService;
+	@Autowired
+	private IGceImageService gceImageService;
 	@Autowired
 	private IGceContainerService gceContainerService;
 	@Autowired
@@ -104,7 +108,12 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
 			this.gceServerService.saveGceExt(gse);
 		}
-		
+		if(null !=gceServer.getGceImageId()) {
+			GceImage image = this.gceImageService.selectById(gceServer.getGceImageId());
+			if(null != image && StringUtils.isNotEmpty(image.getNetType())) {
+				params.put("netType", image.getNetType());
+			}
+		}
 		if(GceType.JETTY.equals(gceServer.getType()) && gceServer.isCreateNginx()) {
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
