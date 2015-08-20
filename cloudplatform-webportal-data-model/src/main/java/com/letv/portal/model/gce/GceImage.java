@@ -17,6 +17,7 @@ public class GceImage extends BaseModel {
 	private GceImageStatus status;
 	private String  logUrl;
 	private String descn;//镜像描述
+	private String netType;
 	
 	private UserModel createUserModel;
 	
@@ -73,5 +74,11 @@ public class GceImage extends BaseModel {
 	}
 	public void setLogUrl(String logUrl) {
 		this.logUrl = logUrl;
+	}
+	public String getNetType() {
+		return netType;
+	}
+	public void setNetType(String netType) {
+		this.netType = netType;
 	}
 }

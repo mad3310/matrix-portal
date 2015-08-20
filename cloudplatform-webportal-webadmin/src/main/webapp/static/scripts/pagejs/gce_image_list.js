@@ -56,8 +56,8 @@ function queryByPage() {
 				var td5 = $("<td class=\"td-url hidden-480\" >"
 						+ array[i].url
 						+ "</td>");
-				var td6 = $("<td class=\"td-url hidden-480\" >"
-						+ array[i].logUrl
+				var td6 = $("<td class=\"td-netType hidden-480\" >"
+						+ array[i].netType
 						+ "</td>");
 				var td7 = $("<td class=\"td-status\" >"
 						+ array[i].status
@@ -259,6 +259,7 @@ function initModify(){
 		 		id : tr.find("input").val(),
 		 		name : tr.find(".td-name").html(),
 		 		url : tr.find(".td-url").html(),
+		 		netType : tr.find(".td-netType").html(),
 		 		tag : tr.find(".td-tag").html(),
 		 		status : tr.find(".td-status").html(),
 		 		type : tr.find(".td-type").html(),
@@ -273,12 +274,12 @@ function initModify(){
     	$('#modify-descn').val(trData.descn);
     	$('#modify-tag').val(trData.tag);
     	$('#modify-url').val(trData.url);
-    	$('#modify-logUrl').val(trData.logUrl);
+    	$('#modify-netType').val(trData.netType);
     	$('#modify-status').val(trData.status);
 	})
 }
 function addImage(){
-	$.ajax({
+$.ajax({
     		cache:false,
     		type : "post",
     		url : "/gce/image",
@@ -290,7 +291,7 @@ function addImage(){
     			url:$('#url').val(),
     			status:$('#status').val(),
     			owner:$('#owner').val(),
-    			logUrl:$('#logUrl').val()
+    			netType:$('#netType').val()
     		},
     		success : function(data) {
     			location.href = "/list/gce/image";
@@ -309,7 +310,7 @@ function updateImage(){
     			descn:$('#modify-descn').val(),
     			tag:$('#modify-tag').val(),
     			url:$('#modify-url').val(),
-    			logUrl:$('#modify-logUrl').val(),
+    			netType:$('#modify-netType').val(),
     			status:$('#modify-status').val(),
     			owner:$('#modify-owner').val()
     		},

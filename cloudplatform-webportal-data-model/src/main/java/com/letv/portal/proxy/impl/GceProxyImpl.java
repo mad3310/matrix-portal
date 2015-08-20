@@ -21,6 +21,7 @@ import com.letv.portal.enumeration.GceType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
@@ -35,6 +36,7 @@ import com.letv.portal.service.IHostService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerExtService;
 import com.letv.portal.service.gce.IGceContainerService;
+import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogServerService;
 
@@ -50,6 +52,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private IGcePythonService gcePythonService;
 	@Autowired
 	private IGceClusterService gceClusterService;
+	@Autowired
+	private IGceImageService gceImageService;
 	@Autowired
 	private IGceContainerService gceContainerService;
 	@Autowired
@@ -93,6 +97,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		
+		params.put("buyNum", gceServer.getBuyNum());
 	    params.put("logParams", logParams);
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);

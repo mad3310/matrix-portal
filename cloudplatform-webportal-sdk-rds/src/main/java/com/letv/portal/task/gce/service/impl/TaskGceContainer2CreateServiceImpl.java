@@ -32,6 +32,12 @@ public class TaskGceContainer2CreateServiceImpl extends BaseTask4GceServiceImpl 
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
+		if(containers.size()==1) {
+			tr.setResult("only one node.");
+			tr.setParams(params);
+			tr.setSuccess(true);
+			return tr;
+		}
 		String nodeIp2 = containers.get(1).getHostIp();
 		String port = containers.get(1).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);

@@ -16,6 +16,18 @@ define(function(require){
         })
     }
 
+    $("[name = buyNum]").closest('.bk-number').click(function(e){
+    	e = e? e:window.event;
+		var _target = e.target || e.srcElement;
+		var aTarget = $(_target).parent()[0];
+		var aTargetClassList = aTarget.classList;
+		var oldVal = $("[name = buyNum]").val();
+		if(aTargetClassList.contains("bk-number-up")){
+			$("[name = buyNum]").val(parseInt(oldVal) < 2?  parseInt(oldVal)+1:2);
+		}else if(aTargetClassList.contains("bk-number-down")){
+		 	$("[name = buyNum]").val(parseInt(oldVal) > 1?  parseInt(oldVal)-1:1);
+		}
+    })
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
         if(!$(this).hasClass("disabled")){
@@ -63,7 +75,8 @@ define(function(require){
 			rdsId : $("[name = 'rdsId']").val(),
 			memorySize : $("[name = 'memorySize']").val(),
             type:$("[name = type]").val(),
-            createNginx:$("[name = isCreateNginx]").val()
+            createNginx:$("[name = isCreateNginx]").val(),
+            buyNum:$("[name = buyNum]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){
 			createGceData.gceImageName=gceImageName;
