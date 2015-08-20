@@ -16,7 +16,6 @@ public class GceServer extends BaseModel {
 	private Long gceClusterId;
 	private Long hclusterId;
 	private Long logId;
-	private Long gceImageId;
 
 	private String gceImageName;//gce镜像名称
 	private String ip;
@@ -142,12 +141,6 @@ public class GceServer extends BaseModel {
 	}
 	public void setBuyNum(int buyNum) {
 		this.buyNum = buyNum;
-	}
-	public Long getGceImageId() {
-		return gceImageId;
-	}
-	public void setGceImageId(Long gceImageId) {
-		this.gceImageId = gceImageId;
 	}
 	
 }

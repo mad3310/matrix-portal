@@ -70,6 +70,7 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 
 	@Override
 	public Map<String,Object> save(GceServer gceServer) {
+		Map<String,Object> params = new HashMap<String,Object>();
 		gceServer.setStatus(GceStatus.BUILDDING.getValue());
 		
 		StringBuffer clusterName = new StringBuffer();
@@ -102,11 +103,11 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		if(!StringUtils.isEmpty(imageId)) {
 			GceImage image = this.gceImageService.selectById(Long.parseLong(imageId));
 			gceServer.setGceImageName(image!=null?image.getUrl():"");
+			params.put("netType", image!=null?image.getNetType():"");
 		}
 		
 		this.gceServerDao.insert(gceServer);
 		
-		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("gceClusterId", gceCluster.getId());
     	params.put("gceId", gceServer.getId());
     	params.put("serviceName", gceServer.getGceName());

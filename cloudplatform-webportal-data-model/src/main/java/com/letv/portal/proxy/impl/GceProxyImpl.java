@@ -108,12 +108,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
 			this.gceServerService.saveGceExt(gse);
 		}
-		if(null !=gceServer.getGceImageId()) {
-			GceImage image = this.gceImageService.selectById(gceServer.getGceImageId());
-			if(null != image && StringUtils.isNotEmpty(image.getNetType())) {
-				params.put("netType", image.getNetType());
-			}
-		}
+		
 		if(GceType.JETTY.equals(gceServer.getType()) && gceServer.isCreateNginx()) {
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
