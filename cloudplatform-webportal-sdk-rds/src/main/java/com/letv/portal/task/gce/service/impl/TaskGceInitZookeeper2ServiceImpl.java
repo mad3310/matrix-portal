@@ -32,6 +32,12 @@ public class TaskGceInitZookeeper2ServiceImpl extends BaseTask4GceServiceImpl im
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
+		if(containers.size()==1) {
+			tr.setResult("only one node.");
+			tr.setParams(params);
+			tr.setSuccess(true);
+			return tr;
+		}
 		String nodeIp2 = containers.get(1).getHostIp();
 		String port = containers.get(1).getMgrBindHostPort();
 		ZookeeperInfo zk = super.getMinusedZk();

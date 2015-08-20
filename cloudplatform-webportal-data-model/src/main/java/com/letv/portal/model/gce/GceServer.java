@@ -31,6 +31,8 @@ public class GceServer extends BaseModel {
 	private UserModel createUserModel;
 	private List<GceContainer> gceContainers;
 	private GceServer gceServerProxy;
+	
+	private int buyNum;
 
 	public GceType getType() {
 		return type;
@@ -134,4 +136,11 @@ public class GceServer extends BaseModel {
 	public void setCreateNginx(boolean createNginx) {
 		this.createNginx = createNginx;
 	}
+	public int getBuyNum() {
+		return buyNum;
+	}
+	public void setBuyNum(int buyNum) {
+		this.buyNum = buyNum;
+	}
+	
 }

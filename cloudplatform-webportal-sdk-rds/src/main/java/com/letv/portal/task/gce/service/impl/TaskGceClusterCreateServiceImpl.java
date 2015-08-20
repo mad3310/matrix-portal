@@ -75,10 +75,6 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("image", gceServer.getGceImageName());
 		map.put("networkMode", "bridge");
 		map.put("memory",gceServer.getMemorySize()!=null?String.valueOf(gceServer.getMemorySize()):CONTAINER_MEMORY_SIZE);
-		
-		if(isNginx)
-			map.put("componentType", "nginx");
-		
 		if(StringUtils.isEmpty(gceServer.getGceImageName())) {
 			if(isNginx) {
 				map.put("image", nginxImage==null ? MATRIX_GCE_NGINX_DEFAULT_IMAGE : nginxImage);
@@ -86,6 +82,18 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 				map.put("image", jettyImage==null ? MATRIX_GCE_JETTY_DEFAULT_IMAGE : jettyImage);
 			}
 		}
+		
+		if(gceServer.getBuyNum() != 0 && !isNginx) {
+			map.put("nodeCount",String.valueOf(gceServer.getBuyNum()));
+		}
+		if(params.get("netType") != null && !isNginx) {
+			map.put("networkMode",(String) params.get("netType"));
+		}
+		
+		if(isNginx)
+			map.put("componentType", "nginx");
+		
+		
 		
 		ApiResultObject resultObject = this.gcePythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(resultObject);
