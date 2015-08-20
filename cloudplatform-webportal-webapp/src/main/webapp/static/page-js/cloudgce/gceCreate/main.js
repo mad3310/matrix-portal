@@ -21,10 +21,11 @@ define(function(require){
 		var _target = e.target || e.srcElement;
 		var aTarget = $(_target).parent()[0];
 		var aTargetClassList = aTarget.classList;
-		if(aTargetClassList.contains("action-start")){
-			volStart(aTarget);
-		}else if(aTargetClassList.contains("action-stop")){
-			volStop(aTarget);
+		var oldVal = $("[name = buyNum]").val();
+		if(aTargetClassList.contains("bk-number-up")){
+			$("[name = buyNum]").val(parseInt(oldVal) < 2?  parseInt(oldVal)+1:2);
+		}else if(aTargetClassList.contains("bk-number-down")){
+		 	$("[name = buyNum]").val(parseInt(oldVal) > 1?  parseInt(oldVal)-1:1);
 		}
     })
     /*按钮组件封装 --begin*/
@@ -82,10 +83,9 @@ define(function(require){
 		}
 		cn.RemoveBeforeunloadListener();
 		var url = "/gce";
-		console.log(createGceData);
-		/*cn.PostData(url, createGceData, function () {
+		cn.PostData(url, createGceData, function () {
 			location.href = "/list/gce";
-		});*/
+		});
     });
     /*表单验证 --end*/
 

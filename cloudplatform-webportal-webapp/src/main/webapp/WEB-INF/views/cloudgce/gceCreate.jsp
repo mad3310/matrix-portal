@@ -323,7 +323,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<span class="bk-number"> 
-														<input type="text" class="bk-number-input" name="buyNum" value="2"> 
+														<input type="text" onfocus="this.blur()" class="bk-number-input" name="buyNum" value="2"> 
 														<span class="bk-number-unit">台</span> 
 														<span class="bk-number-control"> 
 															<span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
@@ -335,6 +335,7 @@
 													</span>
 													</span>
 												</div>
+												<div class="bk-form-row-txt">目前只支持1台或2台</div>
 											</div>
 										</div>
 									</dd>
