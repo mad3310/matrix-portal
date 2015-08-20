@@ -97,6 +97,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		
+		params.put("buyNum", gceServer.getBuyNum());
 	    params.put("logParams", logParams);
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);

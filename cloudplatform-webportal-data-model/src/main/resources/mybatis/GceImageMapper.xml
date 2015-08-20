@@ -30,7 +30,7 @@
 	
 	<sql id="Base_Column_List">
 		gi.ID,
-		gi.NAME,gi.URL,gi.TAG,gi.TYPE,gi.OWNER,gi.STATUS,gi.DESCN,gi.LOG_URL,gi.NET_TYPE
+		gi.NAME,gi.URL,gi.TAG,gi.TYPE,gi.OWNER,gi.STATUS,gi.DESCN,gi.LOG_URL,gi.NET_TYPE,
 		gi.DELETED,gi.CREATE_TIME,gi.CREATE_USER,gi.UPDATE_TIME,gi.UPDATE_USER
 	</sql>
 	

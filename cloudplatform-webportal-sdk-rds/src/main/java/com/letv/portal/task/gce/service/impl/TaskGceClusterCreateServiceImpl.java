@@ -83,8 +83,8 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 			}
 		}
 		
-		if(gceServer.getBuyNum() != 0 && !isNginx) {
-			map.put("nodeCount",String.valueOf(gceServer.getBuyNum()));
+		if(params.get("buyNum") != null && !isNginx) {
+			map.put("nodeCount",String.valueOf(params.get("buyNum")));
 		}
 		if(params.get("netType") != null && !isNginx) {
 			map.put("networkMode",(String) params.get("netType"));
