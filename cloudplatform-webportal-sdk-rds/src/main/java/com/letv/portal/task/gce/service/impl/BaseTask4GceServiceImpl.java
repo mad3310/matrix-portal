@@ -64,6 +64,9 @@ public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBas
 	@Autowired
 	private IZookeeperInfoService zookeeperInfoService;
 	
+	
+	
+	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4GceServiceImpl.class);
 	
 	@Override
@@ -210,6 +213,22 @@ public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBas
 		zk.setUsed(zk.getUsed()+1);
 		this.zookeeperInfoService.updateBySelective(zk);
 		return zk;
+	}
+	
+	public ApiParam getApiParam(GceContainer container,ManageType type,String bindPort) {
+		
+		String ip = "";
+		String port = "";
+		
+		String ipAddr = container.getIpAddr();
+		if(ipAddr.startsWith("10.")) {
+			ip = ipAddr;
+			port = String.valueOf(type.getValue());
+		} else {
+			ip = container.getHostIp();
+			port = bindPort;
+		}
+		return new ApiParam(ip,port);
 	}
 
 }

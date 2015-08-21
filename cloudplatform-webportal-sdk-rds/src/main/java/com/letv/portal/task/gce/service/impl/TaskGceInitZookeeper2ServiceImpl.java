@@ -38,13 +38,15 @@ public class TaskGceInitZookeeper2ServiceImpl extends BaseTask4GceServiceImpl im
 			tr.setSuccess(true);
 			return tr;
 		}
-		String nodeIp2 = containers.get(1).getHostIp();
-		String port = containers.get(1).getMgrBindHostPort();
+		GceContainer container = containers.get(1);
+		
+		ApiParam apiParam = super.getApiParam(container, ManageType.MANAGER, container.getMgrBindHostPort());
+		
 		ZookeeperInfo zk = super.getMinusedZk();
 		Map<String, String> zkParm = new HashMap<String,String>();
 		zkParm.put("zkAddress", zk.getIp());
 		zkParm.put("zkPort", zk.getPort());
-		ApiResultObject resultObject = this.gcePythonService.initZookeeper(nodeIp2,port,zkParm);
+		ApiResultObject resultObject = this.gcePythonService.initZookeeper(apiParam.getIp(),apiParam.getPort(),zkParm);
 		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);

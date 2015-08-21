@@ -77,49 +77,56 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				if(null != hostModel) {
 					container.setHostId(hostModel.getId());
 				}
-				List<Map> portBindings = (List<Map>) map.get("port_bindings");
-				StringBuffer hostPort = new StringBuffer();
-				StringBuffer containerPort = new StringBuffer();
-				StringBuffer protocol = new StringBuffer();
 				
-				for (Map portBinding : portBindings) {
-					if("manager".equals(portBinding.get("type"))) {
-						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
-						continue;
-					}
-					if("9999".equals(portBinding.get("containerPort"))) {
-						container.setLogBindHostPort((String)portBinding.get("hostPort"));
-						continue;
-					}
-					hostPort.append((String)portBinding.get("hostPort")).append(",");
-					containerPort.append((String)portBinding.get("containerPort")).append(",");
-					protocol.append((String)portBinding.get("protocol")).append(",");
-				}
-				container.setBingHostPort(hostPort.length()>0?hostPort.substring(0, hostPort.length()-1):hostPort.toString());
-				container.setBindContainerPort(containerPort.length()>0?containerPort.substring(0, containerPort.length()-1):containerPort.toString());
-				container.setBingProtocol(protocol.length()>0?protocol.substring(0, protocol.length()-1):protocol.toString());
-				
-				this.gceContainerService.insert(container);
-				if("jetty".equals(map.get("type"))) {
-					GceContainerExt ext = new GceContainerExt();
-					ext.setContainerId(container.getId());
+				if(!container.getIpAddr().startsWith("10.")) {
+					
+					List<Map> portBindings = (List<Map>) map.get("port_bindings");
+					StringBuffer hostPort = new StringBuffer();
+					StringBuffer containerPort = new StringBuffer();
+					StringBuffer protocol = new StringBuffer();
+					
 					for (Map portBinding : portBindings) {
-						//保存gceContainer扩展表，记录映射端口
-						if("9888".equals(portBinding.get("containerPort"))) {//gbalance端口
-							ext.setBindPort((String)portBinding.get("hostPort"));
-							ext.setInnerPort((String)portBinding.get("containerPort"));
-							ext.setType("glb");
-							ext.setDescn("gbalancer映射内外端口");
-							this.gceContainerExtService.insert(ext);
-						} else if("7777".equals(portBinding.get("containerPort"))) {//moxi端口
-							ext.setBindPort((String)portBinding.get("hostPort"));
-							ext.setInnerPort((String)portBinding.get("containerPort"));
-							ext.setType("moxi");
-							ext.setDescn("moxi映射内外端口");
-							this.gceContainerExtService.insert(ext);
+						if("manager".equals(portBinding.get("type"))) {
+							container.setMgrBindHostPort((String)portBinding.get("hostPort"));
+							continue;
+						}
+						if("9999".equals(portBinding.get("containerPort"))) {
+							container.setLogBindHostPort((String)portBinding.get("hostPort"));
+							continue;
+						}
+						hostPort.append((String)portBinding.get("hostPort")).append(",");
+						containerPort.append((String)portBinding.get("containerPort")).append(",");
+						protocol.append((String)portBinding.get("protocol")).append(",");
+					}
+					container.setBingHostPort(hostPort.length()>0?hostPort.substring(0, hostPort.length()-1):hostPort.toString());
+					container.setBindContainerPort(containerPort.length()>0?containerPort.substring(0, containerPort.length()-1):containerPort.toString());
+					container.setBingProtocol(protocol.length()>0?protocol.substring(0, protocol.length()-1):protocol.toString());
+					
+					this.gceContainerService.insert(container);
+					if("jetty".equals(map.get("type"))) {
+						GceContainerExt ext = new GceContainerExt();
+						ext.setContainerId(container.getId());
+						for (Map portBinding : portBindings) {
+							//保存gceContainer扩展表，记录映射端口
+							if("9888".equals(portBinding.get("containerPort"))) {//gbalance端口
+								ext.setBindPort((String)portBinding.get("hostPort"));
+								ext.setInnerPort((String)portBinding.get("containerPort"));
+								ext.setType("glb");
+								ext.setDescn("gbalancer映射内外端口");
+								this.gceContainerExtService.insert(ext);
+							} else if("7777".equals(portBinding.get("containerPort"))) {//moxi端口
+								ext.setBindPort((String)portBinding.get("hostPort"));
+								ext.setInnerPort((String)portBinding.get("containerPort"));
+								ext.setType("moxi");
+								ext.setDescn("moxi映射内外端口");
+								this.gceContainerExtService.insert(ext);
+							}
 						}
 					}
+				} else {
+					this.gceContainerService.insert(container);
 				}
+				
 			}
 		}
 		tr.setParams(params);

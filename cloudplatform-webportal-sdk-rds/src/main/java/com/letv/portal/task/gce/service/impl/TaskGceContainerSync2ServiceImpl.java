@@ -39,13 +39,15 @@ public class TaskGceContainerSync2ServiceImpl extends BaseTask4GceServiceImpl im
 			return tr;
 		}
 		
-		String nodeIp2 = containers.get(1).getHostIp();
-		String port = containers.get(1).getMgrBindHostPort();
+		GceContainer container = containers.get(1);
+		
+		ApiParam apiParam = super.getApiParam(container, ManageType.MANAGER, container.getMgrBindHostPort());
+		
 		GceCluster cluster = super.getGceCluster(params);
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterUUID", containers.get(0).getContainerUuid());
-		ApiResultObject resultObject =  this.gcePythonService.syncContainer2(map,nodeIp2,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		ApiResultObject resultObject =  this.gcePythonService.syncContainer2(map,apiParam.getIp(),apiParam.getPort(),cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);

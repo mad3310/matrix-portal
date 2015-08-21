@@ -34,10 +34,13 @@ public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implem
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
-		String port = containers.get(0).getMgrBindHostPort();
+		
+		GceContainer container = containers.get(0);
+		
+		ApiParam apiParam = super.getApiParam(container, ManageType.MANAGER, container.getMgrBindHostPort());
+		
 		GceCluster cluster = super.getGceCluster(params);
-		ApiResultObject resultObject =  this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		ApiResultObject resultObject =  this.gcePythonService.CheckClusterStatus(apiParam.getIp(),apiParam.getPort(),cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = super.analyzeRestServiceResult(resultObject);
 		String result = "";
 		if(tr.isSuccess()) {

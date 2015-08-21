@@ -33,8 +33,12 @@ public class TaskGceInitLogUserAndPwdServiceImpl extends BaseTask4GceServiceImpl
 		GceCluster cluster = super.getGceCluster(params);
 		List<GceContainer> containers = super.getContainers(params);
 		
+		ApiParam apiParam;
 		for (GceContainer gceContainer : containers) {
-			ApiResultObject resultObject = this.gcePythonService.initUserAndPwd4Manager(gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			
+			
+			apiParam = super.getApiParam(gceContainer, ManageType.LOGS, gceContainer.getLogBindHostPort());
+			ApiResultObject resultObject = this.gcePythonService.initUserAndPwd4Manager(apiParam.getIp(),apiParam.getPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess())
 				break;

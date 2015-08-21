@@ -90,8 +90,10 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 		param.put("upstreamName", "newupstream");
 		param.put("serverPorts", sb.length()>0?sb.substring(0, sb.length()-1):sb.toString());
 		
+		ApiParam apiParam;
 		for (GceContainer c : nginxContainers) {
-			ApiResultObject resultObject =  this.gcePythonService.nginxProxyConfig(param,c.getHostIp(),c.getMgrBindHostPort(),nginxCluster.getAdminUser(),nginxCluster.getAdminPassword());
+			apiParam = super.getApiParam(c, ManageType.MANAGER, c.getMgrBindHostPort());
+			ApiResultObject resultObject =  this.gcePythonService.nginxProxyConfig(param,apiParam.getIp(),apiParam.getPort(),nginxCluster.getAdminUser(),nginxCluster.getAdminPassword());
 			tr = analyzeRestServiceResult(resultObject);
 		}
 		

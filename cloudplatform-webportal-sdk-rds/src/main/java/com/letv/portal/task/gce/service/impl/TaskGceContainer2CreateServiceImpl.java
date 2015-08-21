@@ -38,17 +38,21 @@ public class TaskGceContainer2CreateServiceImpl extends BaseTask4GceServiceImpl 
 			tr.setSuccess(true);
 			return tr;
 		}
-		String nodeIp2 = containers.get(1).getHostIp();
-		String port = containers.get(1).getMgrBindHostPort();
+		
+		GceContainer container = containers.get(1);
+		
+		
+		ApiParam apiParam = super.getApiParam(container, ManageType.MANAGER, container.getMgrBindHostPort());
+		
 		GceCluster cluster = super.getGceCluster(params);
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterName", cluster.getClusterName());
-		map.put("dataNodeName", containers.get(1).getContainerName());
-		map.put("dataNodeIp", containers.get(1).getHostIp());
-		map.put("dataNodeExternalPort", containers.get(1).getMgrBindHostPort());
+		map.put("dataNodeName", container.getContainerName());
+		map.put("dataNodeIp", apiParam.getIp());
+		map.put("dataNodeExternalPort", apiParam.getPort());
 		
-		ApiResultObject resultObject = this.gcePythonService.createContainer2(map,nodeIp2,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		ApiResultObject resultObject = this.gcePythonService.createContainer2(map,apiParam.getIp(),apiParam.getPort(),cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);

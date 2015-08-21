@@ -91,6 +91,8 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 		
 		//获取jetty类型的gce-container
 		List<GceContainer> gceContainers = super.getContainers(params);
+	
+		ApiParam apiParam;
 		
 		for (GceContainer gceContainer : gceContainers) {
 			Map<String, Object> extParam = new HashMap<String, Object>();
@@ -100,7 +102,10 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 			if(ext == null || ext.size()==0) {
 				throw new ValidateException("GceContainerExt-list is null by containerId:" + gceContainer.getId()+" and type:"+extParam.get("type"));
 			}
-			ApiResultObject result = this.gcePythonService.startGbalancer(map, gceContainer.getHostIp(),ext.get(0).getBindPort(), gceCluster.getAdminUser(), gceCluster.getAdminPassword());
+			
+			apiParam = super.getApiParam(gceContainer, ManageType.GBALANCER, ext.get(0).getBindPort());
+			
+			ApiResultObject result = this.gcePythonService.startGbalancer(map, apiParam.getIp(),apiParam.getPort(), gceCluster.getAdminUser(), gceCluster.getAdminPassword());
 			logger.info("call startGbalancer, result is : "+result.getResult()+"-"+result.getUrl());
 			tr = analyzeRestServiceResult(result);
 			//任何一个container创建失败时,停止循环,返回失败的结果

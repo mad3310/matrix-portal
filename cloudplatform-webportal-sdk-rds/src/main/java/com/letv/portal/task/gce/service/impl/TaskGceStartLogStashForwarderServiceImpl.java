@@ -39,8 +39,11 @@ public class TaskGceStartLogStashForwarderServiceImpl extends BaseTask4GceServic
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("ip", (String)params.get("logIp"));
 		
+		ApiParam apiParam;
+		
 		for (GceContainer gceContainer : containers) {
-			ApiResultObject resultObject = this.logPythonService.startLogStashForwarder(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			apiParam = super.getApiParam(gceContainer, ManageType.LOGS, gceContainer.getLogBindHostPort());
+			ApiResultObject resultObject = this.logPythonService.startLogStashForwarder(map,apiParam.getIp(),apiParam.getPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess())
 				break;

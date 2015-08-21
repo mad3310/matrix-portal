@@ -41,10 +41,16 @@ public class TaskGceCpSSLServiceImpl extends BaseTask4GceServiceImpl implements 
 		
 		List<LogContainer> logContainers = super.getLogContainers(params);
 		
+		ApiParam apiParam;
+		
 		for (GceContainer gceContainer : containers) {
+			
 			map.put("ip", logContainers.get(0).getHostIp());
 			map.put("port", logContainers.get(0).getMgrBindHostPort());
-			ApiResultObject resultObject = this.logPythonService.cpOpenSSL(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			
+			apiParam = super.getApiParam(gceContainer, ManageType.LOGS, gceContainer.getLogBindHostPort());
+			
+			ApiResultObject resultObject = this.logPythonService.cpOpenSSL(map,apiParam.getIp(),apiParam.getPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess())
 				break;

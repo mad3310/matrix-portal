@@ -32,13 +32,15 @@ public class TaskGceInitZookeeperServiceImpl extends BaseTask4GceServiceImpl imp
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
-		String port = containers.get(0).getMgrBindHostPort();
+		GceContainer container = containers.get(0);
+		
+		ApiParam apiParam = super.getApiParam(container, ManageType.MANAGER, container.getMgrBindHostPort());
+		
 		ZookeeperInfo zk = super.getMinusedZk();
 		Map<String, String> zkParm = new HashMap<String,String>();
 		zkParm.put("zkAddress", zk.getIp());
 		zkParm.put("zkPort", zk.getPort());
-		ApiResultObject resultObject = this.gcePythonService.initZookeeper(nodeIp1,port,zkParm);
+		ApiResultObject resultObject = this.gcePythonService.initZookeeper(apiParam.getIp(),apiParam.getPort(),zkParm);
 		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);

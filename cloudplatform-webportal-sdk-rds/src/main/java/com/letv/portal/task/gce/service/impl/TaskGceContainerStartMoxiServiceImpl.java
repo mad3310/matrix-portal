@@ -73,6 +73,9 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 		//获取jetty类型的gce-container
 		List<GceContainer> gceContainers = super.getContainers(params);
 		
+
+		ApiParam apiParam;
+				
 		for (GceContainer gceContainer : gceContainers) {
 			Map<String,String> map = new HashMap<String,String>();
 			
@@ -83,6 +86,8 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 			if(ext == null) {
 				throw new ValidateException("GceContainerExt-list is null by containerId:" + gceContainer.getId()+" and type:"+map.get("type"));
 			}
+			
+			apiParam = super.getApiParam(gceContainer, ManageType.MOXI, ext.get(0).getBindPort());
 			
 			//配置moxi
 			map.clear();
@@ -96,7 +101,7 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 			}
 			
 			//启动moxi
-			result = this.gcePythonService.startMoxi(gceContainer.getHostIp(),ext.get(0).getBindPort());
+			result = this.gcePythonService.startMoxi(apiParam.getIp(),apiParam.getPort());
 			tr = analyzeRestServiceResult(result);
 			//任何一个container创建失败时,停止循环,返回失败的结果
 			if(!tr.isSuccess()) {
