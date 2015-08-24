@@ -45,8 +45,20 @@ public class TaskGceCpSSLServiceImpl extends BaseTask4GceServiceImpl implements 
 		
 		for (GceContainer gceContainer : containers) {
 			
-			map.put("ip", logContainers.get(0).getHostIp());
-			map.put("port", logContainers.get(0).getMgrBindHostPort());
+			String ip = "";
+			String port = "";
+			
+			String ipAddr = gceContainer.getIpAddr();
+			if(ipAddr.startsWith("10.")) {
+				ip = logContainers.get(0).getIpAddr();
+				port = "9999";
+			} else {
+				ip = logContainers.get(0).getHostIp();
+				port = logContainers.get(0).getMgrBindHostPort();
+			}
+			
+			map.put("ip", ip);
+			map.put("port", port);
 			
 			apiParam = super.getApiParam(gceContainer, ManageType.LOGS, gceContainer.getLogBindHostPort());
 			
