@@ -14,16 +14,22 @@
 		<result column="STATUS" property="status" />
 		<result column="DESCN" property="descn" />
 			
+		<result column="HCLUSTER_ID" property="hclusterId" />
+		
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="hcluster" javaType="Hcluster">
+			<result column="HCLUSTER_NAME" property="hclusterName" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 		zk.ID,
-		zk.NAME,zk.IP,zk.PORT,zk.USED,zk.STATUS,zk.DESCN,
+		zk.NAME,zk.IP,zk.PORT,zk.USED,zk.STATUS,zk.DESCN,zk.HCLUSTER_ID,
 		zk.DELETED,zk.CREATE_TIME,zk.CREATE_USER,zk.UPDATE_TIME,zk.UPDATE_USER
 	</sql>
 	
@@ -52,6 +58,9 @@
 			<if test="deleted != null  ">
 				and zk.DELETED=#{deleted}
 			</if>
+			<if test="hclusterId != null  ">
+				and zk.HCLUSTER_ID=#{hclusterId}
+			</if>
 			<if test="createTime != null  ">
 				and zk.CREATE_TIME=#{createTime}
 			</if>
@@ -72,10 +81,10 @@
 	<insert id="insert" parameterType="ZookeeperInfo" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_ZOOKEEPER_INFO(
-			NAME,IP,PORT,USED,STATUS,DESCN,
+			NAME,IP,PORT,USED,STATUS,DESCN,HCLUSTER_ID,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{name},#{ip},#{port},#{used},#{status},#{descn},
+			#{name},#{ip},#{port},#{used},#{status},#{descn},#{hclusterId},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -103,6 +112,9 @@
 			</if>
 			<if test="descn != null and descn != ''  ">
 				DESCN=#{descn},
+			</if>
+			<if test="hclusterId != null and hclusterId != ''  ">
+				HCLUSTER_ID=#{hclusterId},
 			</if>
 			
 			<if test="deleted != null  ">
@@ -143,6 +155,13 @@
 			from WEBPORTAL_ZOOKEEPER_INFO zk
 			where STATUS = 'AVAILABLE'
 			order by zk.USED limit 1
+	</select>
+	<select id="selectMinusedZkByHclusterId" resultMap="BaseResultMap" parameterType="java.util.Map">
+	        select
+			<include refid="Base_Column_List" /> 
+			from WEBPORTAL_ZOOKEEPER_INFO zk
+			where STATUS = 'AVAILABLE' and HCLUSTER_ID = #{hclusterId} 
+			order by zk.USED limit #{number}
 	</select>
 	
 	
@@ -189,6 +208,9 @@
 			<if test="params != null and params.deleted != null  ">
 				and zk.DELETED=#{deleted}
 			</if>
+			<if test="params != null and params.hclusterId != null  ">
+				and zk.HCLUSTER_ID=#{hclusterId}
+			</if>
 			<if test="params != null and params.createTime != null  ">
 				and zk.CREATE_TIME=#{createTime}
 			</if>
@@ -208,8 +230,9 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_ZOOKEEPER_INFO zk
+		<include refid="Base_Column_List" />,h.HCLUSTER_NAME
+		from WEBPORTAL_ZOOKEEPER_INFO zk 
+		left join WEBPORTAL_HCLUSTER h on zk.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY zk.CREATE_TIME DESC
 		<if test="page != null">

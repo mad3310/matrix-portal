@@ -53,14 +53,11 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
-	public ApiResultObject initZookeeper(String nodeIp) {
+	public ApiResultObject initZookeeper(String nodeIp,Map<String,String> zkParm) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/conf");
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("zkAddress", "127.0.0.1");
-		
-		String result = HttpClient.post(url.toString(), map);
+		String result = HttpClient.post(url.toString(), zkParm);
 		return new ApiResultObject(result,url.toString());
 	}
 
@@ -368,8 +365,10 @@ public class PythonServiceImpl implements IPythonService{
 	}
 	@Override
 	public ApiResultObject getMysqlMonitorData(String ip, String index, Map<String, String> params) {
+		
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		
 		String result = HttpClient.post(url.toString(), params, 1000, 1000, null, null);
 		return new ApiResultObject(result, url.toString());
 	}    

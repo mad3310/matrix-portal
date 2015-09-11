@@ -39,7 +39,7 @@ public interface IPythonService {
 	 * @return
 	 */
 
-	public ApiResultObject initZookeeper(String nodeIp);
+	public ApiResultObject initZookeeper(String nodeIp,Map<String,String> params);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>

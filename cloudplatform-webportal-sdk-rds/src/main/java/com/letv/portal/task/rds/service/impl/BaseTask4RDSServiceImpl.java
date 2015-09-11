@@ -1,10 +1,8 @@
 package com.letv.portal.task.rds.service.impl;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +10,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
-import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTaskServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.common.IZookeeperInfoService;
 
 @Component("baseRDSTaskService")
 public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
@@ -36,6 +34,9 @@ public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBas
 	private IDbService dbService;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	@Autowired
+	private IZookeeperInfoService zookeeperInfoService;
+	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4RDSServiceImpl.class);
 	
 	@Override
@@ -86,6 +87,17 @@ public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBas
 				this.dbService.updateBySelective(dbModel);
 			}
 		}
+	}
+	
+	public List<ZookeeperInfo> selectMinusedZkByHclusterId(Long hclusterId,int number) {
+		List<ZookeeperInfo> zks = this.zookeeperInfoService.selectMinusedZkByHclusterId(hclusterId,number);
+		if(zks == null || zks.size()!=number)
+			throw new ValidateException("zk numbers not sufficient");
+		for (ZookeeperInfo zk : zks) {
+			zk.setUsed(zk.getUsed()+1);
+			this.zookeeperInfoService.updateBySelective(zk);
+		}
+		return zks;
 	}
 
 	@Override

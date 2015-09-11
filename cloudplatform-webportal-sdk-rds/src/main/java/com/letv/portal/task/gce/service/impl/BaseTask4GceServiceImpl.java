@@ -206,13 +206,15 @@ public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBas
 		return logContainers;
 	}
 	
-	public ZookeeperInfo getMinusedZk() {
-		ZookeeperInfo zk = this.zookeeperInfoService.selectMinusedZk();
-		if(zk == null)
-			throw new ValidateException("zk is null");
-		zk.setUsed(zk.getUsed()+1);
-		this.zookeeperInfoService.updateBySelective(zk);
-		return zk;
+	public List<ZookeeperInfo> selectMinusedZkByHclusterId(Long hclusterId,int number) {
+		List<ZookeeperInfo> zks = this.zookeeperInfoService.selectMinusedZkByHclusterId(hclusterId,number);
+		if(zks == null || zks.size()!=number)
+			throw new ValidateException("zk numbers not sufficient");
+		for (ZookeeperInfo zk : zks) {
+			zk.setUsed(zk.getUsed()+1);
+			this.zookeeperInfoService.updateBySelective(zk);
+		}
+		return zks;
 	}
 	
 	public ApiParam getApiParam(GceContainer container,ManageType type,String bindPort) {

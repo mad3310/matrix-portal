@@ -27,6 +27,7 @@
 								<th>ip</th>
 								<th>端口</th>
 								<th>使用次数</th>
+								<th>所属物理机集群</th>
 								<th  class="hidden-480">状态</th>
 								<th class="hidden-480">描述</th>
 								<th>操作</th>
@@ -94,11 +95,25 @@
 									<input class="form-control" name="port" id="port" type="text" />
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此zookeeper的地址" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper端口，默认填2181" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
 							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">所属物理机集群</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select class="form-control" name="hclusterId" id="hcluster">
+									</select>
+								</div>								
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="所属物理机集群" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
+							
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
@@ -108,7 +123,7 @@
 									</select>
 								</div>							
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此功能可用暂时禁用zookeeper" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="暂时禁用zookeeper" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>

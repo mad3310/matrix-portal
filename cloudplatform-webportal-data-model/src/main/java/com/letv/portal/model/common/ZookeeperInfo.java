@@ -1,9 +1,8 @@
 package com.letv.portal.model.common;
 
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.GceImageStatus;
 import com.letv.portal.enumeration.ZookeeperStatus;
-import com.letv.portal.model.UserModel;
+import com.letv.portal.model.HclusterModel;
 
 public class ZookeeperInfo extends BaseModel {
 	
@@ -15,6 +14,10 @@ public class ZookeeperInfo extends BaseModel {
 	private Integer used;
 	private ZookeeperStatus status;
 	private String descn;
+	
+	private Long hclusterId;
+	
+	private HclusterModel hcluster;
 	
 	public String getName() {
 		return name;
@@ -52,5 +55,16 @@ public class ZookeeperInfo extends BaseModel {
 	public void setStatus(ZookeeperStatus status) {
 		this.status = status;
 	}
-	
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
+	}
 }

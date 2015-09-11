@@ -44,9 +44,6 @@
 	<update id="updateBySelective" parameterType="TaskChain">
 		update WEBPORTAL_TASK_CHAIN
 		<set>
-			<if test="id != null  ">
-				ID=#{id},
-			</if>
 			<if test="taskId != null  ">
 				TASK_ID=#{taskId},
 			</if>
@@ -100,7 +97,7 @@
 		from WEBPORTAL_TASK_CHAIN tc where tc.CHAIN_INDEX_ID = #{chainIndexId} and EXECUTE_ORDER=#{executeOrder}
 	</select>
 	<select id="updateAfterDoingChainStatus" resultMap="BaseResultMap" parameterType="java.util.Map">
-		update WEBPORTAL_TASK_CHAIN set status = #{status} where EXECUTE_ORDER>#{executeOrder} and CHAIN_INDEX_ID = #{chainIndexId}
+		update WEBPORTAL_TASK_CHAIN set status = #{status} where CHAIN_INDEX_ID = #{chainIndexId} and EXECUTE_ORDER>#{executeOrder}
 	</select>
 	<select id="selectFailedChainByIndex" resultMap="BaseResultMap" parameterType="TaskChain">
 		select

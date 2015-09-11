@@ -24,6 +24,24 @@ $(function(){
 		});
 	});
 });	
+function queryHcluster(){
+	$.ajax({
+		cache:false,
+		type:"get",		
+		url:"/hcluster",
+		dataType:"json",
+		success:function(data){
+			//removeLoading();
+			if(error(data)) return;
+			var hclusterInfo = data.data;
+			for(var i=0,len=hclusterInfo.length;i<len;i++){
+				var option = $("<option value=\""+hclusterInfo[i].id+"\">"+hclusterInfo[i].hclusterNameAlias+"</option>");
+				$("#hcluster").append(option);
+			}
+			initChosen();
+		}
+	});	
+}
 function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
@@ -63,13 +81,16 @@ function queryByPage() {
 				var td5 = $("<td class=\"used\">"
 						+ array[i].used
 						+ "</td>");
-				var td6 = $("<td class='hidden-480'>"
-						+ array[i].status
+				var td6 = $("<td class=\"used\">"
+						+ (array[i].hcluster!=null?array[i].hcluster.hclusterName:"-")
 						+ "</td>");
 				var td7 = $("<td class='hidden-480'>"
+						+ array[i].status
+						+ "</td>");
+				var td8 = $("<td class='hidden-480'>"
 						+ array[i].descn
 						+ "</td>");
-				var td8 = $("<td>"
+				var td9 = $("<td>"
 						+"<a class=\"red\" href=\"#\" onclick=\"delZookeeper(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
@@ -77,7 +98,7 @@ function queryByPage() {
 				
 				var tr = $("<tr></tr>");
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -184,6 +205,7 @@ function formValidate() {
     			descn:$('#descn').val(),
     			url:$('#url').val(),
     			status:$('#status').val(),
+    			hclusterId:$('#hcluster').val(),
     			ip:$('#ip').val(),
     			port:$('#port').val()
     		},
@@ -223,4 +245,5 @@ function page_init(){
 	queryByPage();
 	formValidate();
 	pageControl();
+	queryHcluster();
 }
