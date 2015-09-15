@@ -21,6 +21,7 @@
 	<li><a href="${ctx}/list/timingTask"><i class="menu-icon fa fa-caret-right"></i> 定时任务管理</a><b class="arrow"></b></li>
 	<li><a href="${ctx}/list/baseImages"><i class="menu-icon fa fa-caret-right"></i> 基础镜像管理</a><b class="arrow"></b></li>
 	<li><a href="${ctx}/list/dictMgr"><i class="menu-icon fa fa-caret-right"></i> 字典管理</a><b class="arrow"></b></li>
+	<li><a href="${ctx}/list/zk"><i class="menu-icon fa fa-cog"></i> zookeeper管理</a><b class="arrow"></b></li>
 	<li id="sidebar-task-mgr">
 	  <a href="#" class="dropdown-toggle">
 	    <i class="menu-icon fa fa-cogs"></i><span class="menu-text">任务管理</span><b class="arrow fa fa-angle-down"></b>
@@ -106,7 +107,6 @@
 	</li>
 	<li><a href="${ctx}/list/gce/server"><i class="menu-icon fa fa-unlink"></i> GCE列表</a><b class="arrow"></b></li>
 	<li><a href="${ctx}/list/gce/image"><i class="menu-icon fa fa-download"></i> 镜像管理</a><b class="arrow"></b></li>
-	<li><a href="${ctx}/list/zk"><i class="menu-icon fa fa-cog"></i> zookeeper管理</a><b class="arrow"></b></li>
       </ul>
     </li>
     <li id="sidebar-slb-mgr">

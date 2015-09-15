@@ -49,9 +49,9 @@ function queryContainer(){
 							+ '-'
 							+ "</td>");
 				}
-				if(array[i].zookeeperId != null){
+				if(array[i].zabbixHosts != null){
 					var	td6 = $("<td class='hidden-480'>"
-							+ array[i].zookeeperId
+							+ array[i].zabbixHosts
 							+ "</td>");
 				}else{
 					var	td6 = $("<td class='hidden-480'>"

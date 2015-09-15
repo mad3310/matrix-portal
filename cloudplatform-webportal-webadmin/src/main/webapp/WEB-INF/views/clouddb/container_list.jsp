@@ -84,6 +84,7 @@
 								<th class="hidden-480">所属物理机集群</th>
 								<th>ip</th>
 								<th>宿主机ip</th>
+								<th>zookeeper地址</th>
 								<th class="hidden-480">创建时间 </th>
 								<th>当前状态</th>
 							</tr>

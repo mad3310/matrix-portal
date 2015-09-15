@@ -57,7 +57,8 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),containers.size()-1);
 	
 		for (int i = 0; i < containers.size()-1; i++) {
-			String nodeIp = containers.get(i).getIpAddr();
+			ContainerModel container = containers.get(i);
+			String nodeIp = container.getIpAddr();
 			Map<String, String> zkParm = new HashMap<String,String>();
 			zkParm.put("zkAddress", zks.get(i).getIp());
 			zkParm.put("zkPort", zks.get(i).getPort());
@@ -67,6 +68,9 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 			if(!tr.isSuccess()) {
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
 				break;
+			} else {
+				container.setZabbixHosts(zks.get(i).getIp());
+				this.containerService.updateBySelective(container);
 			}
 		}
 		

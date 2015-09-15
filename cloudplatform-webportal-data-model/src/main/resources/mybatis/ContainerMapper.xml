@@ -77,6 +77,9 @@
 			<if test="zookeeperId != null ">
 				and C.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
+			<if test="zabbixHosts != null ">
+				and C.ZABBIXHOSTS=#{zabbixHosts}
+			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->

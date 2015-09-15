@@ -123,6 +123,15 @@ function queryByPage() {
 				var td6 = $("<td>"
 						+ array[i].hostIp
 						+ "</td>");
+				if(array[i].zabbixHosts != null){
+					var	td10 = $("<td class='hidden-480'>"
+							+ array[i].zabbixHosts
+							+ "</td>");
+				}else{
+					var	td10 = $("<td class='hidden-480'>"
+							+ '-'
+							+ "</td>");
+				}
 				var td9 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
@@ -138,7 +147,7 @@ function queryByPage() {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td9).append(td7);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td10).append(td9).append(td7);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			

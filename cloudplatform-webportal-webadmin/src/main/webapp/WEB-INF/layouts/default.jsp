@@ -326,6 +326,12 @@
 		$('#sidebar-common-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/hcluster").html("物理机集群管理");
 		$('#main-content-header li:eq(1)').html("物理机集群列表");
+	}else if(path.indexOf("/list/zk") >= 0){
+		// $('#sidebar-zk-mgr').addClass("active");
+		$('#sidebar-common-mgr').addClass("active open hsub");
+		$('#sidebar-common-mgr ul li:eq(4)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
+		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/container") >= 0){
 		// $('#sidebar-cluster-mgr').addClass("active open hsub");
 		// $('#sidebar-cluster-mgr ul li:eq(2)').addClass("active");
@@ -381,12 +387,6 @@
 		$('#sidebar-gce-mgr').addClass("active open hsub");
 		$('#sidebar-gce-mgr ul:first').children('li:eq(2)').addClass('active');
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/image").html("镜像管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/zk") >= 0){
-		// $('#sidebar-zk-mgr').addClass("active");
-		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-mgr ul:first').children('li:eq(3)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
 		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/timingTask") >= 0){
 		// $('#sidebar-timing-task-mgr').addClass("active");
