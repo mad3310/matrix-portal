@@ -60,7 +60,7 @@ public class CacheController {
 				|| cbaseBucketModel.getBucketName().length() < 4
 				|| cbaseBucketModel.getBucketName().length() > 16
 				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) < 1 * 1024
-				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) > 10 * 1024
+				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) > 30 * 1024
 				|| cbaseBucketModel.getHclusterId() == null
 				|| cbaseBucketModel.getBucketType() == null) {
 			throw new ValidateException("参数不合法");
