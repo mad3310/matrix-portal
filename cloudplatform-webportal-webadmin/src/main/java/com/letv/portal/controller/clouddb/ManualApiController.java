@@ -105,6 +105,29 @@ public class ManualApiController {
 		result.getMsgs().add("集群固资信息删除成功");
 		return result;
 	}
+	@AoLog(desc="删除集群固资信息",type=AoLogType.DELETE)
+	@RequestMapping(value = "/V1/fixed", method=RequestMethod.DELETE) 
+	public @ResponseBody ResultObject rmFixed(ResultObject result) {
+		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
+		int sum = 0;
+		int success = 0;
+		int fail = 0;
+		for (MclusterModel mclusterModel : mclusters) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mclusterId", mclusterModel.getId());
+			boolean isSuccess = this.fixedPushService.deleteMutilContainerPushFixedInfo(this.containerService.selectByMap(map));
+			if(isSuccess) {
+				success++;
+			} else {
+				fail ++;
+			}
+			sum++;
+		}
+		result.getMsgs().add("delete mcluster sum:" + sum);
+		result.getMsgs().add("delete mcluster success:" + success);
+		result.getMsgs().add("delete mcluster fail:" + fail);
+		return result;
+	}
 	@AoLog(desc="创建集群固资信息",type=AoLogType.INSERT)
 	@RequestMapping(value = "/V1/fixed", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject addFixed(@RequestParam  String mclusterName,ResultObject result) {

@@ -771,7 +771,7 @@
                 <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
-                <webportal.log.path>D:</webportal.log.path>
+                <webportal.log.path>/var/log</webportal.log.path>
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
