@@ -50,31 +50,6 @@
   <dependencyManagement>
       <dependencies>
             <dependency>
-                <groupId>log.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.2</version>
-            </dependency>
-            <dependency>
-                <groupId>log.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>1.7.1</version>
-            </dependency>
-            <dependency>
-                <groupId>log.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>1.7.2</version>
-            </dependency>
-            <dependency>
-                <groupId>log.logback</groupId>
-                <artifactId>core</artifactId>
-                <version>1.0.7</version>
-            </dependency>
-            <dependency>
-                <groupId>log.logback</groupId>
-                <artifactId>classic</artifactId>
-                <version>1.0.7</version>
-            </dependency>
-            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.18</version>
@@ -205,36 +180,6 @@
 			   <version>${httpclient.version}</version>
 			</dependency>
 
-            <!-- logger -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.6.1</version>
-            </dependency>
-
-    <!--         <dependency> -->
-    <!--             <groupId>log4j</groupId> -->
-    <!--             <artifactId>log4j</artifactId> -->
-    <!--             <version>${log4j.version}</version> -->
-    <!--             <exclusions> -->
-    <!--                 <exclusion> -->
-    <!--                     <groupId>javax.mail</groupId> -->
-    <!--                     <artifactId>mail</artifactId> -->
-    <!--                 </exclusion> -->
-    <!--                 <exclusion> -->
-    <!--                     <groupId>javax.jms</groupId> -->
-    <!--                     <artifactId>jms</artifactId> -->
-    <!--                 </exclusion> -->
-    <!--                 <exclusion> -->
-    <!--                     <groupId>com.sun.jdmk</groupId> -->
-    <!--                     <artifactId>jmxtools</artifactId> -->
-    <!--                 </exclusion> -->
-    <!--                 <exclusion> -->
-    <!--                     <groupId>com.sun.jmx</groupId> -->
-    <!--                     <artifactId>jmxri</artifactId> -->
-    <!--                 </exclusion> -->
-    <!--             </exclusions> -->
-    <!--         </dependency> -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -400,6 +345,13 @@
 				<groupId>org.apache.jclouds.driver</groupId>
 				<artifactId>jclouds-sshj</artifactId>
 				<version>${jclouds.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>net.schmizz</groupId>
+						<artifactId>sshj</artifactId>
+					</exclusion>
+				</exclusions>
+				
 			</dependency>
 			<!-- jclouds OpenStack dependencies -->
 			<dependency>
@@ -427,13 +379,7 @@
 			    <artifactId>openstack-cinder</artifactId>
 			    <version>${jclouds.version}</version>
 			</dependency>
-			<!-- 3rd party dependencies -->
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>1.0.13</version>
-			</dependency>
-
+			
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
@@ -449,6 +395,34 @@
 				<artifactId>jackson-databind</artifactId>
 				<version>2.4.1</version>
 			</dependency>
+			
+			<!-- logback相关 -->
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-api</artifactId>
+	            <version>1.7.5</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>ch.qos.logback</groupId>
+	            <artifactId>logback-classic</artifactId>
+	            <version>1.0.13</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>ch.qos.logback</groupId>
+	            <artifactId>logback-access</artifactId>
+	            <version>1.0.13</version>
+	        </dependency>
+	        <!-- Log4j转换为slf4j -->
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>jcl-over-slf4j</artifactId>
+	            <version>1.7.5</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>log4j-over-slf4j</artifactId>
+	            <version>1.7.5</version>
+	        </dependency>
       </dependencies>
   </dependencyManagement>
   
@@ -762,15 +736,14 @@
         
         <profile>
             <id>test</id>
-            <properties>
+             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/matrix_demo?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
+              <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
                 <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
                 <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
                 <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
@@ -780,29 +753,29 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
+
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
+                
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                 
-                 <webportal.local.http>http://10.200.91.144:18081</webportal.local.http>
-                <webportal.admin.http>http://10.200.91.144:18080</webportal.admin.http>
+                
+                <webportal.local.http>http://10.200.91.144:58081</webportal.local.http>
+                <webportal.admin.http>http://10.200.91.144:58080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>yaokuo@letv.com;liuhao1@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;liuhao1@letv.com</service.notice.email.to>
                 
+                <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
+                 
+                <webportal.log.path>D:</webportal.log.path>
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
+                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
@@ -818,20 +791,20 @@
                 
                 <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
 
-                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
+                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
                 <openstack.keystone.version>2.0</openstack.keystone.version>
                 <openstack.keystone.public.port>5000</openstack.keystone.public.port>
                 <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
                 <openstack.keystone.protocol>http</openstack.keystone.protocol>
                 <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
+                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
+                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
+                <openstack.neutron.network.global.public.id>78c06463-1723-4312-9554-b0afbb77269d</openstack.neutron.network.global.public.id>
                 <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
+                <openstack.neutron.network.user.private.name>__user_private_network</openstack.neutron.network.user.private.name>
+                <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+                <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
             </properties>
         </profile>
 
