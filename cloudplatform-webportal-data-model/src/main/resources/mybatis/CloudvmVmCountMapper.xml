@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmVmCountDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmVmCount">
+		<result column="ID" property="id" />
+		<result column="VM_COUNT" property="vmCount" />
+
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_ADMIN_OP_LOG table all fields -->
+	<sql id="Base_Column_List">
+		c.ID,c.VM_COUNT,
+		c.DELETED,c.CREATE_TIME,c.CREATE_USER,c.UPDATE_TIME,c.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and c.ID=#{id}
+			</if>
+			<if test="deleted != null  ">
+				and c.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and c.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and c.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and c.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and c.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmVmCount" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_VM_COUNT(VM_COUNT,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{vmCount},#{deleted},null,#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmVmCount">
+		update WEBPORTAL_CLOUDVM_VM_COUNT
+		set
+		ID=#{id},
+		VM_COUNT=#{vmCount},
+		DELETED=#{deleted},
+		CREATE_TIME=null,
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=null,
+		UPDATE_USER=null
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_VM_COUNT c
+		<include refid="Example_Where_Clause" />
+	</select>
+
+</mapper>

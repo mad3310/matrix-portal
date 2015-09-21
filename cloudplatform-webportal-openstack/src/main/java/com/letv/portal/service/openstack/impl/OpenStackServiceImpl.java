@@ -1,9 +1,11 @@
 package com.letv.portal.service.openstack.impl;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.SpringContextUtil;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -77,6 +79,12 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 
+	@Autowired
+	private SessionServiceImpl sessionService;
+	
+	@Autowired
+	private ICloudvmVmCountService cloudvmVmCountService;
+	
 	private OpenStackServiceGroup openStackServiceGroup;
 	
 	private static OpenStackServiceImpl INSTANCE;
@@ -102,48 +110,29 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackConf
 				.setUserPrivateNetworkSubnetName(userPrivateNetworkSubnetName);
 		openStackConf.setUserPrivateRouterName(userPrivateRouterName);
+		openStackConf.setAdminEndpoint(adminEndpoint);
+		openStackConf.setUserRegisterToken(userRegisterToken);
 
 		openStackServiceGroup = new OpenStackServiceGroup();
 		openStackServiceGroup.setCloudvmRegionService(cloudvmRegionService);
 		openStackServiceGroup.setDefaultEmailSender(defaultEmailSender);
+		openStackServiceGroup.setPasswordService(passwordService);
+		openStackServiceGroup.setSessionService(sessionService);
+		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
 	}
 
 	@Override
 	public OpenStackSession createSession(String userId, String email,
 			String userName) throws OpenStackException {
-		try {
-			OpenStackUser openStackUser = new OpenStackUser();
-			openStackUser.setUserId(userId);
-			openStackUser.setEmail(email);
-			openStackUser.setUserName(userName);
-			openStackUser.setFirstLogin(false);
-			openStackUser.setInternalUser(false);
+		OpenStackUser openStackUser = new OpenStackUser();
+		openStackUser.setUserId(userId);
+		openStackUser.setEmail(email);
+		openStackUser.setUserName(userName);
+//		openStackUser.setFirstLogin(false);
+		openStackUser.setInternalUser(false);
 
-			final String password = passwordService.userIdToPassword(userId);
-			openStackUser.setPassword(password);
-
-			UserExists userExists = new UserExists(publicEndpoint, userId,
-					password);
-			if (!userExists.run()) {
-				openStackUser.setFirstLogin(true);
-				new UserRegister(adminEndpoint, userId, password, email,
-						userRegisterToken).run();
-				userExists = new UserExists(publicEndpoint, userId, password);
-				if (!userExists.run()) {
-					throw new OpenStackException(
-							"can not create openstack user:" + userId,
-							"不能创建用户：" + email);
-				}
-			}
-			openStackUser.setTenantId(userExists.getTenantId());
-			if (email.endsWith("@letv.com")) {
-				openStackUser.setInternalUser(true);
-			}
-			return new OpenStackSessionImpl(
-					openStackConf, openStackUser);
-		} catch (NoSuchAlgorithmException e) {
-			throw new OpenStackException("后台服务不可用", e);
-		}
+		return new OpenStackSessionImpl(
+				openStackConf, openStackUser);
 	}
 
 	public static OpenStackServiceGroup getOpenStackServiceGroup() {

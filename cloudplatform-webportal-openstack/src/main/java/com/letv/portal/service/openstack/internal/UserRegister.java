@@ -1,11 +1,7 @@
 package com.letv.portal.service.openstack.internal;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Contants;
-import com.letv.portal.service.openstack.util.Params;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
+import java.io.StringWriter;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -14,17 +10,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.StringWriter;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.Params;
+import com.letv.portal.service.openstack.util.Util;
 
 @SuppressWarnings("deprecation")
 public class UserRegister {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(UserRegister.class);
+//    private static final Logger logger = LoggerFactory
+//            .getLogger(UserRegister.class);
 
     private final String endpoint;
     private final String userName;
@@ -72,34 +68,7 @@ public class UserRegister {
             HttpResponse resp = client.execute(req);
             int statusCode = resp.getStatusLine().getStatusCode();
             if (statusCode != 200) {
-                try {
-                    HttpEntity httpEntity = resp.getEntity();
-                    if (httpEntity != null) {
-                        String contentEncoding = "UTF-8";
-                        Header contentEncodingHeader = httpEntity
-                                .getContentEncoding();
-                        if (contentEncodingHeader != null) {
-                            String contentEncodingHeaderValue = contentEncodingHeader
-                                    .getValue();
-                            if (contentEncodingHeaderValue != null) {
-                                contentEncoding = contentEncodingHeaderValue;
-                            }
-                        }
-
-                        InputStream rcis = httpEntity.getContent();
-                        try {
-                            logger.error(IOUtils
-                                    .toString(rcis, contentEncoding));
-                        } finally {
-                            rcis.close();
-                        }
-                    }
-                } catch (Exception ex) {
-                    logger.error(ex.getMessage(), ex);
-                }
-
-                throw new OpenStackException("OpenStack response status code:"
-                        + Integer.toString(statusCode),"后台服务异常");
+                Util.throwExceptionOfResponse(resp);
             }
         } catch (OpenStackException ose) {
             throw ose;

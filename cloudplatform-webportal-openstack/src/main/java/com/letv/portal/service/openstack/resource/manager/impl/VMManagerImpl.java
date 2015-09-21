@@ -42,6 +42,8 @@ import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
+import com.letv.portal.model.cloudvm.CloudvmVmCount;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -467,6 +469,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 			final ServerCreated serverCreated = serverApi.create(
 					conf.getName(), conf.getImageResource().getId(), conf
 							.getFlavorResource().getId(), createServerOptions);
+			incVmCount();
 			Server server = serverApi.get(serverCreated.getId());
 			VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
 					regionDisplayName, server, VMManagerImpl.this, imageManager,
@@ -833,7 +836,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	private void waitingVM(String vmId, ServerApi serverApi,
-			ServerChecker checker) throws PollingInterruptedException {
+			ServerChecker checker) throws OpenStackException {
 		try {
 			Server server = null;
 			while (true) {
@@ -843,8 +846,12 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				}
 				Thread.sleep(1000);
 			}
+		} catch (OpenStackException e) {
+			throw e;
 		} catch (InterruptedException e) {
 			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
 		}
 	}
 
@@ -903,8 +910,12 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		
 	}
 
-	private boolean isDeleteFinished(Server server) {
-		return server == null || server.getStatus() == Status.ERROR;
+	private boolean isDeleteFinished(Server server) throws OpenStackException {
+		if (server == null) {
+			decVmCount();
+			return true;
+		}
+		return server.getStatus() == Status.ERROR;
 	}
 
 	@Override
@@ -921,7 +932,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				waitingVM(vm.getId(), serverApi, new ServerChecker() {
 
 					@Override
-					public boolean check(Server server) {
+					public boolean check(Server server) throws Exception {
 						return isDeleteFinished(server);
 					}
 				});
@@ -1149,7 +1160,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 		waitingVMs(regionAndVmIds, new ServerChecker() {
 			@Override
-			public boolean check(Server server) {
+			public boolean check(Server server) throws Exception {
 				return isDeleteFinished(server);
 			}
 		});
@@ -1383,4 +1394,30 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	// this.identityManager = identityManager;
 	// }
 
+	public void incVmCount() throws OpenStackException {
+		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmVmCountService();
+		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+				.getVmCountOfCurrentUser();
+		if (cloudvmVmCount == null) {
+			cloudvmVmCountService.createVmCountOfCurrentUser(1);
+		} else {
+			cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+					.getVmCount() + 1);
+		}
+	}
+
+	private void decVmCount() throws OpenStackException {
+		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmVmCountService();
+		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+				.getVmCountOfCurrentUser();
+		if (cloudvmVmCount == null) {
+			throw new OpenStackException(
+					"Vm count of user is not synchronized.", "用户数据错误");
+		} else {
+			cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+					.getVmCount() - 1);
+		}
+	}
 }

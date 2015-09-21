@@ -76,5 +76,6 @@
         <typeAlias alias="AdminOpLog" type="com.letv.portal.model.adminoplog.AdminOpLog" />
         <!-- OpenStack -->
         <typeAlias alias="CloudvmRegion" type="com.letv.portal.model.cloudvm.CloudvmRegion" />
+        <typeAlias alias="CloudvmVmCount" type="com.letv.portal.model.cloudvm.CloudvmVmCount"/>
     </typeAliases>
 </configuration>

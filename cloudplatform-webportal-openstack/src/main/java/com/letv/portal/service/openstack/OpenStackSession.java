@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack;
 
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -12,15 +13,19 @@ import java.io.Serializable;
  * Created by zhouxianguang on 2015/6/8.
  */
 public interface OpenStackSession extends Closeable, Serializable {
-    ImageManager getImageManager();
+    ImageManager getImageManager() throws OpenStackException;
     
-    NetworkManager getNetworkManager();
+    NetworkManager getNetworkManager() throws OpenStackException;
     
-    VMManager getVMManager();
+    VMManager getVMManager() throws OpenStackException;
     
-    VolumeManager getVolumeManager();
+    VolumeManager getVolumeManager() throws OpenStackException;
 
     boolean isClosed();
+
+    boolean isAuthority();
+
+    void init() throws OpenStackException;
 
 //    Set<String> listRegions();
 //

@@ -12,7 +12,7 @@ public class OpenStackUser implements Serializable{
 	private String password;
 	private String email;
 	private String userName;
-	private boolean firstLogin;
+//	private boolean firstLogin;
 	private boolean internalUser;
 	private String tenantId;
 
@@ -39,13 +39,13 @@ public class OpenStackUser implements Serializable{
 		this.password = password;
 	}
 
-	public boolean getFirstLogin() {
-		return firstLogin;
-	}
-
-	public void setFirstLogin(boolean firstLogin) {
-		this.firstLogin = firstLogin;
-	}
+//	public boolean getFirstLogin() {
+//		return firstLogin;
+//	}
+//
+//	public void setFirstLogin(boolean firstLogin) {
+//		this.firstLogin = firstLogin;
+//	}
 
 	public boolean getInternalUser() {
 		return internalUser;

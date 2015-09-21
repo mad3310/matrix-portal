@@ -1,29 +1,27 @@
 package com.letv.portal.interceptor;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.letv.common.result.ResultObject;
-import com.letv.common.session.Executable;
-import com.letv.common.session.Session;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.controller.cloudvm.Util;
-import com.letv.portal.proxy.ILoginProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.controller.cloudvm.Util;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 @Component
 public class CloudvmInterceptor implements HandlerInterceptor {
-    private final static Logger logger = LoggerFactory.getLogger(CloudvmInterceptor.class);
+//    private final static Logger logger = LoggerFactory.getLogger(CloudvmInterceptor.class);
 
     @Autowired
     private SessionServiceImpl sessionService;
@@ -56,7 +54,8 @@ public class CloudvmInterceptor implements HandlerInterceptor {
         if (null != checkUrls && checkUrls.length >= 1) {
             for (String url : checkUrls) {
                 if (requestUrl.contains(url)) {
-                    if (!Util.session(sessionService).getVMManager().isAuthority()) {
+                    OpenStackSession openStackSession = Util.session(sessionService);
+                    if (!openStackSession.isAuthority()) {
                         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null) ? true : false;
                         if (isAjaxRequest) {
                             responseJson(request, response, "对不起，您没有权限。");
@@ -64,6 +63,13 @@ public class CloudvmInterceptor implements HandlerInterceptor {
                             response.sendRedirect(request.getContextPath()+"/dashboard");
                         }
                         return false;
+                    }else{
+                        try {
+                            openStackSession.init();
+                        }catch(OpenStackException e){
+                            throw e.matrixException();
+                        }
+                        return true;
                     }
                 }
             }
