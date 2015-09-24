@@ -1,3 +1,6 @@
+/*
+ * 20150923发版已加（0.2.3-20150923）
+ */
 -- OpenStack VM vmCount
 CREATE TABLE `WEBPORTAL_CLOUDVM_VM_COUNT` (
   `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
