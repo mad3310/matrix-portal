@@ -829,15 +829,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				DetailModel detailModel = monitor.getResponse().getDb().getCur_conns();
 				failCount = compareFailCount(failCount,detailModel);
 				timeout = isTimeout(now, detailModel);
+				
 				detailModel = monitor.getResponse().getDb().getExisted_db_anti_item();
 				failCount = compareFailCount(failCount,detailModel);
 				timeout = isTimeout(now, detailModel);
+				
 				detailModel = monitor.getResponse().getDb().getWrite_read_avaliable();
 				failCount = compareFailCount(failCount,detailModel);
 				timeout = isTimeout(now, detailModel);
+				
 				detailModel = monitor.getResponse().getDb().getWsrep_status();
 				failCount = compareFailCount(failCount,detailModel);
 				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getDb().getCur_user_conns();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				
 				monitor.setResult(failCount);
 				if(timeout) {
 					monitor.setResult(MonitorStatus.CRASH.getValue());

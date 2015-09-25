@@ -97,6 +97,7 @@ public class NodeModel extends BaseMonitor {
 		private DetailModel write_read_avaliable;
 		private DetailModel dbuser;
 		private DetailModel backup;
+		private DetailModel cur_user_conns;
 		
 		public DetailModel getExisted_db_anti_item() {
 			return existed_db_anti_item;
@@ -133,6 +134,12 @@ public class NodeModel extends BaseMonitor {
 		}
 		public void setBackup(DetailModel backup) {
 			this.backup = backup;
+		}
+		public DetailModel getCur_user_conns() {
+			return cur_user_conns;
+		}
+		public void setCur_user_conns(DetailModel cur_user_conns) {
+			this.cur_user_conns = cur_user_conns;
 		}
 		
 	}
