@@ -899,6 +899,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return false;
 	}
 	public int compareFailCount(int failCount,DetailModel detailModel) {
+		if(null == detailModel)
+			return failCount;
 		String message = detailModel.getMessage();
 		int next = 0;
 		
