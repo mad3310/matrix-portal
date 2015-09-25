@@ -886,6 +886,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			return monitor;
 	}
 	public boolean isTimeout(Date now,DetailModel detailModel) {
+		if(null == detailModel)
+			return false;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		long diff = 0;
 		try {
