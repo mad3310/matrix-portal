@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import com.letv.common.model.BaseModel;
 
 /**Program Name: MclusterModel <br>
@@ -9,6 +11,7 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class MclusterModel extends BaseModel {
 	
 	private static final long serialVersionUID = 8873122802478974943L;

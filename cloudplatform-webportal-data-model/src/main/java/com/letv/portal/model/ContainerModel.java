@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.ServiceType;
 
@@ -12,6 +14,7 @@ import com.letv.portal.enumeration.ServiceType;
  * Modified Date: <br>
  */
 	
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class ContainerModel extends BaseModel {
 	private static final long serialVersionUID = 4029730587083735122L;
 	
