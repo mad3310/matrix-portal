@@ -345,7 +345,7 @@ function queryHcluster(){
 	getLoading();
 	$.ajax({
 		cache:false,
-		url:'/hcluster',
+		url:'/hcluster/byType/slb',
 		type:'get',
 		dataType:'json',
 		success:function(data){

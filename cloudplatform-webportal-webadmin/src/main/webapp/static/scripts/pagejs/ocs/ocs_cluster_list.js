@@ -661,7 +661,7 @@ function queryHcluster(){
 	getLoading();
 	$.ajax({
 		cache:false,
-		url:'/hcluster',
+		url:'/hcluster/byType/CBASE',
 		type:'get',
 		dataType:'json',
 		success:function(data){

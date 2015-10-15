@@ -43,6 +43,7 @@
 							<select  class="chosen-select" id="Physicalcluster" data-placeholder="所属物理机集群" style="width:100%">
 								<option></option>
 							</select>
+							<input type="hidden" id="hclusters"></input>
 						</div>
 						<!-- <div class="form-group">
 							<select class="form-control" id="nodeStatus">

@@ -81,7 +81,7 @@ function queryHcluster(){
 	$.ajax({
 		cache:false,
 		type:"get",		
-		url:"/hcluster",
+		url:"/hcluster/byType/RDS",
 		dataType:"json",
 		success:function(data){
 			//removeLoading();

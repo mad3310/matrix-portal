@@ -420,7 +420,7 @@ function queryHcluster(){
 	getLoading();
 	$.ajax({
 		cache:false,
-		url:'/hcluster',
+		url:'/hcluster/byType/oss',
 		type:'get',
 		dataType:'json',
 		success:function(data){

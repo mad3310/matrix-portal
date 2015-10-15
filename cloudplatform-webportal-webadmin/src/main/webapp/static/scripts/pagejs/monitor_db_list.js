@@ -44,27 +44,53 @@
 	});
 	enterKeydown($(".page-header > .input-group input"),queryMclusterMonitor);
 });	
-function queryMclusterMonitor() {
+ function queryMclusterMonitor() {
 	var mclusterName = $("#monitorContainer").val()?$("#monitorContainer").val():'';
 	var hclusterName = $("#Physicalcluster").find('option:selected').attr('data-hclsName')?$("#Physicalcluster").find('option:selected').attr('data-hclsName'):'';
 	var vip = $("#VipAddress").val()?$("#VipAddress").val():'';
-	var queryCondition = {
-			'mclusterName':mclusterName,
-			'hclusterName':hclusterName,
-			'ipAddr':vip.replace(/\%/g,"%25")
-		}
+	var queryCondition={};
 	
 	$("#tby tr").remove();
-	getLoading();
+	var updateflag = false;
+	if(hclusterName) {
+		queryCondition = {
+				'mclusterName':mclusterName,
+				'hclusterName':hclusterName,
+				'ipAddr':vip.replace(/\%/g,"%25")
+		}
+		queryMcluster(queryCondition,true);
+		
+	} else {
+		var hclusters = $("#hclusters").val();
+		var hclusterArray = hclusters.split(",");
+		for(var i=0;i<hclusterArray.length-1;i++){
+			if(!hclusterArray[i]) continue;
+			queryCondition = {
+					'mclusterName':mclusterName,
+					'hclusterName':hclusterArray[i],
+					'ipAddr':vip.replace(/\%/g,"%25")
+			}
+			if(i == (hclusterArray.length-2)) {
+				updateflag = true;
+			}
+			queryMcluster(queryCondition,updateflag);
+			
+		}
+	}
+	
+
+}
+
+function queryMcluster(queryCondition,updateflag) {
 	$.ajax({ 
 		cache:false,
 		type : "POST",
 		//url : "/monitor/mcluster/list",
 		url : queryUrlBuilder("/monitor/mcluster/list/",queryCondition),
-		dataType : "json", /*这句可用可不用，没有影响*/
+		dataType : "json",
 		contentType : "application/json; charset=utf-8",
+		async:false,
 		success : function(data) {
-			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -110,18 +136,17 @@ function queryMclusterMonitor() {
 				
 				tr.append(tdh1).append(tdh2).append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
-				
-			}//循环json中的数据 
-			/*增加标记行，控制各种状态的归类显示*/
-			var tr1 = $("<tr class=\"default-danger normalTag\"></tr>");
-			var tr2 = $("<tr class=\"default-danger lightDangerTag\"></tr>");
-			var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
-			var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
-			var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
-			var tr6 = $("<tr class=\"default-danger exceptionClusterTag\"></tr>");
-			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5).prepend(tr6);
-			updateMclusterStatus();//查询集群状态
-			
+			}
+			if(updateflag) {
+				var tr1 = $("<tr class=\"default-danger normalTag\"></tr>");
+				var tr2 = $("<tr class=\"default-danger lightDangerTag\"></tr>");
+				var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
+				var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
+				var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
+				var tr6 = $("<tr class=\"default-danger exceptionClusterTag\"></tr>");
+				tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5).prepend(tr6);
+				updateMclusterStatus();//查询集群状态
+			}
 		}
 	});
 }
@@ -231,10 +256,11 @@ function restartMclusterServer(obj){
 }
 function queryHcluster(){
 	var options=$('#Physicalcluster');
+	var hclusters="";
 	getLoading();
 	$.ajax({
 		cache:false,
-		url:'/hcluster',
+		url:'/hcluster/byType/RDS',
 		type:'get',
 		dataType:'json',
 		success:function(data){
@@ -245,16 +271,18 @@ function queryHcluster(){
 				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
 								+array[i].hclusterNameAlias
 								+"</option>");
-				options.append(option)
+				options.append(option);
+				hclusters+=array[i].hclusterName+",";
 			}
+			$("#hclusters").val(hclusters);
 			initChosen();
+			queryMclusterMonitor();
 		}
 	});
 }
 function page_init(){
 	queryHcluster();
 	$('#nav-search').addClass("hidden");
-	queryMclusterMonitor();
 	setInterval(function() {
 		updateMclusterStatus();
 		},60000);

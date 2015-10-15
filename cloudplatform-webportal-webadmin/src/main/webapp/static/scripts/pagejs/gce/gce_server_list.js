@@ -293,7 +293,7 @@ function queryHcluster(){
 	getLoading();
 	$.ajax({
 		cache:false,
-		url:'/hcluster',
+		url:'/hcluster/byType/gce',
 		type:'get',
 		dataType:'json',
 		success:function(data){

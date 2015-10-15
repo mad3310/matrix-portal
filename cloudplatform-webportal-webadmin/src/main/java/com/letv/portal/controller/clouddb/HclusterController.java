@@ -210,6 +210,13 @@ public class HclusterController {
     	obj.setData(this.hclusterService.selectHclusterByStatus(hclusterModel));
     	return obj;
     }
+	@RequestMapping(value="/byType/{type}",method = RequestMethod.GET)
+	public  @ResponseBody ResultObject selectHclusterByStatusAndType(@PathVariable String type,HclusterModel hclusterModel){
+		ResultObject obj = new ResultObject();
+		hclusterModel.setType(type);
+		obj.setData(this.hclusterService.selectHclusterByStatus(hclusterModel));
+		return obj;
+	}
 	/**
 	 * Methods Name: forbidHcluster <br>
 	 * Description: 禁用hcluster集群<br>

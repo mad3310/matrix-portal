@@ -286,6 +286,9 @@
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId} 
 		</if>
+		<if test="hclusterName != null and hclusterName != ''">
+			and U.HCLUSTER_NAME=#{hclusterName} 
+		</if>
 		and C.MCLUSTER_ID=M.Id AND M.STATUS IN(1,7,8,9,13,14) and C.HOST_ID=H.ID and H.HCLUSTER_ID=U.ID
 		
 	</select>
