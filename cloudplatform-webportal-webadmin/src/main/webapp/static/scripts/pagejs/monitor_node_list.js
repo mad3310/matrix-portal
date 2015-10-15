@@ -59,7 +59,7 @@ function queryMclusterMonitor(){
 	getLoading();
 	$.ajax({ 
 		cache:false,
-		type : "get",
+		type : "POST",
 		//url : "/monitor/mcluster/list",
 		url : queryUrlBuilder("/monitor/mcluster/list/",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/

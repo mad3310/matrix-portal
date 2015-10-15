@@ -61,7 +61,7 @@ public class MonitorController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/mcluster/list",method=RequestMethod.GET)
+	@RequestMapping(value="/mcluster/list")
 	public @ResponseBody ResultObject mclusterList(HttpServletRequest request,ResultObject result) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		if(params !=null && params.containsKey("ipAddr")) {

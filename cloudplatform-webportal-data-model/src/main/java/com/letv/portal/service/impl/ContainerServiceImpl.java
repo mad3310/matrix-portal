@@ -96,11 +96,18 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 
 	@Override
 	public List<ContainerModel> selectVaildVipContainers(Map<String,Object> params) {
-		return this.selectValidVipContianer("mclustervip", params);
+		return this.selectValidContianerByType("mclustervip", params);
 	}
 	@Override
 	public List<ContainerModel> selectVaildNormalContainers(Map<String,Object> params) {
-		return this.selectValidVipContianer("mclusternode", params);
+		return this.selectValidContianerByType("mclusternode", params);
+	}
+	
+	private List<ContainerModel> selectValidContianerByType(String type,Map<String,Object> params){
+		if(params == null)
+			params = new HashMap<String,Object>();
+		params.put("type", type);
+		return this.containerDao.selectValidByMap(params);
 	}
 	
 	@Override
@@ -115,11 +122,6 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		}
 		return containers.get(0);
 	}
-	private List<ContainerModel> selectValidVipContianer(String type,Map<String,Object> params){
-		if(params == null)
-			params = new HashMap<String,Object>();
-		params.put("type", type);
-		return this.containerDao.selectValidByMap(params);
-	}
+	
 
 }
