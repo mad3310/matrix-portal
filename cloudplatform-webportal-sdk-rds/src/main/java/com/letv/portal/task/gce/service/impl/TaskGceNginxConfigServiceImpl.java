@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.result.ApiResultObject;
@@ -33,6 +34,8 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private ITaskEngine taskEngine;
+	@Value("${gce.engine.category}")
+	private String GCE_ENGINE_CATEGORY;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskGceNginxConfigServiceImpl.class);
 	
@@ -111,7 +114,7 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 			return;
 		}
 		Map<String,Object> nextParams = (Map<String, Object>) params.get("nextParams");
-		this.taskEngine.run("GCE_BUY_EXT", nextParams);
+		this.taskEngine.run(GCE_ENGINE_CATEGORY, nextParams);
 	}
 	
 }
