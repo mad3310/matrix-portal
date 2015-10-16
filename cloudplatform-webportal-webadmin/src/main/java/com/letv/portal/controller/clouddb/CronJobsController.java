@@ -157,7 +157,7 @@ public class CronJobsController {
 		long date = cal.getTimeInMillis();
 		Date monthAgo = new Date(date);
 		for (MonitorIndexModel monitorIndexModel : indexs) {
-			this.monitorProxy.deleteOutData(monitorIndexModel,monthAgo);
+			this.monitorProxy.deleteOutData(monitorIndexModel.getDetailTable(), "MONITOR_DATE", monthAgo);
 		}
     	return obj;
 	}
