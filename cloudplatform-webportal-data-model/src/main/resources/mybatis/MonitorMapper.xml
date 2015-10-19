@@ -116,7 +116,7 @@
 		select 
         max(id) MAX_ID,min(id) MIN_ID
 	   	from ${dbName} m
-        where MONITOR_DATE &lt;= #{monitorDate}
+        where ${columnName} &lt;= #{date}
 	</select>
 	
 	<update id="deleteOutDataByIndex" parameterType="java.util.Map">

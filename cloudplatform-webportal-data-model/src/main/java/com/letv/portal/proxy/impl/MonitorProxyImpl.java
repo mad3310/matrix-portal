@@ -165,18 +165,19 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		long date = cal.getTimeInMillis();
 		Date monthAgo = new Date(date);
 		for (MonitorIndexModel monitorIndexModel : indexs) {
-			this.deleteOutData(monitorIndexModel,monthAgo);
+			this.deleteOutData(monitorIndexModel.getDetailTable(), "MONITOR_DATE", monthAgo);
 		}
 	}
 	
 	@Override
 	@Async
-	public void deleteOutData(MonitorIndexModel monitorIndexModel,Date date) {
+	public void deleteOutData(String tableName, String columnName, Date date) {
 		//get max id and min id from table where monitor_date<monthAgo
 		//for in  min and max, delete every 5000 by id.
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("dbName", monitorIndexModel.getDetailTable());
-		map.put("monitorDate", date);
+		map.put("dbName", tableName);
+		map.put("columnName", columnName);
+		map.put("date", date);
 		List<Map<String,Object>> ids = this.monitorService.selectExtremeIdByMonitorDate(map);
 		if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
 			return;
@@ -194,7 +195,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			try {
 				this.monitorService.deleteOutDataByIndex(map);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("monitorService.deleteOutDataByIndex have error : ", e);
 				continue;
 			}
 		}
@@ -381,11 +382,9 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	}
 	@Override
 	public void deleteMonitorErrorData() {
-		Map<String, Object> params = new HashMap<String,Object>();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -DELETE_MONITOR_ERROR_DAYS_AGO);
-		params.put("date", new Date(cal.getTimeInMillis()));
-		this.monitorService.deleteMonitorErrorDataByMap(params);
+		deleteOutData("WEBPORTAL_MONITOR_ERROR", "CREATE_TIME", new Date(cal.getTimeInMillis()));
 	}
 	
 	
