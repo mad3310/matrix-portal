@@ -836,8 +836,8 @@
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
                  <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 
-                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
-                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
+                <webportal.local.http>http://10.200.91.144:20001</webportal.local.http>
+                <webportal.admin.http>http://10.200.91.144:20000</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
@@ -864,6 +864,21 @@
                 <task.executor.size>150</task.executor.size>
                 
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
+                
+                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
+                <openstack.keystone.version>2.0</openstack.keystone.version>
+                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
+                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
+                <openstack.keystone.protocol>http</openstack.keystone.protocol>
+                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
+                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
+                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
+                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
+                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
+                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
+                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
+                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
+                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
             </properties>
         </profile>
           <profile>
