@@ -61,6 +61,11 @@ td{word-break: break-all; word-wrap:break-word;}</style>
 								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="gce_info_available_region"></span>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="text-muted pd-r8">应用描述:</span><span text-length="26" id="gce_descn"></span>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 				  </div>

@@ -49,6 +49,9 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + gceName
                             +"</td>");
+                    var td10 = $("<td width=\"250\">"
+                    		+ (array[i].descn?array[i].descn:'')
+                    		+"</td>");
                     var td6 = $("<td class='hidden-xs'>-</td>");
                    if(array[i].gceServerProxy != undefined && array[i].gceServerProxy!=null){
 	                   	 if(cn.Displayable(array[i].status) && cn.Displayable(array[i].gceServerProxy.status)){
@@ -137,7 +140,7 @@ define(function(require,exports,module){
                     		/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }
                      var tr = $("<tr class='data-tr'></tr>");
-                    tr.append(td1).append(td2).append(td6).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);
+                    tr.append(td1).append(td2).append(td10).append(td6).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
 	            }
 	             $(".gce-start").click(function(){

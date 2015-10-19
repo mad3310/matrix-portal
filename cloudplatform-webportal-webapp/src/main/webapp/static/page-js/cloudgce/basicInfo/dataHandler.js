@@ -15,6 +15,7 @@ define(function(require,exports,module){
     		GceInfoHandler : function(data){
                 var gceInfo = data.data;
     			$("#gce_info_gce_name").html(gceInfo.gceName);
+    			$("#gce_descn").html(gceInfo.descn);
     			$("#gce_type").html(cn.gceTypeTranslation(gceInfo.type));
                 $("#gce_server_addr").html(getAccpetAddr(gceInfo.gceContainers,gceInfo.type));
     			$("#gce_create_time").html(cn.TransDate('Y-m-d H:i:s',gceInfo.createTime));

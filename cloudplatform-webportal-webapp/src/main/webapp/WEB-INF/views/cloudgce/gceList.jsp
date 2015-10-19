@@ -61,6 +61,7 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">应用名称</th>
+						<th>应用描述</th>
 						<th class="hidden-xs">nginx代理应用名称</th>
 						<th>状态</th>
 						<th class="hidden-xs">服务类型</th>

@@ -102,9 +102,15 @@
 										<div>
 										<form id="monthPurchaseForm">
 											<div class="form-group bk-form-row col-sm-12">
-												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">云应用名称：</label>
+												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">应用名称：</label>
 												<div class="col-sm-4 row">
 													<input id="gceName" class="form-control" name="gceName" type="text">
+												</div>
+											</div>
+											<div class="form-group bk-form-row col-sm-12">
+												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">应用描述：</label>
+												<div class="col-sm-4 row">
+													<textarea rows="3" cols="20" id="descn" class="form-control" name="descn"></textarea>
 												</div>
 											</div>
 										</form>

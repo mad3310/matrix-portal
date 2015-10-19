@@ -54,13 +54,21 @@ define(function(require){
 				validMessage: '请按提示输入',
 				validators: {
 					notEmpty: {
-						message: '云应用名不能为空!'
+						message: '应用名不能为空!'
 					}, stringLength: {
 						max: 16,
-						message: '云应用名过长!'
+						message: '应用名过长!'
 					}, regexp: {
 						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
-						message: "请输入字母数字或'_',云应用名不能以数字开头."
+						message: "请输入字母数字或'_',应用名不能以数字开头."
+					}
+				}
+			},descn:{
+				validMessage: '请按提示输入',
+				validators: {
+					stringLength: {
+						max: 50,
+						message: '应用描述在50字以内!'
 					}
 				}
 			}
@@ -70,6 +78,7 @@ define(function(require){
     	var gceImageName=$("[name = gceImageName]").val();
 		var createGceData = {
 			gceName : $("[name = gceName]").val(),
+			descn : $("[name = descn]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
 			ocsId : $("[name = 'ocsId']").val(),
 			rdsId : $("[name = 'rdsId']").val(),
