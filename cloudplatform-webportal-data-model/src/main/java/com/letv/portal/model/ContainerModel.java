@@ -42,7 +42,7 @@ public class ContainerModel extends BaseModel {
 	private HostModel host;
 	private HclusterModel hcluster;
 	
-    
+
 	public HclusterModel getHcluster() {
 		return hcluster;
 	}

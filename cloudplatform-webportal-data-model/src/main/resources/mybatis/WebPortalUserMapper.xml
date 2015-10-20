@@ -18,6 +18,9 @@
 		<result column="REGISTERDATE" property="registerDate" />
 		<result column="IS_ADMIN" property="isAdmin" />
 		
+		<result column="PHONE" property="phone" />
+		<result column="ICON_URL" property="iconUrl" />
+		
 		<result column="SALT" property="salt" />
 		<result column="TYPE" property="type" />
 		
@@ -47,13 +50,13 @@
 	<sql id="Base_Column_List">
 		ID,USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP,
 		CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,IS_ADMIN,
-		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,PHONE,ICON_URL
 	</sql>
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-	insert into WEBPORTAL_USER (USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP, CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
-    (#{userName},#{email},#{passportId},#{lastLoginTime},#{lastLoginIp},#{currentLoginTime},#{currentLoginIp},#{registerDate},#{isAdmin},now(),#{createUser},now(),#{updateUser}) 
+	insert into WEBPORTAL_USER (USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP, CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,PHONE,ICON_URL) values
+    (#{userName},#{email},#{passportId},#{lastLoginTime},#{lastLoginIp},#{currentLoginTime},#{currentLoginIp},#{registerDate},#{isAdmin},now(),#{createUser},now(),#{updateUser},#{phone},#{iconUrl}) 
 	</insert>
 	
 	
@@ -74,6 +77,15 @@
 	<update id="update" parameterType="User">
 		update WEBPORTAL_USER set LAST_LOGIN_TIME=#{lastLoginTime}, LASTLOGIN_IP=#{lastLoginIp}, CURRENT_LOGIN_TIME=#{currentLoginTime}, CURRENT_LOGIN_IP=#{currentLoginIp} 
 		where ID = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="java.util.Map">
+		update 
+			WEBPORTAL_USER 
+		set 
+			PHONE=#{phone}, UPDATE_TIME=now()
+		where 
+			ID = #{id}
 	</update>
 
 	<update id="updatePassword" parameterType="User">

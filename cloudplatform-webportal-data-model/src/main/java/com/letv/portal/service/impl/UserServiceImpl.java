@@ -145,5 +145,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		
 		return users.get(0);
 	}
+
+	@Override
+	public void updateByMap(Map<String, Object> params) {
+		this.userDao.updateByMap(params);
+	}
   
 }

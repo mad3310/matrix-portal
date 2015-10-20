@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>List template</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="build/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="build/css/af.ui.css">
+
+    <link rel="stylesheet" type="text/css" href="build/css/common.css">
+    <link rel="stylesheet" type="text/css" href="build/css/myskin.css">
+
+    <script type="text/javascript" charset="utf-8" src="build/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
+</head>
+<body>
+    <div id="splashscreen" class="ui-loader">
+        <div class="self-loading">
+            <div class="pullDown loading">
+                <span class="pullDownIcon"></span>
+            </div>
+            <div><p>页面努力加载中</p><p>请稍后...</p></div>
+        </div>
+    </div>
+    
+    <div class="view" id="mainview">
+        <header class="self-hidden">
+            <h1>物理机集群</h1>
+            <!-- <a class="button self-right" style="margin-right:10px;">创建</a> -->
+        </header>
+        <div class="self-header">
+            <a class='self-back back' id="mainHeaderGoback"></a>
+            <h1 id="header"><span>物理机集群</span></h1>
+            <!-- <a class="button self-right" style="margin-right:10px;">创建</a> -->
+            <span class="self-clearfix"></span>
+        </div>
+        <div class="pages" id="main">
+             <!--Initial List of items-->
+            <div class="panel" data-selected="true" data-footer="none" data-title='物理机集群'>
+                <div id="wrapper">
+                    <div id="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span>
+                            <span class="pullDownLabel">下拉刷新</span>
+                        </div>
+                        <ul class="list" id="list"></ul>
+                        <div class="pullUp"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Detail View Pages for each list item-->
+            <div id="subpanels"></div>
+        </div>
+    </div>
+</body>
+<script>
+var common=new Common();
+var arrayData=new Array();
+function initePage(refresh,next_page){
+    var _targetDom=$('#list');
+    if(next_page){//加载
+        next_page=next_page?next_page:1;
+    }else{//刷新
+        next_page=1;
+        _targetDom.children('li').remove();
+        $('#subpanels').children().remove();
+    }
+    $.ajax({
+        url: '../hcluster/list?key=&&currentPage='+next_page+'&&recordsPerPage=15&&mclusterName=&&hclusterName=&&userName=&&status=&_=1438659830453',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+         var token= AppObj.getToken();
+         resquest.setRequestHeader('authtoken',token);
+         resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var _targetData=data.data.data;
+            if(refresh){
+                arrayData=_targetData;
+            }else{
+                arrayData=arrayData+_targetData;
+            }
+            var _targetDom=$('#list');
+            var htmlLi='',htmlPage='';
+            if(data.result==0){//has error
+                $.afui.toast({
+                    message:data.msgs,
+                    position:"tr",
+                    autoClose:false,
+                    type:"error"
+                });
+                return;
+            }else{
+                for(var i in _targetData){
+                    htmlLi=htmlLi+"<li data-self-id='"+_targetData[i].id+"' data-self-pageId='#item"+data.data.currentPage+i+"'>"
+                                +"<a href='#item"+data.data.currentPage+i+"'>"
+                                + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left self-status\">"+_targetData[i].hclusterNameAlias+"</span>"
+                                + "<span class=\"self-right self-status\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                                + "</a>"
+                                +"</li>";
+                    htmlPage=htmlPage+"<div class=\"panel\" data-title='物理机列表' id='item"+data.data.currentPage+i+"' data-footer=\"none\">"
+                                    + "</div>";
+                }
+                _targetDom.append(htmlLi);
+                $('#subpanels').append(htmlPage);
+            }  
+        }
+    })
+    .done(function(){
+        common.scrollInite(refresh,initePage);
+        initeSubPage()
+    });
+}
+function initeSubPage(id,pageId){
+    var _targetDom=$('#list');
+    $('#subpanels').find('ul').remove();
+    _targetDom.unbind('click').bind('click',function(event) {
+        $('#subpanels').find('ul').remove();
+        var _target=$(event.target).closest('li')
+        var id=_target.attr('data-self-id');
+        var pageId=_target.attr('data-self-pageId');
+
+        $('.self-header').addClass('self-hidden');
+        $('header').removeClass('self-hidden');
+        $.ajax({
+            url: '../hcluster/'+id+'?_=1439351322358',
+            type: 'get',
+            cache:false,
+            beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+            },
+            success:function(data){
+                var _targetData=data.data.hclusterDetail;
+                var html=''
+                for(var i in _targetData){
+                    var hostType='-';
+                    if(_targetData[i].type==0){
+                        hostType='主机'
+                    }else{
+                        hostType='从机'
+                    }
+                    html=html+'<ul class="list inset self-list">'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\">物理机名称</span>"
+                                    + "<span class=\"self-right\">"+_targetData[i].hostNameAlias+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\">编号</span>"
+                                    + "<span class=\"self-right\">"+_targetData[i].hostName+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\">类型</span>"
+                                    + "<span class=\"self-right\">"+hostType+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\">Ip</span>"
+                                    + "<span class=\"self-right\">"+_targetData[i].hostIp+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\">状态</span>"
+                                    + "<span class=\"self-right self-status\"><span class='self-status-icon icon-success'>正常</span></span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            // +   '<li>'
+                            //     + "<div class=\"self-ovfl\">"
+                            //         + "<span class=\"self-left operation\">操作</span>"
+                            //         + "<span class=\"self-right\"><a class='button deleteCmd' data-self-id='"+_targetData[i].hostId+"'>删除</a></span>"
+                            //         + "<span class=\"self-clearfix\"></span>"
+                            //     + "</div>"
+                            // +   '</li>'
+                            + '</ul>';
+                    
+                }
+                $(pageId).append(html)
+            }
+        })
+        .done(function(){
+            $('.deleteCmd').unbind('click').bind('click',function(event) {
+                var _this=$(this);
+                var id=_this.attr('data-self-id');
+                deleteCmd(id);
+            });
+        });    
+    });
+}
+function deleteCmd(id){
+    $.afui.actionsheet(
+    [{
+        text: '确定删除',
+        cssClasses: 'red',
+        handler:function(){
+            $.ajax({
+                cache:false,
+                url:'../host/isExistContainerOnHost/validate',
+                type:'post',
+                data:{'id':id},
+                success:function(data){
+                    if(data.valid){
+                        $.ajax({
+                            cache:false,
+                            url:'../host/'+id,
+                            type:'delete',
+                            beforeSend: function(resquest){
+                                var token= AppObj.getToken();
+                                resquest.setRequestHeader('authtoken',token);
+                                resquest.setRequestHeader('clientType','android');
+                            },
+                            success:function(data){
+                                if(data.result==0){//has error
+                                    $.afui.toast({
+                                        message:data.msgs,
+                                        position:"tr",
+                                        autoClose:false,
+                                        type:"error"
+                                    });
+                                    return;
+                                }
+                                $.afui.goBack();
+                                $('.self-header').removeClass('self-hidden');
+                                $('header').addClass('self-hidden');
+                                common.s.current_page=1;
+                                initePage();
+                            }
+                        });
+                    }
+                    
+                }
+            });
+        }
+    }]);
+}
+initePage();
+document.getElementById('wrapper').addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+common.selfHeaderNav();
+</script>
+</html>

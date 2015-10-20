@@ -43,5 +43,10 @@ public class TaskChainIndexServiceImpl extends BaseServiceImpl<TaskChainIndex> i
 			return null;
 		return buildSteps.get(0);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectFailedChainIndex() {
+		return this.taskChainIndexDao.selectFailedChainIndex();
+	}
 	
 }

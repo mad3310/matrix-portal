@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.dao.QueryParam;
 import com.letv.portal.model.DbModel;
 
 
@@ -40,4 +41,33 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	public List<DbModel> selectByDbNameForValidate(HashMap<String, Object> params);
 
 	public Integer selectCountByStatus(Integer _parameter);
+	
+	/**
+	  * @Title: selectPendingAuditDb
+	  * @Description: 获取所有待审核Db信息
+	  * @return List<DbModel>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月20日 上午10:16:02
+	  */
+	public List<DbModel> selectPendingAuditDb();
+	/**
+	  * @Title: selectPendingAuditDb
+	  * @Description: 获取分页待审核Db信息
+	  * @return List<DbModel>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月20日 上午10:16:02
+	  */
+	public List<DbModel> getPagePendingAuditDb(QueryParam params);
+	/**
+	  * @Title: getPagePendingAuditDbCount
+	  * @Description: 查询待审核总数量
+	  * @param params
+	  * @return Integer  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月22日 上午9:20:08
+	  */
+	public Integer getPagePendingAuditDbCount(QueryParam params);
 }

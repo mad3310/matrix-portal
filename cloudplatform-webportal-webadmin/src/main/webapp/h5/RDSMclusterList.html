@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>List template</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="build/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="build/css/af.ui.css">
+
+    <link rel="stylesheet" type="text/css" href="build/css/common.css">
+    <link rel="stylesheet" type="text/css" href="build/css/myskin.css">
+
+    <script type="text/javascript" charset="utf-8" src="build/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+    <div id="splashscreen" class="ui-loader">
+        <div class="self-loading">
+            <div class="pullDown loading">
+                <span class="pullDownIcon"></span>
+            </div>
+            <div><p>页面努力加载中</p><p>请稍后...</p></div>
+        </div>
+    </div>
+    <div class="view" id="rdsMclusterview">
+        <header class="self-hidden">
+            <h1>List View Example</h1>
+        </header>
+        <div class="self-header">
+            <a class='self-back back' id="mainHeaderGoback"></a>
+            <h1 id="header"><span>集群管理</span>&nbsp;&nbsp;<span class='self-icon-down self-down'></span></h1>
+            <!-- <a class="button self-right" style="margin-right:10px;">搜索</a> -->
+            <span class="self-clearfix"></span>
+        </div>
+        <div class="self-downItems self-hidden">
+            <ul>
+                <!-- <li>集群管理</li> -->
+                <li self-href='RDSManageMonitor'>监控列表</li>
+                <li self-href='RDSManageDb'>数据库</li>
+                <li self-href='RDSManageBackup'>备份与恢复</li>
+            </ul>
+        </div>
+        <div class="self-tab">
+            <div class="rds-monitorItem" style='width:48%'><a href="#rdsMcluster" class="active-monitorItem" id='tab1'>container集群</a></div>
+            <div class="rds-monitorItem" style='width:50%'><a href="#rdsMcluster" class="" id='tab2' data-transition="slide-right">container列表</a></div>
+        </div>
+        <div class="pages">
+         <!--Tab View Pages-->
+            <div class="panel" id="rdsMcluster" data-selected="true">
+                <div id="wrapper">
+                    <div id="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span>
+                            <span class="pullDownLabel">下拉刷新</span>
+                        </div>
+                        <ul class="list" id="list">                            
+                        </ul>
+                        <div class="pullUp"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="subpanels"></div>
+        </div>
+    </div>
+</body>
+<script>
+var common=new Common();
+$('.rds-monitorItem').unbind('click').bind('click',function(event) {
+    var _this=$(this);
+    if(_this.children('a').hasClass('active-monitorItem')){
+    }else{
+        _this.children('a').addClass('active-monitorItem');
+        _this.siblings().children('a').removeClass('active-monitorItem')
+    }
+    if(_this.children('a').attr('id')=='tab2'){
+        initePageCon();
+    }else{
+        initePage();
+    }
+});
+function initePage(refresh,next_page){
+    var _targetDom=$('#list');
+    var _targetSubDom=$('#subpanels');
+    var htmlLi='',htmlPage='';
+    if(next_page){//加载
+        next_page=next_page?next_page:1;
+    }else{//刷新
+        next_page=1;
+        _targetDom.children('li').remove();
+        $('#subpanels').children().remove();
+    }
+    $.ajax({
+        url: '../mcluster/list?key=&&currentPage='+next_page+'&&recordsPerPage=15&&mclusterName=&&hclusterName=&&userName=&&status=&_=1439774858710',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var _targetData=data.data.data;
+            for(var i in _targetData){
+                htmlLi=htmlLi+"<li data-self-id='"+_targetData[i].id+"'>"
+                        + "<a href='#item"+data.data.currentPage+i+"'>"
+                        + "<div class=\"self-ovfl\">"
+                        + "<span class=\"self-left\">"+_targetData[i].mclusterName+"</span>"
+                        + "<span class=\"self-right self-status\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                        + "<span class=\"self-clearfix\"></span>"
+                        + "</div>"
+                        + "</a>"
+                        +"</li>";
+                
+                htmlPage=htmlPage+"<div class=\"panel\" data-title='Container详情列表' data-footer=\"none\" id='item"+data.data.currentPage+i+"'>"
+                                + "</div>";
+            }
+            _targetDom.append(htmlLi);
+            _targetSubDom.append(htmlPage);
+
+        }
+    })
+    .done(function() {
+        initeSubPage();
+        common.scrollInite(refresh,initePage);
+    }); 
+}
+function initePageCon(refresh,next_page){
+    var _targetDom=$('#list');
+    var _targetSubDom=$('#subpanels');
+    var htmlLi='',htmlPage='';
+    if(next_page){//加载
+        next_page=next_page?next_page:1;
+    }else{//刷新
+        next_page=1;
+        _targetDom.children('li').remove();
+        $('#subpanels').children().remove();
+    }
+    $.ajax({
+        url: '../container?key=&&currentPage=1&&recordsPerPage=15&&containerName=&&ipAddr=&&status=&_=1439775815147',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var _targetData=data.data.data;
+            for(var i in _targetData){
+                htmlLi=htmlLi+"<li data-self-id='"+_targetData[i].id+"'>"
+                        + "<a href='#itemCon"+data.data.currentPage+i+"'>"
+                        + "<div class=\"self-ovfl\">"
+                        + "<span class=\"self-left\">"+_targetData[i].containerName+"</span>"
+                        + "<span class=\"self-right self-status\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                        + "<span class=\"self-clearfix\"></span>"
+                        + "</div>"
+                        + "</a>"
+                        +"</li>";
+                
+                htmlPage=htmlPage+"<div class=\"panel\" data-title='Container详情列表' data-footer=\"none\" id='itemCon"+data.data.currentPage+i+"'>"
+                                + "</div>";
+            }
+            _targetDom.append(htmlLi);
+            _targetSubDom.append(htmlPage);
+
+        }
+    })
+    .done(function() {
+        initeSubPage();
+    }); 
+}
+function initeSubPage(){
+    var _targetDom=$('#list');
+    $('#subpanels').find('ul').remove();
+    _targetDom.unbind('click').bind('click',function(event) {
+        var _target=$(event.target).closest('li')
+        var id=_target.attr('data-self-id');
+        var subpanelItem=_target.children('a').attr('href');
+        $('#subpanels').find('ul').remove();
+        $('.self-header').addClass('self-hidden');
+        $('header').removeClass('self-hidden');
+        $('.self-tab').addClass('self-hidden');
+
+        $.ajax({
+            url: '../container/'+id+'?_=1439778538311',
+            type: 'get',
+            cache:false,
+            beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+            },
+            success:function(data){
+                var _targetData=data.data;
+                var html='';
+                if(_targetData.length>0){
+                    for(var i in _targetData){
+                        html=html+'<ul class="list inset self-list">'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">Container名称</span>"
+                                + "<span class=\"self-right\">"+_targetData[i].containerName+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">类型</span>"
+                                + "<span class=\"self-right\">"+_targetData[i].type+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">Ip</span>"
+                                + "<span class=\"self-right\"><em>"+_targetData[i].ipAddr+"</em></span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">状态</span>"
+                                + "<span class=\"self-right self-status\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        + '</ul>';
+                    }
+                    
+                }else{
+                    html='<ul class="list inset self-list"><li>无数据信息</li></ul>'
+                }
+                $(subpanelItem).append(html);
+            }
+        })
+        .done(function(){
+        });    
+    });
+}
+initePage();
+document.getElementById('wrapper').addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+common.selfHeaderNav();
+</script>
+</html>

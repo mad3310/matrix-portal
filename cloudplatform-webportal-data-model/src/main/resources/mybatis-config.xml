@@ -77,5 +77,11 @@
         <!-- OpenStack -->
         <typeAlias alias="CloudvmRegion" type="com.letv.portal.model.cloudvm.CloudvmRegion" />
         <typeAlias alias="CloudvmVmCount" type="com.letv.portal.model.cloudvm.CloudvmVmCount"/>
+    
+        <typeAlias alias="H5PageInfoModel" type="com.letv.portal.model.app.H5PageInfoModel" />
+        <typeAlias alias="AppVersionModel" type="com.letv.portal.model.app.AppVersionModel" />
+        <typeAlias alias="AppSuggestionModel" type="com.letv.portal.model.app.AppSuggestionModel" />
+        <typeAlias alias="MessageModel" type="com.letv.portal.model.app.MessageModel" />
+        
     </typeAliases>
 </configuration>

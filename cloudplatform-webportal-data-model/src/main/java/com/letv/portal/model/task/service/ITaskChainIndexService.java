@@ -9,4 +9,5 @@ import com.letv.portal.service.IBaseService;
 public interface ITaskChainIndexService extends IBaseService<TaskChainIndex>{
 
 	TaskChainIndex  selectByServiceAndClusterName(String serviceName,String clusterName);
+	List<Map<String, Object>> selectFailedChainIndex();
 }

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>List template</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="build/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="build/css/af.ui.css">
+
+    <link rel="stylesheet" type="text/css" href="build/css/common.css">
+    <link rel="stylesheet" type="text/css" href="build/css/myskin.css">
+
+    <script type="text/javascript" charset="utf-8" src="build/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
+</head>
+<body>
+    <div id="splashscreen" class="ui-loader">
+        <div class="self-loading">
+            <div class="pullDown loading">
+                <span class="pullDownIcon"></span>
+            </div>
+            <div><p>页面努力加载中</p><p>请稍后...</p></div>
+        </div>
+    </div>
+    
+    <div class="view" id="mainview">
+        <header class="self-hidden">
+            <h1>List View Example</h1>
+        </header>
+        <div class="self-header">
+            <a class='self-back back' id="mainHeaderGoback"></a>
+            <h1 id="header"><span>数据库</span>&nbsp;&nbsp;<span class='self-icon-down self-down'></span></h1>
+            <!-- <a class="button self-right" style="margin-right:10px;">搜索</a> -->
+            <span class="self-clearfix"></span>
+        </div>
+        <div class="self-downItems self-hidden">
+            <ul>
+                <li self-href='RDSMclusterList'>集群管理</li>
+                <li self-href='RDSManageMonitor'>监控列表</li>
+                <!-- <li self-href='RDSManageDb'>数据库</li> -->
+                <li self-href='RDSManageBackup'>备份与恢复</li>
+            </ul>
+        </div>
+        <div class="pages" id="main">
+             <!--Initial List of items-->
+            <div class="panel" data-selected="true" data-footer="none" data-title='数据库'>
+                <div id="wrapper">
+                    <div id="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span>
+                            <span class="pullDownLabel">下拉刷新</span>
+                        </div>
+                        <ul class="list" id="list">
+                        </ul>
+                        <div class="pullUp"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Detail View Pages for each list item-->
+            <div id="subpanels"></div>
+        </div>
+    </div>
+</body>
+<script>
+var common=new Common();
+var arrayData=new Array();
+function initePage(refresh,next_page){
+    var _targetDom=$('#list');
+    if(next_page){//加载
+        next_page=next_page?next_page:1;
+    }else{//刷新
+        next_page=1;
+        _targetDom.children('li').remove();
+        $('#subpanels').children().remove();
+    }
+    $.ajax({
+        url: '../db?key=&&currentPage='+next_page+'&&recordsPerPage=15&&dbName=&&mclusterName=&&hclusterName=&&userName=&&status=&_=1439534453029',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+         var token= AppObj.getToken();
+         resquest.setRequestHeader('authtoken',token);
+         resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var _targetData=data.data.data;
+            if(refresh){
+                arrayData=_targetData;
+            }else{
+                arrayData=arrayData+_targetData;
+            }
+            var _targetDom=$('#list');
+            var htmlLi='',htmlPage='';
+            if(data.result==0){//has error
+                $.afui.toast({
+                    message:data.msgs,
+                    position:"tr",
+                    autoClose:false,
+                    type:"error"
+                });
+                return;
+            }else{
+                for(var i in _targetData){
+                    htmlLi=htmlLi+"<li data-self-id='"+_targetData[i].id+"' data-self-pageId='#item"+data.data.currentPage+i+"'>"
+                                +"<a href='#item"+data.data.currentPage+i+"'>"
+                                + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">"+_targetData[i].dbName+"</span>"
+                                + "<span class=\"self-right self-status\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                                + "</a>"
+                                +"</li>";
+                    htmlPage=htmlPage+"<div class=\"panel\" data-title='数据库' id='item"+data.data.currentPage+i+"' data-footer=\"none\">"
+                                        +"<div style=\"background:#f3f4f6;\">"
+                                            + "<div class=\"rds-monitorItem\" style='width:48%'><a self-href='#rdsDb"+_targetData[i].id+"' class=\"active-monitorItem\">数据库信息</a></div>"
+                                            + "<div class=\"rds-monitorItem\" style='width:52%'><a self-href='#rdsUser"+_targetData[i].id+"' class=\"\" data-transition=\"slide-right\">数据库用户</a></div>"
+                                        + "</div>"
+                                    + "</div>";
+                }
+                _targetDom.append(htmlLi);
+                $('#subpanels').append(htmlPage);
+            }  
+        }
+    })
+    .done(function(){
+        common.scrollInite(refresh,initePage);
+        initeSubPage();
+    });
+}
+function initeSubPage(){
+    var _targetDom=$('#list');
+    $('#subpanels').find('ul').remove();
+    _targetDom.unbind('click').bind('click',function(event) {
+        var _target=$(event.target).closest('li')
+        var id=_target.attr('data-self-id');
+        var pageId=_target.attr('data-self-pageId');
+        // $(pageId).find('ul').remove();
+        $('#rdsDb'+id).find('ul').remove();
+
+        $('.self-header').addClass('self-hidden');
+        $('header').removeClass('self-hidden');
+        $('.self-tab').addClass('self-hidden');
+
+        $.ajax({
+            url: '../db/'+id+'?_=1439351322358',
+            type: 'get',
+            cache:false,
+            beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+            },
+            success:function(data){
+                var _targetData=data.data;
+                var html=''
+                var lis='';
+                var _containers=_targetData.containers;
+                if(_containers){
+                    for(var j in _containers){
+                        lis=lis+   '<li>'
+                                    + "<div class=\"self-ovfl\">"
+                                        + "<span class=\"self-left\">"+_containers[j].containerName+"</span>"
+                                        + "<span class=\"self-right\">"+_containers[j].ipAddr+"</span>"
+                                        + "<span class=\"self-clearfix\"></span>"
+                                    + "</div>"
+                                +   '</li>';
+                    }
+                }
+                html=html+'<ul class="list inset self-list">'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">数据库名称</span>"
+                                + "<span class=\"self-right\">"+_targetData.dbName+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">所属用户</span>"
+                                + "<span class=\"self-right\">"+_targetData.user.userName+"</span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   '<li>'
+                            + "<div class=\"self-ovfl\">"
+                                + "<span class=\"self-left\">创建时间</span>"
+                                + "<span class=\"self-right\"><em>"+common.date(_targetData.createTime)+"</em></span>"
+                                + "<span class=\"self-clearfix\"></span>"
+                            + "</div>"
+                        +   '</li>'
+                        +   lis
+                        + '</ul>';
+                $(pageId).append('<div><div id="rdsDb'+id+'"></div><div id="rdsUser'+id+'" class="self-hidden"></div></div>');
+                $('#rdsDb'+id).append(html);
+                initeSubPageUser(id,pageId);
+            }
+        })
+        .done(function(){
+            // $('.deleteCmd').unbind('click').bind('click',function(event) {
+            //     var _this=$(this);
+            //     var id=_this.attr('data-self-id');
+            //     deleteCmd(id);
+            // });
+            $('.rds-monitorItem').unbind('click').bind('click',function(event) {
+                var _this=$(this);
+                if(_this.children('a').hasClass('active-monitorItem')){
+                }else{
+                    _this.children('a').addClass('active-monitorItem');
+                    _this.siblings().children('a').removeClass('active-monitorItem');
+                    var selfHref=_this.children('a').attr('self-href');
+                    $(selfHref).removeClass('self-hidden').siblings().addClass('self-hidden');
+                }
+            });
+        });    
+    });
+}
+function initeSubPageUser(id,pageId){
+    $('#rdsUser'+id).find('ul').remove();
+    $.ajax({
+        url: '../dbUser/'+id+'?_=1439351322358',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+         var token= AppObj.getToken();
+         resquest.setRequestHeader('authtoken',token);
+         resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var html='';
+            if(data.result==0){//has error
+
+            }else{
+                var _targetData=data.data;
+                if(_targetData.length>0){
+                    for(var i in _targetData){
+                        html=html+'<ul class="list inset self-list">'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\"><b>用户名</b></span>"
+                                    + "<span class=\"self-right\">"+_targetData[i].username+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\"><b>读写比例</b></span>"
+                                    + "<span class=\"self-right\">"+_targetData[i].maxConcurrency+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\"><b>状态</b></span>"
+                                    + "<span class=\"self-right\">"+common.translateStatus(_targetData[i].status)+"</span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            +   '<li>'
+                                + "<div class=\"self-ovfl\">"
+                                    + "<span class=\"self-left\"><b>备注</b></span>"
+                                    + "<span class=\"self-right\"><em>"+_targetData[i].descn+"</em></span>"
+                                    + "<span class=\"self-clearfix\"></span>"
+                                + "</div>"
+                            +   '</li>'
+                            + '</ul>';
+                    }
+                }else{
+                    html='<ul class="list inset"><li>暂时没有数据</li></ul>'
+                }
+                $('#rdsUser'+id).append(html)
+            }
+        }
+    })
+    .done(function(){
+
+    });    
+}
+function deleteCmd(id){
+    $.afui.actionsheet(
+    [{
+        text: '确定删除',
+        cssClasses: 'red',
+        handler:function(){
+            $.ajax({
+                cache:false,
+                url:'../host/isExistContainerOnHost/validate',
+                type:'post',
+                data:{'id':id},
+                beforeSend: function(resquest){
+                     var token= AppObj.getToken();
+                     resquest.setRequestHeader('authtoken',token);
+                     resquest.setRequestHeader('clientType','android');
+                },
+                success:function(data){
+                    if(data.valid){
+                        $.ajax({
+                            cache:false,
+                            url:'../host/'+id,
+                            type:'delete',
+                            success:function(data){
+                                if(data.result==0){//has error
+                                    $.afui.toast({
+                                        message:data.msgs,
+                                        position:"tr",
+                                        autoClose:false,
+                                        type:"error"
+                                    });
+                                    return;
+                                }
+                                $.afui.goBack();
+                                $('.self-header').removeClass('self-hidden');
+                                $('header').addClass('self-hidden');
+                                common.s.current_page=1;
+                                initePage();
+                            }
+                        });
+                    }
+                    
+                }
+            });
+        }
+    }]);
+}
+initePage();
+document.getElementById('wrapper').addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+common.selfHeaderNav();
+</script>
+</html>

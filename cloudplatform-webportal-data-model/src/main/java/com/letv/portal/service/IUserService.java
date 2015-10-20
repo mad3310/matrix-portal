@@ -1,5 +1,7 @@
 package com.letv.portal.service;
 
+import java.util.Map;
+
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
 
@@ -21,4 +23,6 @@ public interface IUserService extends IBaseService<UserModel>{
 	public UserModel getUserById(Long userId);
 
 	public UserModel getUserByNameAndEmail(String userNamePassport, String email);
+	
+	public void updateByMap(Map<String, Object> params);
 }

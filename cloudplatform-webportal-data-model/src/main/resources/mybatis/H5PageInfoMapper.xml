@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.app.IH5PageInfoDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="H5PageInfoModel">
+		<result column="ID" property="id" />
+		
+		<result column="PAGE_ID" property="pageId" />
+		<result column="TYPE" property="type" />
+		<result column="WEB_URL" property="webUrl" />
+		<result column="TITLE" property="title" />
+		<result column="ICON_URL" property="iconUrl" />
+		
+		<result column="DESCN" property="descn" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		h5.ID,
+		h5.PAGE_ID,h5.TYPE,h5.WEB_URL,h5.TITLE,h5.ICON_URL,h5.DESCN,h5.DELETED,
+		h5.CREATE_TIME,h5.CREATE_USER,h5.UPDATE_TIME,h5.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and h5.ID=#{id}
+			</if>
+			<if test="pageId != null and pageId != '' ">
+				and h5.PAGE_ID=#{pageId}
+			</if>
+			<if test="type != null ">
+				and h5.TYPE=#{type}
+			</if>
+			<if test="webUrl != null ">
+				and h5.WEB_URL=#{webUrl}
+			</if>
+			<if test="title != null ">
+				and h5.TITLE=#{title}
+			</if>
+			<if test="iconUrl != null ">
+				and h5.ICON_URL=#{iconUrl}
+			</if>
+			<if test="descn != null ">
+				and h5.DESCN=#{descn}
+			</if>
+			<if test="deleted != null ">
+				and h5.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and h5.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and h5.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and h5.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and h5.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from WEBPORTAL_APP_H5_PAGE h5
+			<include refid="Example_Where_Clause" />
+	</select>
+	
+</mapper>   

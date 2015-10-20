@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>Dashboard template</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="build/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="build/css/af.ui.css">
+
+    <link rel="stylesheet" type="text/css" href="build/css/common.css">
+    <link rel="stylesheet" type="text/css" href="build/css/myskin.css">
+    <script type="text/javascript" charset="utf-8" src="build/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/echarts-all.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
+</head>
+<body>
+    <div id="splashscreen" class="ui-loader heavy">
+        mcluster-manager views
+        <br>
+        <br>
+        <span class="ui-icon ui-icon-loading spin"></span>
+        <h1>Waiting...</h1>
+    </div>
+    
+    <div class="view" id="mainview">
+        <header>
+            <h1>List View Example</h1>
+        </header>
+        <div class="pages" id="main">
+             <!--Initial List of items-->
+            <div class="panel" data-title="监控" data-selected="true" data-footer="none">
+                <p><b>消息通知</b></p>
+                <ul class='list'>
+                    <li class="swipe-reveal">
+                        <div class="swipe-content">即时消息1</div>
+                        <div class="swipe-hidden">
+                            <a class="button more" onclick="$(this).closest('.swipe-reveal').remove()">忽略</a>
+                            <a class="button archive">处理</a>
+                        </div>
+                    </li>
+                    <li class="swipe-reveal">
+                        <div class="swipe-content">即时消息2</div>
+                        <div class="swipe-hidden">
+                            <a class="button more" onclick="$(this).closest('.swipe-reveal').remove()">忽略</a>
+                            <a class="button archive">处理</a>
+                        </div>
+                    </li>
+                </ul>
+                
+                <div>
+                    <p><b>监控状态</b></p>
+                    <div class="self-textcenter" id="waiting"><span class="ui-icon ui-icon-loading spin" style="font-size:26px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#999;'>正在加载...</span></div>     
+                    <ul class="list" id="listMonitor"></ul>
+                </div>
+            </div>
+            <!--Detail View Pages for each list item-->
+            <div id="subpanels"></div>
+        </div>
+    </div>
+</body>
+<script>
+$.afui.useOSThemes=true;
+var common=new Common();
+var pieArray=new Array();
+function initePage(urlid){
+    var _targetDom=$('#listMonitor');
+    var _targetSubDom=$('#subpanels');
+    var _waiting=$('#waiting');
+    var whichState='';
+    var pieData='';
+    if(urlid==1){whichState='Cluster状态'}
+    else if(urlid==2){whichState='Node状态'}
+    else if(urlid==3){whichState='Db状态'}
+    else{return;}    
+    $.ajax({
+        url: '../dashboard/monitor/'+urlid+'?_=1438927403335',
+        type: 'get',
+        success:function(data){
+            var html='',subHtml='';
+            if(data.result==0){//has error
+                $.afui.toast({
+                    message:data.msgs,
+                    position:"tr",
+                    autoClose:false, 
+                    type:"error"
+                });
+                return;
+            }else{
+                pieData=data.data;
+                pieArray.push(pieData);
+                html="<li>"
+                        +"<a href='#item"+urlid+"'>"
+                            +"<p><b>"+whichState+"</b></p>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon database'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon bug self-text-warn'></i>单点故障"+pieData.general+"</span></div>"
+                            +"</div>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon download'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon bug self-text-error'></i>危险"+pieData.serious+"</span></div>"
+                            +"</div>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon cloud'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon bug self-text-primary'></i>集群不可用"+pieData.crash+"</span></div>"
+                           +" </div>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon cloud'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon bug self-text-error'></i>数据超时"+pieData.timeout+"</span></div>"
+                            +"</div>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon upload'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon bug self-text-warn'></i>解析数据错误"+pieData.except+"</span></div>"
+                            +"</div>"
+                            +"<div class='self-left self-dashitems'>"
+                                +"<div class='dashitem-icon'><span><b><i class='icon check'></i></b></span></div>"
+                                +"<div class='dashitem'><span><i class='icon check self-text-success'></i>正常"+pieData.nothing+"</span></div>"
+                            +"</div>"
+                           +" <div class='self-clearfix'></div>"
+                        +"</a>"
+                    +"</li>";
+                subHtml='<div id="item'+urlid+'" class="panel dashitem-chart" data-footer="none;"></div>';
+                _targetDom.append(html);
+                _targetSubDom.append(subHtml);
+            }  
+        }
+    })
+    .done(function() {
+        _waiting.addClass('self-hidden')
+        var id='item'+urlid;
+        common.chartInit(id,whichState,pieArray[0]);
+    });  
+}
+initePage(1);
+setTimeout(function(){initePage(2);},1000);
+setTimeout(function(){initePage(3);},2000);
+</script>
+</html>

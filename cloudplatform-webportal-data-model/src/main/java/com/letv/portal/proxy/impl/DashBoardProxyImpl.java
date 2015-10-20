@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
@@ -65,6 +69,8 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 	private ICbaseBucketService cbaseBucketService;
 	@Autowired
 	private ISwiftServerService swiftServerService;
+	@Autowired
+	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
@@ -95,6 +101,98 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 		statistics.put("dbUserBuilding",
 				this.dbUserService.selectByMapCount(map));
 		return statistics;
+	}
+	
+	private class MonitorStatusThread extends Thread {
+		private Long monitorType;
+		private Long mclusterId;
+		AtomicInteger nothing;
+		AtomicInteger general;
+		AtomicInteger serious;
+		AtomicInteger crash;
+		AtomicInteger timeout;
+		AtomicInteger except;
+		CountDownLatch latch;
+		
+		public MonitorStatusThread(long mclusterId, long monitorType, AtomicInteger nothing, AtomicInteger general, AtomicInteger serious, 
+				AtomicInteger crash, AtomicInteger timeout, AtomicInteger except, CountDownLatch latch) {
+			this.mclusterId = mclusterId;
+			this.monitorType = monitorType;
+			this.nothing = nothing;
+			this.general = general;
+			this.serious = serious;
+			this.crash = crash;
+			this.timeout = timeout;
+			this.except = except;
+			this.latch = latch;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				ContainerModel container = selectValidVipContianer(mclusterId, "mclustervip");
+				if (container == null) {
+					except.incrementAndGet();
+				} else {
+					BaseMonitor monitor = buildTaskService.getMonitorData(
+							container.getIpAddr(), monitorType);
+					if (MonitorStatus.NORMAL.getValue() == monitor.getResult()) {
+						nothing.incrementAndGet();
+					}
+					if (MonitorStatus.GENERAL.getValue() == monitor.getResult()) {
+						general.incrementAndGet();
+					}
+					if (MonitorStatus.SERIOUS.getValue() == monitor.getResult()) {
+						serious.incrementAndGet();
+					}
+					if (MonitorStatus.CRASH.getValue() == monitor.getResult()) {
+						crash.incrementAndGet();
+					}
+					if (MonitorStatus.TIMEOUT.getValue() == monitor.getResult()) {
+						timeout.incrementAndGet();
+					}
+					if (MonitorStatus.EXCEPTION.getValue() == monitor.getResult()) {
+						except.incrementAndGet();
+					}
+				}
+			} catch (Exception e) {
+				except.incrementAndGet();
+			} finally {
+				latch.countDown();
+			}
+		}
+		
+	}
+	
+	public Map<String, Integer> selectMonitorAlertWithMultiThread(Long monitorType) {
+		List<MclusterModel> mclusters = this.mclusterService
+				.selectValidMclusters();
+		AtomicInteger nothing = new AtomicInteger();
+		AtomicInteger general = new AtomicInteger();
+		AtomicInteger serious = new AtomicInteger();
+		AtomicInteger crash = new AtomicInteger();
+		AtomicInteger timeout = new AtomicInteger();
+		AtomicInteger except = new AtomicInteger();
+		CountDownLatch latch = new CountDownLatch(mclusters==null?0:mclusters.size());
+
+		for (MclusterModel mcluster : mclusters) {
+			MonitorStatusThread status = new MonitorStatusThread(mcluster.getId(), monitorType, nothing, general, serious, crash, timeout, 
+					except, latch);
+			this.threadPoolTaskExecutor.execute(status);
+		}
+		try {
+			latch.await(5, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			logger.error("CountDownLatch.wait had error : ", e);
+		}
+		Map<String, Integer> data = new HashMap<String, Integer>();
+		data.put("nothing", nothing.get());
+		data.put("general", general.get());
+		data.put("serious", serious.get());
+		data.put("crash", crash.get());
+		data.put("timeout", timeout.get());
+		data.put("except", except.get());
+		return data;
 	}
 
 	@Override

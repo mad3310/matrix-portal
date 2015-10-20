@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <title>List template</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" type="text/css" href="build/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="build/css/af.ui.css">
+
+    <link rel="stylesheet" type="text/css" href="build/css/common.css">
+    <link rel="stylesheet" type="text/css" href="build/css/myskin.css">
+
+    <script type="text/javascript" charset="utf-8" src="build/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
+    <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
+</head>
+<body>
+    <div id="splashscreen" class="ui-loader">
+        <div class="self-loading">
+            <div class="pullDown loading">
+                <span class="pullDownIcon"></span>
+            </div>
+            <div><p>页面努力加载中</p><p>请稍后...</p></div>
+        </div>
+    </div>
+    
+    <div class="view" id="mainview">
+        <div class="self-header">
+            <a class='self-back back' id="mainHeaderGoback"></a>
+            <h1 id="header"><span>待审核数据库详情</span></h1>
+            <a class="button self-right" style="margin-right:10px;" id="submit">提交</a>
+            <span class="self-clearfix"></span>
+        </div>
+        <div class="pages" id="main">
+             <!--Initial List of items-->
+            <div class="panel" data-selected="true" data-footer="none">
+                <div>
+                    <p class='uncheck-dbP'><span>用户申请单信息</span></p>
+                    <ul class="list inset self-list">
+                        <li>
+                            <div class="self-listP">
+                                <span class='self-left'>数据库名</span>
+                                <span class='self-right' data-self-name='dbName'>加载中...</span>
+                                <span class='self-clearfix'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="self-listP">
+                                <span class='self-left'>所属用户</span>
+                                <span class='self-right' data-self-name='dbUser'>加载中...</span>
+                                <span class='self-clearfix'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="self-listP">
+                                <span class='self-left'>链接类型</span>
+                                <span class='self-right' data-self-name='dbType'>加载中...</span>
+                                <span class='self-clearfix'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="self-listP">
+                                <span class='self-left'>数据库引擎</span>
+                                <span class='self-right' data-self-name='dbDriver'>加载中...</span>
+                                <span class='self-clearfix'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="self-listP">
+                                <span class='self-left'>申请时间</span>
+                                <em><span class='self-right' data-self-name='dbTime'>加载中...</span></em>
+                                <span class='self-clearfix'></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="uncheck-handleDiv">
+                    <p class='uncheck-dbP'><span>审核处理</span></p>
+                    <div class="uncheck-handle" id="chosen">
+                        <span>处理意见</span>
+                        <div class="uncheck-handle-opt" data-self-value="0">同意&nbsp;&nbsp;<span class="icon add"></span></div>
+                    </div>
+                    <div id="dependChosen">
+                        <div class="uncheck-handle">
+                            <input type="text" placeholder='请输入集群名称' id="mclusterName" />
+                            <div class="self-wrongTip"style="margin-top:-8px;"></div>
+                        </div>
+                        <div class="uncheck-handle self-hidden">
+                            <div><textarea row="3" placeholder='请输入未通过原因' id="auditInfo"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <!--Detail View Pages for each list item-->
+            <div id="subpanels"></div>
+        </div>
+        <div class="uncheck-handle-opts self-hidden">
+            <div class="uncheck-opts-turn">
+                <div class="opts-items self-active" data-self-value='0'>同意 &nbsp;<span class="icon check"></span></div>
+                <div class="opts-items" data-self-value='1'>不同意 &nbsp;<span class="icon check self-hidden"></span></div>
+            </div>
+        </div>
+    </div> 
+</body>
+<script>
+var common=new Common();
+var id=common.urlParameter('id');
+function ConNameRandom(){
+    var random=Math.ceil(Math.random()*100);
+    return 'd-mcl-'+random;
+}
+function chosenCg(){
+    var _target=$('#chosen');
+    var _handle_opts=$('.uncheck-handle-opts');
+    var _opts_turn=$('.uncheck-opts-turn');
+    _target.unbind('click').bind('click', function(event) { 
+        _handle_opts.removeClass('self-hidden');
+        setTimeout(function(){
+            _opts_turn.css('transform', 'rotateX(0deg)');
+        },100);  
+    });
+    _opts_turn.unbind('click').bind('click',function(event) {
+        var _this=$(event.target).closest('div');
+        var type=_this.attr('data-self-value');
+        _this.addClass('self-active').children('span').removeClass('self-hidden');
+        _this.siblings('div').removeClass('self-active').children('span').addClass('self-hidden');
+        _opts_turn.css('transform', 'rotateX(90deg)');
+        setTimeout(function(){
+            _handle_opts.addClass('self-hidden');
+            $('#dependChosen').children('div:eq('+type+')').removeClass('self-hidden')
+                .siblings('div').addClass('self-hidden');
+            _target.children('div').attr('data-self-value',type);
+            if(type==0){
+                _target.children('div').html('同意&nbsp;&nbsp;<span class="icon add"></span>');
+                $('#mclusterName').val(ConNameRandom());
+            }else{
+                _target.children('div').html('不同意&nbsp;&nbsp;<span class="icon add"></span>')
+            }
+        },501);
+    });
+}
+function initePage(){
+    $.ajax({
+        url: '../db/'+id+'?_=1439274183815',
+        type: 'get',
+        cache:false,
+        beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            if(data.result==0){//error
+                $.afui.toast({
+                    message:data.msgs,
+                    position:"tr",
+                    autoClose:true, 
+                    type:"error"
+                });
+                return;
+            }else{
+                var _data=data.data;
+                if(_data){
+                   var type='-',dbDriver='-';
+                    if(_data.linkType==0){
+                        type='长链接';
+                    }else if(_data.linkType==0){type='短链接'}
+                    if(_data.engineType==0){dbDriver='InnoDB'}
+                    $('span[data-self-name="dbName"]').text(_data.dbName);
+                    $('span[data-self-name="dbUser"]').text(_data.user.userName);
+                    $('span[data-self-name="dbType"]').text(type);
+                    $('span[data-self-name="dbDriver"]').text(dbDriver);
+                    $('span[data-self-name="dbTime"]').text(common.date('Y-m-d H:i:s',_data.createTime)); 
+                }else{
+                    $.afui.toast({
+                        message:'参数不合法，相关数据不存在',
+                        position:"tr",
+                        autoClose:true, 
+                        type:"error"
+                    });
+                    return;
+                }
+                
+            }
+        }
+    }); 
+}
+function auditDb(){
+    $('#submit').unbind('click').bind('click', function(event) {
+        var type=$('#chosen').children('div').attr('data-self-value');
+        var url='../db/audit';
+        var postData={
+            'dbId':id
+        };
+        if(type==0){
+            postData.auditType=2;
+            postData.mclusterName=$('#mclusterName').val();
+            var _ajax=checkClusterName();
+            _ajax.done(function(data){
+                audit(url,postData);
+            });
+        }else if(type==1){
+            postData.auditType=4;
+            postData.auditInfo=$('#auditInfo').val();
+            audit(url,postData);
+        }
+    });
+}
+function audit(url,postData){
+    $.ajax({
+        url:url,
+        type: 'post',
+        data: postData,
+        cache:false,
+        beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            if(data.result==0){//has error
+                $.afui.toast({
+                    message:data.msgs,
+                    position:"tr",
+                    autoClose:true,
+                    type:"error"
+                });
+                return;
+            }else{
+                AppObj.goBackHome();
+            }
+        }
+    })
+}
+function checkClusterName(){
+    var clusterName=$('#mclusterName').val();
+    var postData={
+        mclusterName:clusterName
+    }
+    var flag=false;
+    return $.ajax({
+        url: '../mcluster/validate',
+        type: 'post',
+        data:postData,
+        cache:false,
+        beforeSend: function(resquest){
+             var token= AppObj.getToken();
+             resquest.setRequestHeader('authtoken',token);
+             resquest.setRequestHeader('clientType','android');
+        },
+        success:function(data){
+            var html='';
+            flag=data.valid;
+            if(flag){
+                $('#mclusterName').removeClass('self-error')
+            }else{
+                html='<i class="icon error"></i><span>集群名称已存在</span>'
+            }
+            $('#mclusterName').addClass('self-error');
+            $('.self-wrongTip').append(html);
+        }
+    });
+}
+function changeClusterName(){
+    var _ajax=checkClusterName();
+    $('#mclusterName').change(function(event) {
+        _ajax.done(function(data){
+            if(data.valid){
+                auditDb();
+            }
+        })
+    });
+}
+
+initePage();
+chosenCg();
+changeClusterName();
+auditDb();
+$('#mclusterName').val(ConNameRandom());
+$('#mainHeaderGoback').unbind('click').bind('click',function(event) {
+    AppObj.goBackHome();
+});
+</script>
+</html>

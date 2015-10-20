@@ -139,6 +139,19 @@
  		from WEBPORTAL_TASK_CHAIN_INDEX tci
 		<include refid="Example_Where_Clause"/>
 	</select>
+	<!-- 获取失败的ChainIndex -->
+	<select id="selectFailedChainIndex" resultType="java.util.Map">
+		select 
+			tt.NAME taskName,count(tci.TASK_ID) failedCount 
+ 		from 
+ 			WEBPORTAL_TASK_CHAIN_INDEX tci
+ 		left join 
+ 			WEBPORTAL_TEMPLATE_TASK tt on tt.ID = tci.TASK_ID
+		where 
+			tci.STATUS='FAILED'
+		group by
+			tci.TASK_ID
+	</select>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select

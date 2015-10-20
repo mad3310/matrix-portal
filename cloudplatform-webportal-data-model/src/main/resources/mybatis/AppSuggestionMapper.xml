@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.app.IAppSuggestionDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="AppSuggestionModel">
+		<result column="ID" property="id" />
+		
+		<result column="CONTACT" property="contact" />
+		<result column="CONTENT" property="content" />
+		
+		<result column="DESCN" property="descn" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		s.ID,
+		s.CONTACT,s.CONTENT,s.DESCN,s.DELETED,
+		s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and s.ID=#{id}
+			</if>
+			<if test="contact != null ">
+				and s.CONTACT=#{contact}
+			</if>
+			<if test="content != null ">
+				and s.CONTENT=#{content}
+			</if>
+			<if test="descn != null ">
+				and s.DESCN=#{descn}
+			</if>
+			<if test="deleted != null ">
+				and s.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and s.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and s.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and s.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and s.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<insert id="saveSuggestion" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" >
+		insert into WEBPORTAL_APP_SUGGESTION 
+			(CONTACT,CONTENT,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+		values 
+			(#{info},#{content},#{descn},#{deleted},now(),#{updateTime},#{createUser},#{updateUser});
+	</insert>
+	
+</mapper>   

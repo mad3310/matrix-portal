@@ -18,8 +18,11 @@
     
     <bean id="threadPoolTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="10" />
+		<property name="corePoolSize" value="30" />
 		<property name="maxPoolSize" value="500" />
-		<property name="queueCapacity" value="100" />
+		<property name="queueCapacity" value="500" />
+		<property name="rejectedExecutionHandler">  
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />  
+        </property> 
 	</bean>
 </beans>

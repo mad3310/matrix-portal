@@ -3,6 +3,7 @@
 	<excludes>
 		<pattern>/static/*</pattern>
 		<pattern>/account/login*</pattern>
+		<pattern>/h5/*</pattern>
 		
 		<!-- 异步请求 -->
 		<pattern>/mcluster</pattern>

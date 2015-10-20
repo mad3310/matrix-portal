@@ -30,6 +30,10 @@ public class ResultObject implements Serializable {
 	 */
 	private List<String> msgs = new ArrayList<String>();
 	/**
+	 * 用户提示信息
+	 */
+	private String alertMessage;
+	/**
 	 * 附加数据
 	 */
 	private Object data;
@@ -74,7 +78,14 @@ public class ResultObject implements Serializable {
 	public void setData(Object data) {
 		this.data = data;
 	}
-
+	
+	public String getAlertMessage() {
+		return alertMessage;
+	}
+	
+	public void setAlertMessage(String alertMessage) {
+		this.alertMessage = alertMessage;
+	}
 	/**
 	 * 添加信息
 	 * 

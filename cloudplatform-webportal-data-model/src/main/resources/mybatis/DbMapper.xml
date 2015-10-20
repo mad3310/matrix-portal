@@ -72,7 +72,7 @@
 			<if test="hclusterId != null  ">
 				and m.HCLUSTER_ID=#{hclusterId}
 			</if>
-			<if test="status != null and status!='' ">
+			<if test="status != null and status=='0' or status!='' ">
 				and m.STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
@@ -259,6 +259,39 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
+	<!-- 获取所有待审核信息 -->
+	<select id="selectPendingAuditDb" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />,u.USERNAME
+		from 
+			WEBPORTAL_DB m
+		left join 
+			WEBPORTAL_USER u on m.CREATE_USER=u.ID
+		where
+			m.STATUS=0
+	</select>
+	<select id="getPagePendingAuditDb" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />,u.USERNAME
+		from 
+			WEBPORTAL_DB m
+		left join 
+			WEBPORTAL_USER u on m.CREATE_USER=u.ID
+			<include refid="Example_Page_Where_Clause" />
+		ORDER BY m.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+	<select id="getPagePendingAuditDbCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select count(1) 
+		from 
+			WEBPORTAL_DB m
+		left join 
+			WEBPORTAL_USER u on m.CREATE_USER=u.ID
+			<include refid="Example_Page_Where_Clause" />
+	</select>
+	
 	
 	<sql id="Example_Page_Where_Clause">
 		where 1=1
@@ -272,7 +305,7 @@
 			<if test="params != null and params.mclusterId != null  ">
 				and m.MCLUSTER_ID=#{params.mclusterId}
 			</if>
-			<if test="params != null and params.status != null and params.status != ''  and params.status != 'null' ">
+			<if test="params != null and params.status != null and params.status == '0' or params.status != '' ">
 				and m.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">

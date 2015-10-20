@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.app.IAppVersionDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="AppVersionModel">
+		<result column="ID" property="id" />
+		
+		<result column="VERSION_CODE" property="versionCode" />
+		<result column="VERSION_NAME" property="versionName" />
+		<result column="PLATFORM" property="platform" />
+		<result column="FORCE_UPDATE" property="forceUpdate" />
+		<result column="URL" property="url" />
+		
+		<result column="DESCN" property="descn" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		version.ID,
+		version.VERSION_CODE,version.VERSION_NAME,version.PLATFORM,version.FORCE_UPDATE,version.URL,version.DESCN,version.DELETED,
+		version.CREATE_TIME,version.CREATE_USER,version.UPDATE_TIME,version.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and version.ID=#{id}
+			</if>
+			<if test="versionCode != null ">
+				and version.VERSION_CODE=#{versionCode}
+			</if>
+			<if test="versionName != null ">
+				and version.VERSION_NAME=#{versionName}
+			</if>
+			<if test="platform != null ">
+				and version.PLATFORM=#{platform}
+			</if>
+			<if test="forceUpdate != null ">
+				and version.FORCE_UPDATE=#{forceUpdate}
+			</if>
+			<if test="url != null ">
+				and version.URL=#{url}
+			</if>
+			<if test="descn != null ">
+				and version.DESCN=#{descn}
+			</if>
+			<if test="deleted != null ">
+				and version.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and version.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and version.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and version.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and version.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 根据条件查询 -->
+	<select id="getLastestVersionInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_APP_VERSION version
+		where
+			version.PLATFORM=#{platform} 
+		order by
+			version.VERSION_CODE desc
+		limit 1
+	</select>
+	
+</mapper>   

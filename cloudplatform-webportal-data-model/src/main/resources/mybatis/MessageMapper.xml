@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.app.IMessageDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="MessageModel">
+		<result column="ID" property="id" />
+		<result column="TITLE" property="title" />
+		
+		<result column="DESCN" property="descn" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		message.ID,
+		message.TITLE,message.DESCN,message.DELETED,
+		message.CREATE_TIME,message.CREATE_USER,message.UPDATE_TIME,message.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Common_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and message.ID=#{id}
+			</if>
+			<if test="title != null ">
+				and message.TITLE=#{title}
+			</if>
+			<if test="descn != null ">
+				and message.DESCN=#{descn}
+			</if>
+			<if test="deleted != null ">
+				and message.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and message.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and message.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and message.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and message.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from WEBPORTAL_APP_MESSAGE message
+			<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1) 
+		from 
+			WEBPORTAL_APP_MESSAGE message
+		<include refid="Common_Where_Clause" />
+	</select>
+	
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />
+		from WEBPORTAL_APP_MESSAGE message
+			<include refid="Page_Where_Clause" />
+		ORDER BY message.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+	
+	<sql id="Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and message.ID=#{params.id}
+			</if>
+			<if test="params != null and params.title != null  ">
+				and message.TITLE=#{params.title}
+			</if>
+			<if test="params != null and params.descn != null ">
+				and message.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.deleted != null  ">
+				and message.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and message.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and message.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and message.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and message.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+</mapper>   

@@ -16,11 +16,9 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
-import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.JsonUtils;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
@@ -164,5 +162,21 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Override
 	public Integer selectCountByStatus(Integer _parameter) {
 		return this.dbDao.selectCountByStatus(_parameter);
+	}
+
+	@Override
+	public List<DbModel> selectPendingAuditDb() {
+		return this.dbDao.selectPendingAuditDb();
+	}
+
+	@Override
+	public Page getPagePendingAuditDb(Page page,
+			Map<String, Object> params) {
+		QueryParam param = new QueryParam();
+		param.setPage(page);
+		param.setParams(params);
+		page.setData(this.dbDao.getPagePendingAuditDb(param));
+		page.setTotalRecords(this.dbDao.getPagePendingAuditDbCount(param));
+		return page;
 	}
 }

@@ -62,5 +62,26 @@ public interface IDbService extends IBaseService<DbModel> {
 	public Map<String, Object> getGbaConfig(Long dbId);
 
 	public Integer selectCountByStatus(Integer _parameter);
+	
+	/**
+	  * @Title: selectPendingAuditDb
+	  * @Description: 获取所有待审核db信息
+	  * @return List<DbModel>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月18日 下午8:18:52
+	  */
+	public List<DbModel> selectPendingAuditDb();
+	/**
+	  * @Title: getPagePendingAuditDb
+	  * @Description: 获取分页待审核db信息
+	  * @param page
+	  * @param params
+	  * @return Page   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月22日 上午9:23:09
+	  */
+	public Page getPagePendingAuditDb(Page page, Map<String, Object> params);
 
 }
