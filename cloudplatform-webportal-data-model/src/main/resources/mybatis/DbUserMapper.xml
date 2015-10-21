@@ -241,9 +241,7 @@
 		<if test="username != null  ">
 			m.USERNAME=#{username},
 		</if>
-		<if test="password != null  ">
-			m.PASSWORD=#{password},
-		</if>
+		m.PASSWORD=#{password},
 		<if test="salt != null  ">
 			m.SALT=#{salt},
 		</if>

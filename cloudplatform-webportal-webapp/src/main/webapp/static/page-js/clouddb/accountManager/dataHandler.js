@@ -50,18 +50,25 @@ define(function(require,exports,module){
                      var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
                      var td4 = $("<td class='hidden-xs'><span>"+array[i].maxConcurrency+"</span></td>");
                      var td5 = $("<td class='hidden-xs' style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
-                     		+ "</span>" 
+                     		+ "</span>"
                      		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
                      		+ "</td>");
-                     var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
-                     + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
-                     + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
-                     + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
-                     + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
-                     +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;"
-                     +"<a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-repeat text-warning'></span></a>&nbsp;"
-                     +"<a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-edit text-success'></span></a>&nbsp;"
-                     +"<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
+                     console.info(array[i].status);
+                     if(array[i].status != 6) {
+                         var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
+                             + "<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
+                             +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
+                     } else {
+                         var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
+                             + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
+                             + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
+                             + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
+                             + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
+                             +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;"
+                             +"<a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-repeat text-warning'></span></a>&nbsp;"
+                             +"<a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-edit text-success'></span></a>&nbsp;"
+                             +"<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
+                     }
                      var tr = $("<tr class='data-tr'></tr>");
                      tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                      tr.appendTo($tby);

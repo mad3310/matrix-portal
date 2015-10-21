@@ -151,11 +151,11 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 				updateIps.add(ip.getAcceptIp());
 			}
 		}
-		if(!removes.isEmpty()) {
-			this.deleteAndBuild(removes);
-		}
 		if(!updates.isEmpty()) {
 			this.updateDbUser(updates);
+		}
+		if(!removes.isEmpty()) {
+			this.deleteAndBuild(removes);
 		}
 	}
 	
