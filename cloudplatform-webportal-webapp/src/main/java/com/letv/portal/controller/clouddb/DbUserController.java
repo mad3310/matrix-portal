@@ -152,15 +152,7 @@ public class DbUserController {
 		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
 		return obj;
 	}
-	/**Methods Name: updateDbUser <br>
-	 * Description: 用户账户更新<br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 * @param types
-	 * @param ips
-	 * @param obj
-	 * @return
-	 */
+
 	@RequestMapping(value="/descn/{username}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateUserDescn(DbUserModel dbUserModel,ResultObject obj) {
 		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {

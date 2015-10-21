@@ -371,7 +371,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
+				<%--<div class="form-group">
 					<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
 					</label>
 					<div class="">
@@ -396,7 +396,7 @@
 							<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off" />
 						</div>
 					</div>
-				</div>
+				</div>--%>
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-2 control-label">备注说明：</label>
 					<div class="">

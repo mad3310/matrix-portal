@@ -107,7 +107,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		
 		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
-		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?PasswordRandom.genStr():dbUserModel.getPassword();
+		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?null:dbUserModel.getPassword();
 		Integer maxConcurrency = dbUserModel.getMaxConcurrency();
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();

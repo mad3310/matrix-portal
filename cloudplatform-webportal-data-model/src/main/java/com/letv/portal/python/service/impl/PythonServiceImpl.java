@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -182,8 +183,9 @@ public class PythonServiceImpl implements IPythonService{
 		}
 		map.put("dbName", dbName);
 		map.put("userName", dbUser.getUsername());
-		//自动生成密码
-		map.put("user_password", dbUser.getPassword());
+		if (StringUtils.isNotEmpty(dbUser.getPassword())) {
+			map.put("user_password", dbUser.getPassword());
+		}
 		map.put("ip_address", dbUser.getAcceptIp());
 		map.put("max_queries_per_hour", String.valueOf(dbUser.getMaxQueriesPerHour()));
 		map.put("max_updates_per_hour", String.valueOf(dbUser.getMaxUpdatesPerHour()));
