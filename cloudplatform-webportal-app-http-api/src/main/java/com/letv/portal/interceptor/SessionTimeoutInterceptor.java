@@ -2,11 +2,16 @@ package com.letv.portal.interceptor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.common.util.IpUtil;
+import com.letv.portal.model.UserLogin;
+import com.letv.portal.service.impl.oauth.IOauthService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,55 +38,83 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	
+	@Autowired
+	private IOauthService oauthService;
 	@Autowired
 	private ILoginProxy loginProxy;
-	
-	public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
-	
+
+	public String[] allowUrls;
+
 	public void setAllowUrls(String[] allowUrls) {
 		this.allowUrls = allowUrls;
+	}
+
+	private boolean allowUrl(HttpServletRequest request) {
+		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");
+		if("/".equals(requestUrl)) {
+			return true;
+		}
+		//特殊url过滤
+		if(null != allowUrls && allowUrls.length>=1) {
+			for(String url : allowUrls) {
+				if(requestUrl.contains(url)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
-		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");  
-		
-		//特殊url过滤
-		if(null != allowUrls && allowUrls.length>=1) {
-			for(String url : allowUrls) {  
-				if(requestUrl.contains(url)) {  
-					return true;  
-				}  
-			}
-		}
-		if("/".equals(requestUrl)) {
-			return true; 
-		}
-		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-		if(session == null ) {
-			logger.debug("please login");
-			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
-			
-			if (isAjaxRequest) {
-				responseJson(request,response,"长时间未操作，请重新登录");
-			} else {
-				RequestDispatcher rd = request.getRequestDispatcher("/toLogin");
-				rd.forward(request, response);
-			}
+
+		if(allowUrl(request))
+			return true;
+
+		String clientId = request.getHeader("client_id");
+		String clientSecret = request.getHeader("client_secret");
+		if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(clientSecret))
 			return false;
-		} else {
+
+		Session session = login(clientId,clientSecret,request);
+
+		if(session != null ) {
 			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
 				@Override
 				public Session execute() throws Throwable {
 					return null;
 				}
 			});
+			return true;
 		}
-		return true;
+
+		//login failed
+		logger.info("login failed by clientId:{},clientSecret:{}.",clientId,clientSecret);
+		responseJson(request, response, "login failed by clientId:{"+clientId+"},clientSecret:{"+clientSecret+"}.");
+		return false;
 	}
-	
+
+	private Session login(String clientId, String clientSecret,HttpServletRequest request) {
+		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailInfo(clientId,clientSecret);
+
+		if(userDetailInfo == null)
+			return null;
+
+		String username = (String) userDetailInfo.get("username");
+		String email = (String) userDetailInfo.get("email");
+
+		if(StringUtils.isEmpty(username))
+			return null;
+
+		UserLogin userLogin = new UserLogin();
+		userLogin.setLoginName(username);
+		userLogin.setLoginIp(IpUtil.getIp(request));
+		userLogin.setEmail(email);
+		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+		return null;
+	}
+
 	@Override
 	public void afterCompletion(HttpServletRequest arg0,
 			HttpServletResponse arg1, Object arg2, Exception arg3)

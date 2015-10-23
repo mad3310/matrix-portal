@@ -107,7 +107,12 @@ public class OauthServiceImpl  implements IOauthService{
 		
 		return resultMap;
 	}
-	
+
+	@Override
+	public Map<String, Object> getUserdetailInfo(String clientId, String clientSecret) {
+		return this.getUserdetailinfo(this.getAccessToken(clientId,clientSecret,this.getAuthorize(clientId)));
+	}
+
 	public Map<String,Object> transResult(String result){
 		ObjectMapper resultMapper = new ObjectMapper();
 		Map<String,Object> jsonResult = new HashMap<String,Object>();

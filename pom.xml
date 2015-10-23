@@ -16,6 +16,7 @@
         <module>cloudplatform-webportal-data-model</module>
         <module>cloudplatform-webportal-webapp</module>
         <module>cloudplatform-webportal-webadmin</module>
+        <module>cloudplatform-webportal-app-http-api</module>
         <module>cloudplatform-webportal-cache-client</module>
         <module>cloudplatform-webportal-exception</module>
         <module>cloudplatform-webportal-logger</module>

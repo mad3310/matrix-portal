@@ -12,8 +12,9 @@ import java.util.Map;
  */
 public interface IOauthService {
 	
-	public String getAuthorize(String clientId);
-	public String getAccessToken(String clientId,String clientSecret,String code);
-	public Map<String,Object> getUserdetailinfo(String accessToken);
+	String getAuthorize(String clientId);
+	String getAccessToken(String clientId, String clientSecret, String code);
+	Map<String,Object> getUserdetailinfo(String accessToken);
+	Map<String,Object> getUserdetailInfo(String clientId,String clientSecret);
 	
 }

@@ -61,13 +61,8 @@
 	    <bean class="com.letv.portal.interceptor.SessionTimeoutInterceptor">
 	      <property name="allowUrls">
 	        <list>
-	          <value>/oauth/callback</value>
-	          <value>/static</value>
-	          <value>/logout</value>
 	          <value>/jettyMonitor</value>
 	          <value>/dbMonitor</value>
-	          <value>/toLogin</value>
-	          <value>/home</value>
 	        </list>
 	      </property>
 	    </bean>
