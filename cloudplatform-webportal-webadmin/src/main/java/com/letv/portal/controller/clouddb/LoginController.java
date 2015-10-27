@@ -84,7 +84,7 @@ public class LoginController{
 		clientSecret = clientSecretCookie.getValue();
 		code = StringUtils.isNullOrEmpty(code)?request.getParameter("code"):code;
 		
-		String accessToken = this.oauthService.getAccessToken(clientId, clientSecret, code);
+		String accessToken = this.oauthService.getAccessToken(clientId, clientSecret, code,WEBPORTAL_ADMIN_HTTP);
 		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(accessToken);
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");

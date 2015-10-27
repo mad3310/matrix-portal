@@ -61,22 +61,9 @@ public class OauthServiceImpl  implements IOauthService{
 	}
 	
 	@Override
-	public String getAuthorize(String clientId) {
+	public String getAccessToken(String clientId,String clientSecret,String code,String backDomain) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
-		logger.debug("getAuthorize :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
-		retryOauthApi(result,buffer.toString());
-		if(StringUtils.isNullOrEmpty(result))
-			throw new OauthException("长时间未操作，请重新登录");
-		Map<String,Object> resultMap = this.transResult(result);
-		return (String) resultMap.get("code");
-	}
-	
-	@Override
-	public String getAccessToken(String clientId,String clientSecret,String code) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
+		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(backDomain).append("/oauth/callback");
 		logger.debug("getAccessToken :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		retryOauthApi(result,buffer.toString());
@@ -89,7 +76,7 @@ public class OauthServiceImpl  implements IOauthService{
 	@Override
 	public Map<String,Object> getUserdetailinfo(String accessToken) {
 		
-		Map<String,Object>  resultMap = (Map<String, Object>) this.cacheService.get("7b09664fbaa1fd190af7cb44a5307147", null);
+		Map<String,Object>  resultMap = (Map<String, Object>) this.cacheService.get(accessToken, null);
 		
 		if(resultMap != null) 
 			return resultMap;
@@ -106,11 +93,6 @@ public class OauthServiceImpl  implements IOauthService{
 			this.cacheService.set(accessToken, resultMap,OAUTH_TOKEN_CACHE_EXPIRE);
 		
 		return resultMap;
-	}
-
-	@Override
-	public Map<String, Object> getUserdetailInfo(String clientId, String clientSecret) {
-		return this.getUserdetailinfo(this.getAccessToken(clientId,clientSecret,this.getAuthorize(clientId)));
 	}
 
 	public Map<String,Object> transResult(String result){

@@ -1,5 +1,7 @@
 package com.letv.common.result;
 
+import org.springframework.validation.ObjectError;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,12 @@ public class ResultObject implements Serializable {
 	}
 	public ResultObject(int result) {
 		this.result = result;
+	}
+	public ResultObject(List<ObjectError> errors) {
+		for (ObjectError error : errors) {
+			this.msgs.add(error.getDefaultMessage());
+		}
+		this.result = 0;
 	}
 
 	public int getResult() {

@@ -6,6 +6,10 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Digits;
 
 public class GceServer extends BaseModel {
 	
@@ -34,113 +38,159 @@ public class GceServer extends BaseModel {
 	
 	private int buyNum;
 
-	public GceType getType() {
-		return type;
-	}
-	public void setType(GceType type) {
-		this.type = type;
-	}
-	public String getGceName() {
-		return gceName;
-	}
+    @NotEmpty
+    @Length(max = 20,min = 2)
 	public void setGceName(String gceName) {
 		this.gceName = gceName;
 	}
-	public Long getGceClusterId() {
-		return gceClusterId;
-	}
+
 	public void setGceClusterId(Long gceClusterId) {
 		this.gceClusterId = gceClusterId;
 	}
-	public Long getHclusterId() {
-		return hclusterId;
-	}
+
+    @NotEmpty
 	public void setHclusterId(Long hclusterId) {
 		this.hclusterId = hclusterId;
 	}
-	public String getGceImageName() {
-		return gceImageName;
-	}
-	public void setGceImageName(String gceImageName) {
-		this.gceImageName = gceImageName;
-	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	public String getPortForward() {
-		return portForward;
-	}
-	public void setPortForward(String portForward) {
-		this.portForward = portForward;
-	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-	public String getDescn() {
-		return descn;
-	}
-	public void setDescn(String descn) {
-		this.descn = descn;
-	}
-	public HclusterModel getHcluster() {
-		return hcluster;
-	}
-	public void setHcluster(HclusterModel hcluster) {
-		this.hcluster = hcluster;
-	}
-	public GceCluster getGceCluster() {
-		return gceCluster;
-	}
-	public void setGceCluster(GceCluster gceCluster) {
-		this.gceCluster = gceCluster;
-	}
-	public UserModel getCreateUserModel() {
-		return createUserModel;
-	}
-	public void setCreateUserModel(UserModel createUserModel) {
-		this.createUserModel = createUserModel;
-	}
-	public List<GceContainer> getGceContainers() {
-		return gceContainers;
-	}
-	public void setGceContainers(List<GceContainer> gceContainers) {
-		this.gceContainers = gceContainers;
-	}
-	public GceServer getGceServerProxy() {
-		return gceServerProxy;
-	}
-	public void setGceServerProxy(GceServer gceServerProxy) {
-		this.gceServerProxy = gceServerProxy;
-	}
-	public Long getLogId() {
-		return logId;
-	}
+
 	public void setLogId(Long logId) {
 		this.logId = logId;
 	}
-	public Long getMemorySize() {
-		return memorySize;
+
+	public void setGceImageName(String gceImageName) {
+		this.gceImageName = gceImageName;
 	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public void setPortForward(String portForward) {
+		this.portForward = portForward;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+    @Length(max = 50)
+	public void setDescn(String descn) {
+		this.descn = descn;
+	}
+
+    @NotEmpty
+	public void setType(GceType type) {
+		this.type = type;
+	}
+
+    @NotEmpty
 	public void setMemorySize(Long memorySize) {
 		this.memorySize = memorySize;
 	}
-	public boolean isCreateNginx() {
-		return createNginx;
-	}
+
+    @NotEmpty
 	public void setCreateNginx(boolean createNginx) {
 		this.createNginx = createNginx;
 	}
-	public int getBuyNum() {
-		return buyNum;
+
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
 	}
+
+	public void setGceCluster(GceCluster gceCluster) {
+		this.gceCluster = gceCluster;
+	}
+
+	public void setCreateUserModel(UserModel createUserModel) {
+		this.createUserModel = createUserModel;
+	}
+
+	public void setGceContainers(List<GceContainer> gceContainers) {
+		this.gceContainers = gceContainers;
+	}
+
+	public void setGceServerProxy(GceServer gceServerProxy) {
+		this.gceServerProxy = gceServerProxy;
+	}
+
+    @NotEmpty
 	public void setBuyNum(int buyNum) {
 		this.buyNum = buyNum;
 	}
-	
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getGceName() {
+		return gceName;
+	}
+
+	public Long getGceClusterId() {
+		return gceClusterId;
+	}
+
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+
+	public Long getLogId() {
+		return logId;
+	}
+
+	public String getGceImageName() {
+		return gceImageName;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public String getPortForward() {
+		return portForward;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public String getDescn() {
+		return descn;
+	}
+
+	public GceType getType() {
+		return type;
+	}
+
+	public Long getMemorySize() {
+		return memorySize;
+	}
+
+	public boolean isCreateNginx() {
+		return createNginx;
+	}
+
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+
+	public GceCluster getGceCluster() {
+		return gceCluster;
+	}
+
+	public UserModel getCreateUserModel() {
+		return createUserModel;
+	}
+
+	public List<GceContainer> getGceContainers() {
+		return gceContainers;
+	}
+
+	public GceServer getGceServerProxy() {
+		return gceServerProxy;
+	}
+
+	public int getBuyNum() {
+		return buyNum;
+	}
 }

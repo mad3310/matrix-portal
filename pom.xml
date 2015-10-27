@@ -424,6 +424,17 @@
 	            <artifactId>log4j-over-slf4j</artifactId>
 	            <version>1.7.5</version>
 	        </dependency>
+          <!-- validator -->
+          <dependency>
+              <groupId>javax.validation</groupId>
+              <artifactId>validation-api</artifactId>
+              <version>1.1.0.Final</version>
+          </dependency>
+          <dependency>
+              <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-validator</artifactId>
+              <version>5.1.3.Final</version>
+          </dependency>
       </dependencies>
   </dependencyManagement>
   
@@ -618,6 +629,7 @@
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
                 
                 <webportal.local.http>http://127.0.0.1:8081</webportal.local.http>
+                <webportal.api.http>http://10.58.186.85:8082</webportal.api.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 
@@ -691,6 +703,7 @@
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 
                  <webportal.local.http>http://127.0.0.1:8081</webportal.local.http>
+                <webportal.api.http>http://127.0.0.1:8082</webportal.api.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                  
