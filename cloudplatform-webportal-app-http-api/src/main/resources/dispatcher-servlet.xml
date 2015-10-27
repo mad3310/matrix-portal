@@ -63,6 +63,7 @@
 	        <list>
 	          <value>/jettyMonitor</value>
 	          <value>/dbMonitor</value>
+	          <value>/oauth/callback</value>
 	        </list>
 	      </property>
 	    </bean>

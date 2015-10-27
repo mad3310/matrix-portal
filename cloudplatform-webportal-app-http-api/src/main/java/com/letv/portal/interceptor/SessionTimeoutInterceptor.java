@@ -72,14 +72,12 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		if(allowUrl(request))
 			return true;
 
-		String clientId = request.getHeader("client_id");
-		String clientSecret = request.getHeader("client_secret");
-		if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(clientSecret))
-			return false;
+		String accessToken = request.getHeader("access_token");
 
-		Session session = login(clientId,clientSecret,request);
+		Session session = login(accessToken,request);
 
 		if(session != null ) {
+			logger.info("login success by access_token:{}.",accessToken);
 			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
 				@Override
 				public Session execute() throws Throwable {
@@ -90,14 +88,15 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		}
 
 		//login failed
-		logger.info("login failed by clientId:{},clientSecret:{}.",clientId,clientSecret);
-		responseJson(request, response, "login failed by clientId:{"+clientId+"},clientSecret:{"+clientSecret+"}.");
+		logger.info("login failed by access_token:{}.",accessToken);
+		responseJson(request, response, "login failed by access_token:{"+accessToken+"}.");
 		return false;
 	}
 
-	private Session login(String clientId, String clientSecret,HttpServletRequest request) {
-		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailInfo(clientId,clientSecret);
-
+	private Session login(String accessToken,HttpServletRequest request) {
+		if(StringUtils.isEmpty(accessToken))
+			return null;
+		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(accessToken);
 		if(userDetailInfo == null)
 			return null;
 
@@ -112,7 +111,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		userLogin.setLoginIp(IpUtil.getIp(request));
 		userLogin.setEmail(email);
 		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-		return null;
+		return session;
 	}
 
 	@Override

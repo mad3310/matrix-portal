@@ -14,11 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -46,10 +49,10 @@ public class GceServerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(GceServer gceServer,Long rdsId,Long ocsId,int buyNum,ResultObject obj) {
-		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName())){
-			throw new ValidateException("参数不合法");
-		}
+	public @ResponseBody ResultObject save(@Valid @ModelAttribute GceServer gceServer,BindingResult result,Long rdsId,Long ocsId,int buyNum,ResultObject obj) {
+		if(result.hasErrors())
+			return new ResultObject(result.getAllErrors());
+
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.gceProxy.saveAndBuild(gceServer,rdsId,ocsId);
 		return obj;
