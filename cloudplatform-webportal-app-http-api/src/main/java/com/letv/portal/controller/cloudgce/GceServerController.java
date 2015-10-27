@@ -1,6 +1,5 @@
 package com.letv.portal.controller.cloudgce;
 
-import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
@@ -49,13 +48,13 @@ public class GceServerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(@Valid @ModelAttribute GceServer gceServer,BindingResult result,Long rdsId,Long ocsId,int buyNum,ResultObject obj) {
+	public @ResponseBody ResultObject save(@Valid @ModelAttribute GceServer gceServer,BindingResult result) {
 		if(result.hasErrors())
 			return new ResultObject(result.getAllErrors());
-
-		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
+		return new ResultObject();
+		/*gceServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.gceProxy.saveAndBuild(gceServer,rdsId,ocsId);
-		return obj;
+		return obj;*/
 	}
 
 }

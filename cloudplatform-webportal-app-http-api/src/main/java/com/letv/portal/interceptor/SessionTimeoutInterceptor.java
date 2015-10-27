@@ -1,33 +1,30 @@
 package com.letv.portal.interceptor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.letv.common.util.IpUtil;
-import com.letv.portal.model.UserLogin;
-import com.letv.portal.service.impl.oauth.IOauthService;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.IpUtil;
+import com.letv.platform.oauth.sdk.bo.OauthUserDetailInfoRet;
+import com.letv.platform.oauth.sdk.exception.LeCloudException;
+import com.letv.platform.oauth.sdk.facade.LeCloudFacade;
+import com.letv.portal.model.UserLogin;
 import com.letv.portal.proxy.ILoginProxy;
+import com.letv.portal.service.impl.oauth.IOauthService;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 处理session超时的拦截器
@@ -72,13 +69,14 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		if(allowUrl(request))
 			return true;
 
-		String accessToken = request.getHeader("access_token");
+		String clientId = request.getHeader("client_id");
+		String clientSecret = request.getHeader("client_secret");
 
-		Session session = login(accessToken,request);
+		Session session = login(clientId,clientSecret,request);
 
 		if(session != null ) {
-			logger.info("login success by access_token:{}.",accessToken);
-			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+			logger.info("login success by client_id:{},client_secret:{}.",clientId,clientSecret);
+			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>() {
 				@Override
 				public Session execute() throws Throwable {
 					return null;
@@ -88,30 +86,28 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		}
 
 		//login failed
-		logger.info("login failed by access_token:{}.",accessToken);
-		responseJson(request, response, "login failed by access_token:{"+accessToken+"}.");
+		logger.info("login failed by client_id:{},client_secret:{}.",clientId,clientSecret);
+		responseJson(request, response, "login failed by client_id:{"+clientId+"},client_secret:{"+clientSecret+"}.");
 		return false;
 	}
 
-	private Session login(String accessToken,HttpServletRequest request) {
-		if(StringUtils.isEmpty(accessToken))
+	private Session login(String clientId,String clientSecret,HttpServletRequest request) {
+		if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(clientSecret))
 			return null;
-		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(accessToken);
-		if(userDetailInfo == null)
+		try {
+			LeCloudFacade facade = LeCloudFacade.initial();
+			OauthUserDetailInfoRet obj = facade.getUserDetailInfoObj(clientId,clientSecret);
+
+			UserLogin userLogin = new UserLogin();
+			userLogin.setLoginName(obj.getUsername());
+			userLogin.setLoginIp(IpUtil.getIp(request));
+			userLogin.setEmail(obj.getEmail());
+
+			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+			return session;
+		} catch (LeCloudException e) {
 			return null;
-
-		String username = (String) userDetailInfo.get("username");
-		String email = (String) userDetailInfo.get("email");
-
-		if(StringUtils.isEmpty(username))
-			return null;
-
-		UserLogin userLogin = new UserLogin();
-		userLogin.setLoginName(username);
-		userLogin.setLoginIp(IpUtil.getIp(request));
-		userLogin.setEmail(email);
-		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-		return session;
+		}
 	}
 
 	@Override
