@@ -1,7 +1,9 @@
 package com.letv.portal.model.gce;
 
 import com.letv.common.model.BaseModel;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class GceContainerExt extends BaseModel {
 	
 	private static final long serialVersionUID = 6663970534108172228L;

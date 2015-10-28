@@ -5,9 +5,14 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.proxy.IGceProxy;
+import com.letv.portal.service.IHclusterService;
+import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
+import com.letv.portal.service.gce.impl.GceImageServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,13 +53,12 @@ public class GceServerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(@Valid @ModelAttribute GceServer gceServer,BindingResult result) {
+	public @ResponseBody ResultObject save(@Valid @ModelAttribute GceServer gceServer,BindingResult result,Long rdsId,Long ocsId,ResultObject object) {
 		if(result.hasErrors())
 			return new ResultObject(result.getAllErrors());
-		return new ResultObject();
-		/*gceServer.setCreateUser(this.sessionService.getSession().getUserId());
+		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.gceProxy.saveAndBuild(gceServer,rdsId,ocsId);
-		return obj;*/
+		return new ResultObject();
 	}
 
 }

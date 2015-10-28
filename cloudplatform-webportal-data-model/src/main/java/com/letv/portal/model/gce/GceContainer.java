@@ -4,7 +4,9 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.ServiceType;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class GceContainer extends BaseModel {
 	
 	private static final long serialVersionUID = 6663970534108178228L;

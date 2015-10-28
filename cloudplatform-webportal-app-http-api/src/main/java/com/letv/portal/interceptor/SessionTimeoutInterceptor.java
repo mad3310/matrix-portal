@@ -32,7 +32,7 @@ import java.io.PrintWriter;
 @Component
 public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private final static Logger logger = LoggerFactory.getLogger(SessionTimeoutInterceptor.class);
-	
+
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
 	@Autowired
@@ -64,7 +64,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object arg2) throws Exception {
+							 Object arg2) throws Exception {
 
 		if(allowUrl(request))
 			return true;
@@ -112,17 +112,17 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 
 	@Override
 	public void afterCompletion(HttpServletRequest arg0,
-			HttpServletResponse arg1, Object arg2, Exception arg3)
+								HttpServletResponse arg1, Object arg2, Exception arg3)
 			throws Exception {
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1,
-			Object arg2, ModelAndView arg3) throws Exception {
+						   Object arg2, ModelAndView arg3) throws Exception {
 	}
-	
+
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
-    	PrintWriter out = null;
+		PrintWriter out = null;
 		try {
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();

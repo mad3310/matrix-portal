@@ -4,12 +4,17 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.validation.annotation.IdValid;
+import com.letv.portal.validation.annotation.NumberLimit;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class GceServer extends BaseModel {
 	
 	private static final long serialVersionUID = -7999485658204466572L;
@@ -37,32 +42,38 @@ public class GceServer extends BaseModel {
 	
 	private int buyNum;
 
-    @NotEmpty
-    @Length(max = 20,min = 2)
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z_][a-zA-Z_0-9]{1,15}$",message = "内容必须以字母开头，允许字母数字下划线，长度在2-16字节内")
 	public String getGceName() {
 		return gceName;
 	}
+
     @NotNull
+    @IdValid(service = "hclusterService",message = "物理机集群id不合法")
 	public Long getHclusterId() {
 		return hclusterId;
 	}
+
     @Length(max = 50)
     public String getDescn() {
         return descn;
     }
+
+    @NumberLimit(limits = {1073741824L,2147483648L,4294967296L},message = "内存大小必须在1073741824,2147483648,4294967296之中")
+    public Long getMemorySize() {
+        return memorySize;
+    }
+
     @NotNull
     public GceType getType() {
         return type;
     }
-    @NotNull
-    public Long getMemorySize() {
-        return memorySize;
-    }
-    @NotNull
+
     public boolean isCreateNginx() {
         return createNginx;
     }
-    @NotNull
+
+    @NumberLimit(limits = {1,2},message = "购买数量必须在1,2之中")
     public int getBuyNum() {
         return buyNum;
     }
@@ -75,6 +86,7 @@ public class GceServer extends BaseModel {
 		return logId;
 	}
 
+    @IdValid(service = "gceImageService",message = "镜像id不合法")
 	public String getGceImageName() {
 		return gceImageName;
 	}

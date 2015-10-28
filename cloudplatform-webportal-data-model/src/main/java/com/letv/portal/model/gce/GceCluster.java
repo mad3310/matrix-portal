@@ -3,7 +3,9 @@ package com.letv.portal.model.gce;
 import com.letv.common.model.BaseModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class GceCluster extends BaseModel {
 
 	private static final long serialVersionUID = -8757063845109274144L;

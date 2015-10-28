@@ -1,10 +1,11 @@
 package com.letv.portal.model;
 
-import java.util.Date;
-
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.UserStatus;
-   
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import java.util.Date;
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class UserModel extends BaseModel{
 
 	private static final long serialVersionUID = 5336795056773086076L;

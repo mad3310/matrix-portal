@@ -1,5 +1,6 @@
 package com.letv.common.result;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.ObjectError;
 
 import java.io.Serializable;
@@ -54,7 +55,7 @@ public class ResultObject implements Serializable {
 	}
 	public ResultObject(List<ObjectError> errors) {
 		for (ObjectError error : errors) {
-			this.msgs.add(error.getDefaultMessage());
+			this.msgs.add(((DefaultMessageSourceResolvable)error.getArguments()[0]).getDefaultMessage()+":"+error.getDefaultMessage());
 		}
 		this.result = 0;
 	}
