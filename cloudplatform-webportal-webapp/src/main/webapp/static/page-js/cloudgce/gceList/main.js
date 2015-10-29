@@ -26,7 +26,8 @@ define(function(require){
 	});
 	$("#gceName").keydown(function(e){
 		if(e.keyCode==13){
-			cn.currentPage = 1;
+            e.preventDefault();
+            cn.currentPage = 1;
 			asyncData();
 		}
 	});

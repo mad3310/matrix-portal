@@ -25,7 +25,7 @@ define(function(require,exports,module){
             },
             GceExtHandler : function(data){
                 var gceExt = data.data;
-                if(gceExt!= undefined && gceExt != null) {
+                if(gceExt) {
                 	if(gceExt.rdsId!=null) {
                 		$("#gce_rds_name").html("<a href='#' onclick='javascript:parent.location.href=\"/detail/db/"+gceExt.rdsId+"\"'>"+gceExt.db.dbName+"</a>");
                 	}

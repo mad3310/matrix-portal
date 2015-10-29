@@ -21,13 +21,13 @@ define(function(require,exports,module){
                 $("#gceStatus").html("("+cn.TranslateStatus(data.data.status)+")");
                 var logId =  data.data.logId;
                 if(logId) {
-                		cn.PostData( "/gce/log/url", {logId:logId}, function (data) {
+                		/*cn.PostData( "/gce/log/url", {logId:logId}, function (data) {
                 			if(data.data) {
                 				$("#logUrl").attr("src",data.data);
                 			} else {
                 				$("#logUrlInst").html("镜像中未配置");
                 			}
-                		});
+                		});*/
                 } else {
                 	$("#logUrlInst").html("镜像中未配置");
                 }

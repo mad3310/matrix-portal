@@ -55,12 +55,9 @@ define(function(require){
 				validators: {
 					notEmpty: {
 						message: '应用名不能为空!'
-					}, stringLength: {
-						max: 16,
-						message: '应用名过长!'
 					}, regexp: {
-						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
-						message: "请输入字母数字或'_',应用名不能以数字开头."
+						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]{1,15}$/,
+						message: "2-16个字符,支持英文、数字和“_”格式,请以英文字母开头"
 					}
 				}
 			},descn:{

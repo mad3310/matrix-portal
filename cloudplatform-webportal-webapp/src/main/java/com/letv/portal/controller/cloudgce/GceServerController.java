@@ -1,21 +1,5 @@
 package com.letv.portal.controller.cloudgce;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
@@ -34,6 +18,20 @@ import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogClusterService;
 import com.letv.portal.service.log.ILogServerService;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/gce")
@@ -48,15 +46,6 @@ public class GceServerController {
 	@Autowired
 	private IGceProxy gceProxy;
 	
-	@Autowired
-	private ITaskEngine taskEngine;
-	
-	@Autowired
-	private ITaskChainIndexService taskChainIndexService;
-	@Autowired
-	private ITaskChainService taskChainService;
-	@Autowired
-	private ILogClusterService logClusterService;
 	@Autowired
 	private ILogServerService logServerService;
 	

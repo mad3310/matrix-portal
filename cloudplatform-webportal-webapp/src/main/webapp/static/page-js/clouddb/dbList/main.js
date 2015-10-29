@@ -6,14 +6,14 @@ define(function(require){
 	var pFresh,iFresh;
     var common = require('../../common');
     var cn = new common();
-    
+
     cn.Tooltip();
      /* 初始化navbar-header-menu */
 	cn.initNavbarMenu([{
 				name : "RDS关系型数据库",
 				herf : "/list/db"
 			}]);
-    
+
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
@@ -22,21 +22,22 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	
+
 	$("#search").click(function() {
 		cn.currentPage = 1;
 		asyncData();
 	});
-	$("#refresh").click(function() {		
+	$("#refresh").click(function() {
 		asyncData();
 	});
 	$("#dbName").keydown(function(e){
 		if(e.keyCode==13){
+			e.preventDefault();
 			cn.currentPage = 1;
 			asyncData();
 		}
 	});
-	
+
 	/*初始化按钮*/
 	$(".btn-region-display").click(function(){
 		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
@@ -44,7 +45,7 @@ define(function(require){
 		$("#dbName").val("");
 		asyncData();
 	})
-	
+
 	/*
 	 * 可封装公共方法 begin
 	 */
@@ -79,14 +80,14 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
-	
+
 	//加载列表数据
 	function asyncData(page) {
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
 		cn.GetData(url,refreshCtl);
-		
+
 	}
 	function refreshCtl(data) {
 		dbListHandler.DbListHandler(data);
@@ -108,7 +109,7 @@ define(function(require){
 			}
 			pFresh = setInterval(asyncProgressData,10000);
 		}
-	}	
+	}
 	 /*进度条数据刷新*/
 	function asyncProgressData(){
 		$("input[name = progress_db_id]").each(function(){

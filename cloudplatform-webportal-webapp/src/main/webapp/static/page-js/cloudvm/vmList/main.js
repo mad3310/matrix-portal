@@ -66,6 +66,7 @@ define(function(require){
     });
 	$("#vmName").keydown(function(e){
 		if(e.keyCode==13){
+			e.preventDefault();
 			currentPage = 1;
 			asyncData();
 		}
