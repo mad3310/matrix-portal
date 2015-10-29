@@ -89,17 +89,6 @@ public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBas
 		}
 	}
 	
-	public List<ZookeeperInfo> selectMinusedZkByHclusterId(Long hclusterId,int number) {
-		List<ZookeeperInfo> zks = this.zookeeperInfoService.selectMinusedZkByHclusterId(hclusterId,number);
-		if(zks == null || zks.size()!=number)
-			throw new ValidateException("zk numbers not sufficient");
-		for (ZookeeperInfo zk : zks) {
-			zk.setUsed(zk.getUsed()+1);
-			this.zookeeperInfoService.updateBySelective(zk);
-		}
-		return zks;
-	}
-
 	@Override
 	public void callBack(TaskResult tr) {
 	}

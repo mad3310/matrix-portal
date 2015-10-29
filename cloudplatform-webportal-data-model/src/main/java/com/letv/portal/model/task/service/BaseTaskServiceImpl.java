@@ -1,8 +1,12 @@
 package com.letv.portal.model.task.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.letv.common.exception.ValidateException;
+import com.letv.portal.model.common.ZookeeperInfo;
+import com.letv.portal.service.common.IZookeeperInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -30,7 +34,9 @@ public  class BaseTaskServiceImpl implements IBaseTaskService{
 	@Autowired
 	private IUserService userService;
 
-	
+    @Autowired
+    private IZookeeperInfoService zookeeperInfoService;
+
 	private final static Logger logger = LoggerFactory.getLogger(BaseTaskServiceImpl.class);
 	
 	@Override
@@ -124,6 +130,16 @@ public  class BaseTaskServiceImpl implements IBaseTaskService{
 			value = (Long) o;
 		
 		return value;
+	}
+	public List<ZookeeperInfo> selectMinusedZkByHclusterId(Long hclusterId,int number) {
+		List<ZookeeperInfo> zks = this.zookeeperInfoService.selectMinusedZkByHclusterId(hclusterId,number);
+		if(zks == null || zks.size()!=number)
+			throw new ValidateException("zk numbers not sufficient");
+		for (ZookeeperInfo zk : zks) {
+			zk.setUsed(zk.getUsed()+1);
+			this.zookeeperInfoService.updateBySelective(zk);
+		}
+		return zks;
 	}
 
 	@Override
