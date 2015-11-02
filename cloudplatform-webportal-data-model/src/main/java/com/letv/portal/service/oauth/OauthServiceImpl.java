@@ -46,8 +46,6 @@ public class OauthServiceImpl  implements IOauthService{
 
 	@Value("${oauth.auth.http}")
 	public String OAUTH_AUTH_HTTP;
-	@Value("${webportal.admin.http}")
-	public String WEBPORTAL_ADMIN_HTTP;
 	@Value("${oauth.token.cache.expire}")
 	public long OAUTH_TOKEN_CACHE_EXPIRE;
 	
@@ -61,9 +59,9 @@ public class OauthServiceImpl  implements IOauthService{
 	}
 	
 	@Override
-	public String getAccessToken(String clientId,String clientSecret,String code,String backDomain) {
+	public String getAccessToken(String clientId,String clientSecret,String code) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(backDomain).append("/oauth/callback");
+		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret);
 		logger.debug("getAccessToken :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		retryOauthApi(result,buffer.toString());
@@ -93,6 +91,24 @@ public class OauthServiceImpl  implements IOauthService{
 			this.cacheService.set(accessToken, resultMap,OAUTH_TOKEN_CACHE_EXPIRE);
 		
 		return resultMap;
+	}
+
+	@Override
+	public String getAuthorize(String clientId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/authorizenoredirect?response_type=code&client_id=").append(clientId);
+		logger.debug("getAuthorize :" + buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		retryOauthApi(result,buffer.toString());
+		if(StringUtils.isNullOrEmpty(result))
+			throw new OauthException("长时间未操作，请重新登录");
+		Map<String,Object> resultMap = this.transResult(result);
+		return (String) resultMap.get("code");
+	}
+
+	@Override
+	public Map<String, Object> getUserdetailinfo(String clientId, String clientSecret) {
+		return getUserdetailinfo(getAccessToken(clientId,clientSecret,getAuthorize(clientId)));
 	}
 
 	public Map<String,Object> transResult(String result){

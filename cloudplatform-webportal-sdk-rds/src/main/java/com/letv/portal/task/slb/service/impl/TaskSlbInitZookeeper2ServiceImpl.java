@@ -33,10 +33,10 @@ public class TaskSlbInitZookeeper2ServiceImpl extends BaseTask4SlbServiceImpl im
 		//执行业务
 		List<SlbContainer> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(1).getIpAddr();
-		ZookeeperInfo zk = super.getMinusedZk();
+		List<ZookeeperInfo> zk = super.selectMinusedZkByHclusterId(super.getCluster(params).getHclusterId(),1);
 		Map<String, String> zkParm = new HashMap<String,String>();
-		zkParm.put("zkAddress", zk.getIp());
-		zkParm.put("zkPort", zk.getPort());
+		zkParm.put("zkAddress", zk.get(0).getIp());
+		zkParm.put("zkPort", zk.get(0).getPort());
 		ApiResultObject result = this.slbPythonService.initZookeeper(nodeIp1,zkParm);
 		tr = analyzeRestServiceResult(result);
 		

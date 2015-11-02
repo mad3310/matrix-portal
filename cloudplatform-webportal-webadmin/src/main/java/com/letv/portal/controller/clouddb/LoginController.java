@@ -1,11 +1,14 @@
 package com.letv.portal.controller.clouddb;
 
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.letv.common.session.Executable;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.IpUtil;
+import com.letv.portal.model.UserLogin;
+import com.letv.portal.proxy.ILoginProxy;
+import com.letv.portal.service.adminoplog.ClassAoLog;
+import com.letv.portal.service.impl.oauth.IOauthService;
+import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.letv.common.session.Executable;
-import com.letv.common.session.Session;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.CookieUtil;
-import com.letv.common.util.IpUtil;
-import com.letv.portal.model.UserLogin;
-import com.letv.portal.proxy.ILoginProxy;
-import com.letv.portal.service.ILoginService;
-import com.letv.portal.service.adminoplog.ClassAoLog;
-import com.letv.portal.service.impl.oauth.IOauthService;
-import com.mysql.jdbc.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @ClassAoLog(ignore=true)
 @Controller
 public class LoginController{
 	
-	private static String WEB_URL = "http://www.letv.com";
-	
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
-	private final static int OAUTH_API_RETRY_COUNT = 3;
-	
-	@Autowired
-	private ILoginService loginManager;
 	@Autowired
 	private SessionServiceImpl sessionService;
 	@Autowired
@@ -58,34 +46,18 @@ public class LoginController{
 	 * @return
 	 */
 	@RequestMapping("/oauth/callback")
-	public ModelAndView afterlogin(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) throws Exception {
+	public ModelAndView afterlogin(HttpServletRequest request,ModelAndView mav) throws Exception {
 		
 		String clientId = request.getParameter("client_id");
 		String clientSecret = request.getParameter("client_secret");
-		String code = request.getParameter("code");
-		
-		if(StringUtils.isNullOrEmpty(code) && !StringUtils.isNullOrEmpty(clientId)) {
-			CookieUtil.addCookie(response, "clientId", clientId, 10);
-			CookieUtil.addCookie(response, "clientSecret", clientSecret, 10);
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
-			mav.setViewName("redirect:" + buffer.toString());
-			return mav;
-		} 
-		Cookie clientIdCookie = CookieUtil.getCookieByName(request, "clientId");
-		Cookie clientSecretCookie = CookieUtil.getCookieByName(request, "clientSecret");
-		if(clientIdCookie == null || clientSecretCookie == null) {
+
+		if(StringUtils.isNullOrEmpty(clientId)) {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
 			mav.setViewName("redirect:" + buffer.toString());
 			return mav;
 		}
-		clientId = clientIdCookie.getValue();
-		clientSecret = clientSecretCookie.getValue();
-		code = StringUtils.isNullOrEmpty(code)?request.getParameter("code"):code;
-		
-		String accessToken = this.oauthService.getAccessToken(clientId, clientSecret, code,WEBPORTAL_ADMIN_HTTP);
-		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(accessToken);
+		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(clientId,clientSecret);
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");
 		

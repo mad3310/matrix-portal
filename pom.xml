@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.letv.cloudplatform</groupId>
-  <artifactId>webportal</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.letv.cloudplatform</groupId>
+    <artifactId>webportal</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>cloudplatform-webportal</name>
-  <url>http://www.letv.com</url>
-  <description>cloud platform web portal</description>
+    <name>cloudplatform-webportal</name>
+    <url>http://www.letv.com</url>
+    <description>cloud platform web portal</description>
 
-  <modules>
+    <modules>
         <module>cloudplatform-webportal-common</module>
         <module>cloudplatform-webportal-data-model</module>
         <module>cloudplatform-webportal-webapp</module>
@@ -22,7 +22,7 @@
         <module>cloudplatform-webportal-logger</module>
         <module>cloudplatform-webportal-sdk-rds</module>
         <module>cloudplatform-webportal-openstack</module>
-  </modules>
+    </modules>
 
 
     <developers>
@@ -35,21 +35,21 @@
     </developers>
 
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hibernate.version>3.6.5.Final</hibernate.version>
-    <spring.version>3.1.0.RELEASE</spring.version>
-    <ehcache.version>2.4.6</ehcache.version>
-    <c3p0.version>0.9.1.2</c3p0.version>
-    <jackson.version>1.8.3</jackson.version>
-    <joda-time.version>1.6.2</joda-time.version>
-    <httpclient.version>4.3.3</httpclient.version>
-    <aspectj.version>1.6.8</aspectj.version>
-    <jclouds.version>1.9.0</jclouds.version>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate.version>3.6.5.Final</hibernate.version>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <ehcache.version>2.4.6</ehcache.version>
+        <c3p0.version>0.9.1.2</c3p0.version>
+        <jackson.version>1.8.3</jackson.version>
+        <joda-time.version>1.6.2</joda-time.version>
+        <httpclient.version>4.3.3</httpclient.version>
+        <aspectj.version>1.6.8</aspectj.version>
+        <jclouds.version>1.9.0</jclouds.version>
+    </properties>
 
-  <dependencyManagement>
-      <dependencies>
+    <dependencyManagement>
+        <dependencies>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -141,12 +141,12 @@
                 <version>${c3p0.version}</version>
                 <scope>compile</scope>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
                 <version>1.6</version>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
                 <version>1.1.2</version>
@@ -158,7 +158,7 @@
                 <version>1.1.2</version>
                 <scope>runtime</scope>
             </dependency>
-             <!-- Jackson JSON Processor -->
+            <!-- Jackson JSON Processor -->
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
@@ -176,10 +176,10 @@
                 <version>${joda-time.version}</version>
             </dependency>
             <dependency>
-			   <groupId>org.apache.httpcomponents</groupId>
-			   <artifactId>httpclient</artifactId>
-			   <version>${httpclient.version}</version>
-			</dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
@@ -214,15 +214,15 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
-	            <groupId>org.aspectj</groupId>
-	            <artifactId>aspectjrt</artifactId>
-	            <version>${aspectj.version}</version>
-	        </dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
             <dependency>
-            	<groupId>aopalliance</groupId>
-            	<artifactId>aopalliance</artifactId>
-            	<version>1.0</version>
-        	</dependency>
+                <groupId>aopalliance</groupId>
+                <artifactId>aopalliance</artifactId>
+                <version>1.0</version>
+            </dependency>
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
@@ -239,9 +239,9 @@
                 <version>1.1.20</version>
             </dependency>
             <dependency>
-              <groupId>commons-dbcp</groupId>
-              <artifactId>commons-dbcp</artifactId>
-              <version>1.2.2</version>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>1.2.2</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis</groupId>
@@ -264,337 +264,337 @@
                 <version>1.2.2</version>
             </dependency>
             <dependency>
-		  <groupId>commons-io</groupId>
-		  <artifactId>commons-io</artifactId>
-		  <version>1.2</version>
-		</dependency>
-            <dependency>
-            	<groupId>org.springframework.retry</groupId>
-            	<artifactId>spring-retry</artifactId>
-            	<version>1.0.2.RELEASE</version>
-            	<type>jar</type>
-            	<scope>compile</scope>
-            </dependency>
-	        <dependency>
-			  <groupId>janino</groupId>
-			  <artifactId>janino</artifactId>
-			  <version>2.5.10</version>
-			</dependency>
-			<!-- SECURITY begin -->
-			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-spring</artifactId>
-				<version>1.2.3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-ehcache</artifactId>
-				<version>1.2.3</version>
-			</dependency>
-			<!-- SECURITY end -->
-			
-			<dependency>
-				<groupId>opensymphony</groupId>
-				<artifactId>sitemesh</artifactId>
-				<version>2.4.2</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-	        	<groupId>org.mockito</groupId>
-	        	<artifactId>mockito-all</artifactId>
-	        	<version>1.9.5</version>
-	        	<type>jar</type>
-	        	<scope>compile</scope>
-        	</dependency>
-			<dependency>
-            	<groupId>org.freemarker</groupId>
-            	<artifactId>freemarker</artifactId>
-            	<version>2.3.19</version>
-            	<type>jar</type>
-            	<scope>compile</scope>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>1.2</version>
             </dependency>
             <dependency>
-	            <groupId>org.apache.commons</groupId>
-	            <artifactId>commons-lang3</artifactId>
-	            <version>3.1</version>
-        	</dependency>
+                <groupId>org.springframework.retry</groupId>
+                <artifactId>spring-retry</artifactId>
+                <version>1.0.2.RELEASE</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>2.5.10</version>
+            </dependency>
+            <!-- SECURITY begin -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <!-- SECURITY end -->
+
+            <dependency>
+                <groupId>opensymphony</groupId>
+                <artifactId>sitemesh</artifactId>
+                <version>2.4.2</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>1.9.5</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.19</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.1</version>
+            </dependency>
             <!-- quartz -->
             <dependency>
-	            <groupId>org.quartz-scheduler</groupId>
-	            <artifactId>quartz</artifactId>
-            	<version>2.2.1</version>
-        	</dependency>
-        	<dependency>
-			  <groupId>org.google</groupId>
-			  <artifactId>kaptcha</artifactId>
-			  <version>2.3.2</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>1.3.160</version>
-			</dependency>
-			
-			<!-- jclouds dependencies -->
-		    <dependency>
-				<groupId>org.apache.jclouds.driver</groupId>
-				<artifactId>jclouds-slf4j</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.jclouds.driver</groupId>
-				<artifactId>jclouds-sshj</artifactId>
-				<version>${jclouds.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>net.schmizz</groupId>
-						<artifactId>sshj</artifactId>
-					</exclusion>
-				</exclusions>
-				
-			</dependency>
-			<!-- jclouds OpenStack dependencies -->
-			<dependency>
-				<groupId>org.apache.jclouds.api</groupId>
-				<artifactId>openstack-keystone</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.jclouds.api</groupId>
-				<artifactId>openstack-nova</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.jclouds.labs</groupId>
-				<artifactId>openstack-glance</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.jclouds.labs</groupId>
-				<artifactId>openstack-neutron</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.apache.jclouds.api</groupId>
-			    <artifactId>openstack-cinder</artifactId>
-			    <version>${jclouds.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>2.4</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>1.10</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>2.4.1</version>
-			</dependency>
-			
-			<!-- logback相关 -->
-	        <dependency>
-	            <groupId>org.slf4j</groupId>
-	            <artifactId>slf4j-api</artifactId>
-	            <version>1.7.5</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>ch.qos.logback</groupId>
-	            <artifactId>logback-classic</artifactId>
-	            <version>1.0.13</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>ch.qos.logback</groupId>
-	            <artifactId>logback-access</artifactId>
-	            <version>1.0.13</version>
-	        </dependency>
-	        <!-- Log4j转换为slf4j -->
-	        <dependency>
-	            <groupId>org.slf4j</groupId>
-	            <artifactId>jcl-over-slf4j</artifactId>
-	            <version>1.7.5</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>org.slf4j</groupId>
-	            <artifactId>log4j-over-slf4j</artifactId>
-	            <version>1.7.5</version>
-	        </dependency>
-          <!-- validator -->
-          <dependency>
-              <groupId>javax.validation</groupId>
-              <artifactId>validation-api</artifactId>
-              <version>1.1.0.Final</version>
-          </dependency>
-          <dependency>
-              <groupId>org.hibernate</groupId>
-              <artifactId>hibernate-validator</artifactId>
-              <version>5.1.3.Final</version>
-          </dependency>
-          <dependency>
-              <groupId>com.letv.oauth</groupId>
-              <artifactId>client-sdk</artifactId>
-              <version>1.0</version>
-          </dependency>
-      </dependencies>
-  </dependencyManagement>
-  
-  <build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.2</version>
-				<configuration>
-					<forkMode>pertest</forkMode>
-					<argLine>-Xms256m -Xmx1024m</argLine>
-					<testFailureIgnore>false</testFailureIgnore>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/distribution.xml</descriptor>
-					</descriptors>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<sourceExcludes>
-						<sourceExclude>**/.svn/**</sourceExclude>
-					</sourceExcludes>
-					<additionalProjectnatures>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-					</additionalBuildcommands>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<wtpversion>1.5</wtpversion>
-					<outputDirectory>classes</outputDirectory>
-					<additionalConfig>
-						<file>
-							<name>.settings/org.eclipse.core.resources.prefs</name>
-							<content>  
-               						<![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${app.encoding}${line.separator}]]>
-							</content>
-						</file>
-					</additionalConfig>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-idea-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<dependenciesAsLibraries>true</dependenciesAsLibraries>
-					<useFullNames>false</useFullNames>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<dependentWarExcludes>
-						**/jdbc.properties,**/hibernate.cfg.xml,**/web.xml,WEB-INF/classes/META-INF/**,**/.svn/**
-					</dependentWarExcludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<excludes>
-						<exclude>**/.svn/**</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>2.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.google</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>2.3.2</version>
+            </dependency>
 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.2</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.9</version>
-				<configuration>
-					<contextPath>/</contextPath>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
-					<scanTargetPatterns>
-						<scanTargetPattern>
-							<directory>src/main/webapp/WEB-INF</directory>
-							<excludes>
-								<exclude>**/*.jsp</exclude>
-							</excludes>
-							<includes>
-								<include>**/*.properties</include>
-								<include>**/*.xml</include>
-							</includes>
-						</scanTargetPattern>
-					</scanTargetPatterns>
-				</configuration>
-			</plugin>
-		</plugins>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.3.160</version>
+            </dependency>
 
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/.svn/**</exclude>
-				</excludes>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<excludes>
-					<exclude>**/.svn/**</exclude>
-				</excludes>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
-	</build>
-	
+            <!-- jclouds dependencies -->
+            <dependency>
+                <groupId>org.apache.jclouds.driver</groupId>
+                <artifactId>jclouds-slf4j</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.driver</groupId>
+                <artifactId>jclouds-sshj</artifactId>
+                <version>${jclouds.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.schmizz</groupId>
+                        <artifactId>sshj</artifactId>
+                    </exclusion>
+                </exclusions>
+
+            </dependency>
+            <!-- jclouds OpenStack dependencies -->
+            <dependency>
+                <groupId>org.apache.jclouds.api</groupId>
+                <artifactId>openstack-keystone</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.api</groupId>
+                <artifactId>openstack-nova</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.labs</groupId>
+                <artifactId>openstack-glance</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.labs</groupId>
+                <artifactId>openstack-neutron</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.api</groupId>
+                <artifactId>openstack-cinder</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.4.1</version>
+            </dependency>
+
+            <!-- logback相关 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.5</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.0.13</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>1.0.13</version>
+            </dependency>
+            <!-- Log4j转换为slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>1.7.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>1.7.5</version>
+            </dependency>
+            <!-- validator -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>1.1.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>5.1.3.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>com.letv.oauth</groupId>
+                <artifactId>client-sdk</artifactId>
+                <version>1.6</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.2</version>
+                <configuration>
+                    <forkMode>pertest</forkMode>
+                    <argLine>-Xms256m -Xmx1024m</argLine>
+                    <testFailureIgnore>false</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/distribution.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <sourceExcludes>
+                        <sourceExclude>**/.svn/**</sourceExclude>
+                    </sourceExcludes>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>1.5</wtpversion>
+                    <outputDirectory>classes</outputDirectory>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/org.eclipse.core.resources.prefs</name>
+                            <content>
+                                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${app.encoding}${line.separator}]]>
+                            </content>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <dependenciesAsLibraries>true</dependenciesAsLibraries>
+                    <useFullNames>false</useFullNames>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <dependentWarExcludes>
+                        **/jdbc.properties,**/hibernate.cfg.xml,**/web.xml,WEB-INF/classes/META-INF/**,**/.svn/**
+                    </dependentWarExcludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/.svn/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.9</version>
+                <configuration>
+                    <contextPath>/</contextPath>
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
+                    <scanTargetPatterns>
+                        <scanTargetPattern>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <excludes>
+                                <exclude>**/*.jsp</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/*.properties</include>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </scanTargetPattern>
+                    </scanTargetPatterns>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/.svn/**</exclude>
+                </excludes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <excludes>
+                    <exclude>**/.svn/**</exclude>
+                </excludes>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
 
     <!-- 部署环境相关配置-->
     <!-- 1. 如果是本地测试[默认是Windows系统] 则使用local配置的属性-->
@@ -604,7 +604,7 @@
         <profile>
             <id>local</id>
             <activation>
-            	<activeByDefault>true</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
@@ -622,33 +622,33 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
+
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
 
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
+
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                
+
                 <webportal.local.http>http://127.0.0.1:8081</webportal.local.http>
                 <webportal.api.http>http://10.58.186.85:8082</webportal.api.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                
+
                 <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
                 <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                 
+
                 <webportal.log.path>D:</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                 <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
@@ -657,9 +657,9 @@
                 <zabbix.host.groupid>9,10</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
+
                 <task.executor.size>30</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
 
                 <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
@@ -679,85 +679,11 @@
             </properties>
         </profile>
 
-        <profile>
-            <id>dev_linux</id>
-            <properties>
-               <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
-                 <webportal.local.http>http://127.0.0.1:8081</webportal.local.http>
-                <webportal.api.http>http://127.0.0.1:8082</webportal.api.http>
-                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                 
-                <webportal.errormail.to>yaokuo@letv.com;liuhao1@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;liuhao1@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                 
-                <webportal.log.path>/tmp/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                 <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
-                <zabbix.host.groupid>9,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
-                <task.executor.size>30</task.executor.size>
-                
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>78c06463-1723-4312-9554-b0afbb77269d</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
-            </properties>
-        </profile>
-        
         <profile>
             <id>test</id>
-             <properties>
+            <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-              <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -771,32 +697,33 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
+
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
 
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
+
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                
-                <webportal.local.http>http://10.200.91.144:58081</webportal.local.http>
-                <webportal.admin.http>http://10.200.91.144:58080</webportal.admin.http>
+
+                <webportal.local.http>http://10.150.149.120:8080</webportal.local.http>
+                <webportal.api.http>http://10.150.149.31:8080</webportal.api.http>
+                <webportal.admin.http>http://10.150.149.242:8080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                
+
                 <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
                 <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                 
+
                 <webportal.log.path>/var/log</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                 <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
@@ -805,9 +732,9 @@
                 <zabbix.host.groupid>9,10</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
+
                 <task.executor.size>30</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
 
                 <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
@@ -831,7 +758,7 @@
             <id>production</id>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.130.85.171:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>paascloud_wr</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -846,31 +773,32 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
-                <webportal.local.http>http://10.200.91.144:20001</webportal.local.http>
-                <webportal.admin.http>http://10.200.91.144:20000</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
+
+                <webportal.local.http>http://10.150.149.121:8080</webportal.local.http>
+                <webportal.api.http>http://10.150.149.32:8080</webportal.api.http>
+                <webportal.admin.http>http://10.150.149.30:8080</webportal.admin.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
                 <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                
+
                 <webportal.log.path>/var/log</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
@@ -879,11 +807,11 @@
                 <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
+
                 <task.executor.size>150</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-                
+
                 <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
                 <openstack.keystone.version>2.0</openstack.keystone.version>
                 <openstack.keystone.public.port>5000</openstack.keystone.public.port>
@@ -900,7 +828,7 @@
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
             </properties>
         </profile>
-          <profile>
+        <profile>
             <id>production-app</id>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
@@ -919,9 +847,9 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
@@ -929,20 +857,20 @@
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
                 <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                
+
                 <webportal.log.path>/var/log</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
@@ -951,9 +879,9 @@
                 <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
+
                 <task.executor.size>150</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
 
                 <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
@@ -972,7 +900,7 @@
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
             </properties>
         </profile>
-          <profile>
+        <profile>
             <id>production-admin</id>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
@@ -991,30 +919,30 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
+
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
+                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
                 <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                
+
                 <webportal.log.path>/var/log</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
@@ -1023,9 +951,9 @@
                 <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
+
                 <task.executor.size>150</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
 
                 <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
@@ -1044,7 +972,7 @@
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
             </properties>
         </profile>
-          <profile>
+        <profile>
             <id>production-task</id>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
@@ -1063,30 +991,30 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
+                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
                 <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
-                
+
                 <webportal.log.path>/var/log</webportal.log.path>
-                
+
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
+
                 <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
@@ -1095,9 +1023,9 @@
                 <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
                 <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
+
                 <task.executor.size>150</task.executor.size>
-                
+
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
 
                 <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
@@ -1118,45 +1046,45 @@
         </profile>
 
     </profiles>
-  
-   <repositories>
-       <repository>
-           <id>matrix.thirdparty</id>
-           <name>Matrix Thirdparty Repository</name>
-           <url>http://10.200.91.144:28081/nexus/content/repositories/thirdparty/</url>
-       </repository>
+
+    <repositories>
+        <repository>
+            <id>matrix.thirdparty</id>
+            <name>Matrix Thirdparty Repository</name>
+            <url>http://10.200.91.144:28081/nexus/content/repositories/thirdparty/</url>
+        </repository>
         <repository>
             <id>letv.public</id>
             <name>Letv.com Repository</name>
             <url>http://maven.letv.cn/nexus/content/groups/public/</url>
         </repository>
     </repositories>
-	<!-- <repositories> <repository> <snapshots> <enabled>false</enabled> </snapshots> 
-		<id>central</id> <name>Maven Repository Switchboard</name> <url>http://repo1.maven.org/maven2</url> 
-		</repository> <repository> <id>java.net2</id> <name>java.net Repository hosting 
-		the jee6 artifacts</name> <url>http://download.java.net/maven/2</url> </repository> 
-		<repository> <id>jboss-public-repository-group</id> <name>JBoss Public Repository 
-		Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url> 
-		<layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
-		</releases> <snapshots> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
-		</snapshots> </repository> <repository> <id>JBOSS</id> <name>JBoss Repository 
-		Deprecated</name> <url>http://repository.jboss.org/maven2/</url> </repository> 
-		</repositories> -->
+    <!-- <repositories> <repository> <snapshots> <enabled>false</enabled> </snapshots>
+        <id>central</id> <name>Maven Repository Switchboard</name> <url>http://repo1.maven.org/maven2</url>
+        </repository> <repository> <id>java.net2</id> <name>java.net Repository hosting
+        the jee6 artifacts</name> <url>http://download.java.net/maven/2</url> </repository>
+        <repository> <id>jboss-public-repository-group</id> <name>JBoss Public Repository
+        Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        <layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy>
+        </releases> <snapshots> <enabled>true</enabled> <updatePolicy>never</updatePolicy>
+        </snapshots> </repository> <repository> <id>JBOSS</id> <name>JBoss Repository
+        Deprecated</name> <url>http://repository.jboss.org/maven2/</url> </repository>
+        </repositories> -->
     <pluginRepositories>
         <pluginRepository>
-			<id>letv.public</id>
-			<name>Letv.com Repository</name>
-			<url>http://maven.letv.cn/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
+            <id>letv.public</id>
+            <name>Letv.com Repository</name>
+            <url>http://maven.letv.cn/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
     <distributionManagement>
-       <repository>
+        <repository>
             <id>project-release</id>
             <name>Projects Release repository</name>
             <url>http://maven.letv.cn/nexus/content/repositories/releases/</url>
@@ -1165,7 +1093,7 @@
             <id>project-snapshots</id>
             <name>Projects SnapShot repository</name>
             <url>http://maven.letv.cn/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>   
-    </distributionManagement>    
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

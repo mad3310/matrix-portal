@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * 处理session超时的拦截器
@@ -95,17 +96,16 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(clientSecret))
 			return null;
 		try {
-			LeCloudFacade facade = LeCloudFacade.initial();
-			OauthUserDetailInfoRet obj = facade.getUserDetailInfoObj(clientId,clientSecret);
-
+			Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(clientId, clientSecret);
+			String username = (String) userDetailInfo.get("username");
+			String email = (String) userDetailInfo.get("email");
 			UserLogin userLogin = new UserLogin();
-			userLogin.setLoginName(obj.getUsername());
+			userLogin.setLoginName(username);
 			userLogin.setLoginIp(IpUtil.getIp(request));
-			userLogin.setEmail(obj.getEmail());
-
+			userLogin.setEmail(email);
 			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 			return session;
-		} catch (LeCloudException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
