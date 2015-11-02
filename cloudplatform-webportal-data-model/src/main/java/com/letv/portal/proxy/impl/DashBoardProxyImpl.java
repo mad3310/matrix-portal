@@ -81,25 +81,11 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 	@Override
 	public Map<String, Integer> selectManagerResource() {
 		Map<String, Integer> statistics = new HashMap<String, Integer>();
-		statistics.put("db", this.dbService.selectByMapCount(null));
-		statistics.put("dbUser", this.dbUserService.selectByMapCount(null));
+		statistics.put("db", this.dbService.selectCountByStatus(DbStatus.NORMAL.getValue()));
 		statistics.put("mcluster", this.mclusterService.selectValidMclusterCount());
 		statistics.put("hcluster", this.hclusterService.selectByMapCount(null));
 		statistics.put("host", this.hostService.selectByMapCount(null));
-
-		statistics
-				.put("dbAudit", this.dbService
-						.selectCountByStatus(DbStatus.DEFAULT.getValue()));
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		statistics.put("dbUserAudit", this.dbUserService.selectByMapCount(map));
-		map.put("status", DbStatus.BUILDFAIL.getValue());
-		statistics.put("dbFaild", this.dbService.selectByMapCount(map));
-		statistics.put("dbUserFaild", this.dbUserService.selectByMapCount(map));
-		map.put("status", DbStatus.BUILDDING.getValue());
-		statistics.put("dbBuilding", this.dbService.selectByMapCount(map));
-		statistics.put("dbUserBuilding",
-				this.dbUserService.selectByMapCount(map));
+		statistics.put("dbAudit", this.dbService.selectCountByStatus(DbStatus.DEFAULT.getValue()));
 		return statistics;
 	}
 	

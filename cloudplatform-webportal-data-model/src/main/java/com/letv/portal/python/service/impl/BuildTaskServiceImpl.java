@@ -569,26 +569,60 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
+		if(map.isEmpty()) {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+			return;
+		}
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			mcluster.setStatus(status);
 			this.mclusterService.updateBySelective(mcluster);
 			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(mcluster);
+				this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
+			} else {
+				this.checkVipMcluster(mcluster);
 			}
 		} else if(null !=result && result.contains("not existed")){
 			this.mclusterService.delete(mcluster);
+			this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
 		}
-		this.pythonService.checkMclusterStatus(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
+
+	}
+	private void checkVipMcluster(MclusterModel mcluster) {
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String resultVip = this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
+		Map mapResult = this.transResult(resultVip);
+		if(mapResult.isEmpty()) {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+			return;
+		}
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)mapResult.get("meta")).get("code")))) {
+			Integer status = transStatus((String)((Map)mapResult.get("response")).get("status"));
+			if(status != MclusterStatus.NORMAL.getValue()) {
+				mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+				this.mclusterService.updateBySelective(mcluster);
+			}
+		} else {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+		}
 	}
 
 	@Override
 	@Async
 	public void checkContainerStatus(ContainerModel container) {
 		HostModel host = this.hostService.selectById(container.getHostId());
-		String result = this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.checkContainerStatus(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
 		Map map = this.transResult(result);
-		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+		if(map.isEmpty()) {
+			container.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.containerService.updateBySelective(container);
+			return;
+		}
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map) map.get("meta")).get("code")))) {
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			container.setStatus(status);
 			this.containerService.updateBySelective(container);
@@ -613,7 +647,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} else if("not exist".equals(statusStr)) {
 			status = MclusterStatus.NOTEXIT.getValue();
 		} else if("failed".equals(statusStr)) {
-			
+			status = MclusterStatus.ABNORMAL.getValue();
 		} else if("danger".equals(statusStr)) {
 			status = MclusterStatus.DANGER.getValue();
 		} else if("crisis".equals(statusStr)) {
