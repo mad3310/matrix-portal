@@ -701,6 +701,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	private void asyncMclusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
 		for (Map<String,Object> mm : data) {
+            if(!"mcluster".equals(mm.get("type")) && !"gbalancer".equals(mm.get("type")))
+                continue;
 			String mclusterName = (String) mm.get("clusterName");
 			if(StringUtils.isNullOrEmpty(mclusterName))
 				continue;
@@ -716,7 +718,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				continue;
 			if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(list.get(0));
-				continue;
+                continue;
 			}
 			addOrUpdateContainer(mm,mcluster);
 		}
@@ -726,7 +728,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (Map<String,Object> cm : cms) {
 			ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
 			if(null == container) {
-				this.addHandContainer(cm, mcluster.getId());
+                this.addHandContainer(cm, mcluster.getId());
 				continue;
 			} 
 			if(!cm.get("hostIp").equals(container.getHostIp())) {
