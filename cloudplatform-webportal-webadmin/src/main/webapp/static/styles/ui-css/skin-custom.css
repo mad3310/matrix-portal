@@ -706,6 +706,7 @@ edit by jinglinlin@letv.com
 .skin-custom .navbar .navbar-container .navbar-buttons .nav .blue> a{
 	background-color:#333333;
 }
+.skin-custom .widget-box{-ms-touch-action:auto;touch-action:auto;}
 .skin-custom .widget-color-blue>.widget-header {
 	background-color: #333333!important;
 }
