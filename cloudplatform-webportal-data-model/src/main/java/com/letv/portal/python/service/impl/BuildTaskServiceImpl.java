@@ -869,18 +869,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				
 				detailModel = monitor.getResponse().getDb().getExisted_db_anti_item();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+				if(!timeout)
+                    timeout = isTimeout(now, detailModel);
 				
 				detailModel = monitor.getResponse().getDb().getWrite_read_avaliable();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				
 				detailModel = monitor.getResponse().getDb().getWsrep_status();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				detailModel = monitor.getResponse().getDb().getCur_user_conns();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				
 				monitor.setResult(failCount);
 				if(timeout) {
@@ -908,13 +912,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				
 				DetailModel detailModel = monitor.getResponse().getNode().getLog_health();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				detailModel = monitor.getResponse().getNode().getLog_error();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				detailModel = monitor.getResponse().getNode().getStarted();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				monitor.setResult(failCount);
 				if(timeout) {
 					monitor.setResult(MonitorStatus.CRASH.getValue());
