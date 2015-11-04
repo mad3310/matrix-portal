@@ -569,26 +569,60 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
+		if(map.isEmpty()) {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+			return;
+		}
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			mcluster.setStatus(status);
 			this.mclusterService.updateBySelective(mcluster);
 			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(mcluster);
+				this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
+			} else {
+				this.checkVipMcluster(mcluster);
 			}
 		} else if(null !=result && result.contains("not existed")){
 			this.mclusterService.delete(mcluster);
+			this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
 		}
-		this.pythonService.checkMclusterStatus(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
+
+	}
+	private void checkVipMcluster(MclusterModel mcluster) {
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String resultVip = this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
+		Map mapResult = this.transResult(resultVip);
+		if(mapResult.isEmpty()) {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+			return;
+		}
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)mapResult.get("meta")).get("code")))) {
+			Integer status = transStatus((String)((Map)mapResult.get("response")).get("status"));
+			if(status != MclusterStatus.NORMAL.getValue()) {
+				mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+				this.mclusterService.updateBySelective(mcluster);
+			}
+		} else {
+			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.mclusterService.updateBySelective(mcluster);
+		}
 	}
 
 	@Override
 	@Async
 	public void checkContainerStatus(ContainerModel container) {
 		HostModel host = this.hostService.selectById(container.getHostId());
-		String result = this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.checkContainerStatus(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
 		Map map = this.transResult(result);
-		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+		if(map.isEmpty()) {
+			container.setStatus(MclusterStatus.ABNORMAL.getValue());
+			this.containerService.updateBySelective(container);
+			return;
+		}
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map) map.get("meta")).get("code")))) {
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			container.setStatus(status);
 			this.containerService.updateBySelective(container);
@@ -613,7 +647,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} else if("not exist".equals(statusStr)) {
 			status = MclusterStatus.NOTEXIT.getValue();
 		} else if("failed".equals(statusStr)) {
-			
+			status = MclusterStatus.ABNORMAL.getValue();
 		} else if("danger".equals(statusStr)) {
 			status = MclusterStatus.DANGER.getValue();
 		} else if("crisis".equals(statusStr)) {
@@ -667,6 +701,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	private void asyncMclusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
 		for (Map<String,Object> mm : data) {
+            if(!"mcluster".equals(mm.get("type")) && !"gbalancer".equals(mm.get("type")))
+                continue;
 			String mclusterName = (String) mm.get("clusterName");
 			if(StringUtils.isNullOrEmpty(mclusterName))
 				continue;
@@ -682,7 +718,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				continue;
 			if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(list.get(0));
-				continue;
+                continue;
 			}
 			addOrUpdateContainer(mm,mcluster);
 		}
@@ -692,7 +728,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (Map<String,Object> cm : cms) {
 			ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
 			if(null == container) {
-				this.addHandContainer(cm, mcluster.getId());
+                this.addHandContainer(cm, mcluster.getId());
 				continue;
 			} 
 			if(!cm.get("hostIp").equals(container.getHostIp())) {
@@ -833,18 +869,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				
 				detailModel = monitor.getResponse().getDb().getExisted_db_anti_item();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+				if(!timeout)
+                    timeout = isTimeout(now, detailModel);
 				
 				detailModel = monitor.getResponse().getDb().getWrite_read_avaliable();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				
 				detailModel = monitor.getResponse().getDb().getWsrep_status();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				detailModel = monitor.getResponse().getDb().getCur_user_conns();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+				    timeout = isTimeout(now, detailModel);
 				
 				monitor.setResult(failCount);
 				if(timeout) {
@@ -872,13 +912,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				
 				DetailModel detailModel = monitor.getResponse().getNode().getLog_health();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				detailModel = monitor.getResponse().getNode().getLog_error();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				detailModel = monitor.getResponse().getNode().getStarted();
 				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
+                if(!timeout)
+                    timeout = isTimeout(now, detailModel);
+
 				monitor.setResult(failCount);
 				if(timeout) {
 					monitor.setResult(MonitorStatus.CRASH.getValue());
@@ -896,7 +942,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		if(diff > 60) {
+		if(diff > 480) {
 			return true;
 		}
 		return false;

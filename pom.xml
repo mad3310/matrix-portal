@@ -435,11 +435,6 @@
                 <artifactId>hibernate-validator</artifactId>
                 <version>5.1.3.Final</version>
             </dependency>
-            <dependency>
-                <groupId>com.letv.oauth</groupId>
-                <artifactId>client-sdk</artifactId>
-                <version>1.6</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
