@@ -942,7 +942,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		if(diff > 60) {
+		if(diff > 480) {
 			return true;
 		}
 		return false;
