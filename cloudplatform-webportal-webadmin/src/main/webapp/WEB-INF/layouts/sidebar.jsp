@@ -219,9 +219,9 @@ if(!IsPC()){
     function touchMoveFunc(evt) {
 	    try {
 		    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
-		    var touch = evt.touches[0]; //获取第一个触点
-		    var x = Number(touch.clientX); //页面触点X坐标
-		    var y = Number(touch.clientX); //页面触点Y坐标
+		    // var touch = evt.touches[0]; //获取第一个触点
+		    // var x = Number(touch.clientX); //页面触点X坐标
+		    // var y = Number(touch.clientX); //页面触点Y坐标
 		    //判断滑动方向
 		 //    if (x - startX > 60) {
 		 //    	$("#sidebar").addClass("display ");
@@ -229,7 +229,7 @@ if(!IsPC()){
 		 //    }else if(x - startX < -60){
 			// 	$("#sidebar").removeClass("display");
 			// 	$("#menu-toggler").removeClass("display");
-			// }   	    
+			// } 	    
 		} catch (e) {}
 	}
 	//touchend事件
@@ -242,18 +242,23 @@ if(!IsPC()){
 		    var xabs=x-startX;
 		    var yabs=y-startY;
 		    var tan=Math.abs(yabs/xabs);
-		    if(tan>Math.tan(Math.PI/9)){//上下滑动
-		    	$("#sidebar").removeClass("display");
-				$("#menu-toggler").removeClass("display");
-		    }else{
-		    	if (x - startX > 60) {
-			    	$("#sidebar").addClass("display ");
-				    $("#menu-toggler").addClass("display");
-			    }else if(x - startX < -60){
-					$("#sidebar").removeClass("display");
-					$("#menu-toggler").removeClass("display");
-				}
-		    }
+		    if(Math.abs(xabs)>30||Math.abs(yabs)>30){
+		    	if(tan>Math.tan(Math.PI/9)){//上下滑动
+		    		if($('#sidebar').hasClass('display')){
+		    		}else{
+		    			$("#sidebar").removeClass("display");
+						$("#menu-toggler").removeClass("display");	
+		    		}
+			    }else{
+			    	if (x - startX > 60) {
+				    	$("#sidebar").addClass("display ");
+					    $("#menu-toggler").addClass("display");
+				    }else if(x - startX < -60){
+						$("#sidebar").removeClass("display");
+						$("#menu-toggler").removeClass("display");
+					}
+			    }
+		    }else{}
 		} catch (e) {
 		}
 	}
