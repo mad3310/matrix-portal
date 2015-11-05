@@ -35,7 +35,7 @@ define(function(require,exports,module){
     			if(dbInfo.hcluster) {
     				$("#db_info_available_region").html(dbInfo.hcluster.hclusterNameAlias);
     			}
-    			$("#db_info_net_addr").html(GetNetAddr(dbInfo.containers));
+    			$("#db_info_net_addr").html(GetNetAddr(dbInfo.containers)+"<span class='text-danger'>（此IP仅用于调试，禁止生产环境使用！）</span>");
                 $("#db_info_running_state").html(cn.TranslateStatus(dbInfo.status));
                 $("#db_info_create_time").html(cn.TransDate('Y-m-d H:i:s',dbInfo.createTime));
                 $("#db_info_remain_days").html(cn.RemainAvailableTime(dbInfo.createTime));
