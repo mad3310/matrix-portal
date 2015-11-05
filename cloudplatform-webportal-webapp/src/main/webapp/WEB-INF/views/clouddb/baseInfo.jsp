@@ -63,7 +63,7 @@
 		        	<tr>
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">内网地址:</span>
-		        			<span id="db_info_net_addr">（此IP仅用于调试，禁止生产环境使用！）</span>
+		        			<span id="db_info_net_addr"><span class='text-danger'>（此IP仅用于调试，禁止生产环境使用！）</span></span>
 			        	</td> 
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">端口:</span>
