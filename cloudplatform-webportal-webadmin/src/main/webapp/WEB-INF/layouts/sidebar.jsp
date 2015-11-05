@@ -186,68 +186,84 @@
   </div>
   
   <!-- /section:basics/sidebar.layout.minimize -->
-  <script type="text/javascript">
+<script type="text/javascript">
     /* 	try {
     ace.settings.check('sidebar', 'collapsed')
     } catch (e) {
     } */
-    if(!IsPC()){
+if(!IsPC()){
     //判断是否支持触摸事件
     ace.settings.navbar_fixed(true);
     ace.settings.sidebar_fixed(true);
     function isTouchDevice() {
-    try {
-    document.createEvent("TouchEvent");
-    bindEvent(); //绑定事件
-    } catch (e) {
-    }
+	    try {
+		    document.createEvent("TouchEvent");
+		    bindEvent(); //绑定事件
+	    } catch (e) {}
     }
     //全局变量，触摸开始位置
     var startX = 0, startY = 0;
     //touchstart事件
     function touchSatrtFunc(evt) {
-    try {
-    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
-    var touch = evt.touches[0]; //获取第一个触点
-    var x = Number(touch.pageX); //页面触点X坐标
-    var y = Number(touch.pageY); //页面触点Y坐标
-    //记录触点初始位置
-    startX = x;
-    startY = y;
-    } catch (e) {
-    }
+	    try {
+		    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+		    var touch = evt.touches[0]; //获取第一个触点
+		    var x = Number(touch.clientX); //页面触点X坐标
+		    var y = Number(touch.clientY); //页面触点Y坐标
+		    //记录触点初始位置
+		    startX = x;
+		    startY = y;
+	    } catch (e) {}
     }
     //touchmove事件，这个事件无法获取坐标
     function touchMoveFunc(evt) {
-    try {
-    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
-    var touch = evt.touches[0]; //获取第一个触点
-    var x = Number(touch.pageX); //页面触点X坐标
-    var y = Number(touch.pageY); //页面触点Y坐标
-    //判断滑动方向
-    if (x - startX > 60) {
-    $("#sidebar").addClass("display ");
-    $("#menu-toggler").addClass("display");
-    }else if(x - startX < -60){
-			  $("#sidebar").removeClass("display");
-			  $("#menu-toggler").removeClass("display");
-			  }
-			  } catch (e) {
-			  }
-			  }
-			  //touchend事件
-			  function touchEndFunc(evt) {
-			  try {
-			  } catch (e) {
-			  }
-			  }
-			  //绑定事件
-			  function bindEvent() {
-			  document.addEventListener('touchstart', touchSatrtFunc, true);
-			  document.addEventListener('touchmove', touchMoveFunc, true);
-			  document.addEventListener('touchend', touchEndFunc, true);
-			  }
-			  isTouchDevice() ;//touchDevice添加touch事件
-			  } 
-			  </script>
+	    try {
+		    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+		    var touch = evt.touches[0]; //获取第一个触点
+		    var x = Number(touch.clientX); //页面触点X坐标
+		    var y = Number(touch.clientX); //页面触点Y坐标
+		    //判断滑动方向
+		 //    if (x - startX > 60) {
+		 //    	$("#sidebar").addClass("display ");
+			//     $("#menu-toggler").addClass("display");
+		 //    }else if(x - startX < -60){
+			// 	$("#sidebar").removeClass("display");
+			// 	$("#menu-toggler").removeClass("display");
+			// }   	    
+		} catch (e) {}
+	}
+	//touchend事件
+	function touchEndFunc(evt) {
+		try {
+			var touch = evt.changedTouches[0]; //获取第一个触点
+		    var x = Number(touch.clientX); //页面触点X坐标
+		    var y = Number(touch.clientY); //页面触点Y坐标
+		    //判断滑动方向
+		    var xabs=x-startX;
+		    var yabs=y-startY;
+		    var tan=Math.abs(yabs/xabs);
+		    if(tan>Math.tan(Math.PI/9)){//上下滑动
+		    	$("#sidebar").removeClass("display");
+				$("#menu-toggler").removeClass("display");
+		    }else{
+		    	if (x - startX > 60) {
+			    	$("#sidebar").addClass("display ");
+				    $("#menu-toggler").addClass("display");
+			    }else if(x - startX < -60){
+					$("#sidebar").removeClass("display");
+					$("#menu-toggler").removeClass("display");
+				}
+		    }
+		} catch (e) {
+		}
+	}
+	//绑定事件
+	function bindEvent() {
+		document.addEventListener('touchstart', touchSatrtFunc, true);
+		document.addEventListener('touchmove', touchMoveFunc, true);
+		document.addEventListener('touchend', touchEndFunc, true);
+	}
+	isTouchDevice() ;//touchDevice添加touch事件
+} 
+</script>
 </div>
