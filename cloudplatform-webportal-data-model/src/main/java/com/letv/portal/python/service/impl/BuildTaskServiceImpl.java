@@ -701,29 +701,27 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	private void asyncMclusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
 		for (Map<String,Object> mm : data) {
-            if(!"mcluster".equals(mm.get("type")) && !"gbalancer".equals(mm.get("type")))
-                continue;
 			String mclusterName = (String) mm.get("clusterName");
-			if(StringUtils.isNullOrEmpty(mclusterName))
-				continue;
-			if(mclusterName.contains("_vip"))
-				mclusterName = mclusterName.substring(0,mclusterName.lastIndexOf(Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX));
-			List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
-			if(null == list || list.isEmpty()) {
-				this.addHandMcluster(mm,hcluster.getId());
-				continue;
-			} 
-			MclusterModel mcluster = list.get(0);
-			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus())
-				continue;
-			if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
-				this.mclusterService.delete(list.get(0));
+			if(!"mcluster".equals(mm.get("type")))
                 continue;
-			}
-			addOrUpdateContainer(mm,mcluster);
+            if(StringUtils.isNullOrEmpty(mclusterName))
+                continue;
+            List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
+            if(null == list || list.isEmpty()) {
+                this.addHandMcluster(mm,hcluster.getId());
+                continue;
+            }
+            MclusterModel mcluster = list.get(0);
+            if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus())
+                continue;
+            if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
+                this.mclusterService.delete(list.get(0));
+                continue;
+            }
+            syncContainer(mm, mcluster);
 		}
 	}
-	private void addOrUpdateContainer(Map<String,Object> mm,MclusterModel mcluster) {
+	private void syncContainer(Map<String,Object> mm,MclusterModel mcluster) {
 		List<Map<String,Object>> cms = (List<Map<String,Object>>) mm.get("nodeInfo");
 		for (Map<String,Object> cm : cms) {
 			ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
@@ -731,15 +729,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 this.addHandContainer(cm, mcluster.getId());
 				continue;
 			} 
-			if(!cm.get("hostIp").equals(container.getHostIp())) {
-				container.setContainerName((String) cm.get("containerName"));
-				container.setHostIp((String) cm.get("hostIp"));
-				HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-				if(null != hostModel) {
-					container.setHostId(hostModel.getId());
-				}
-				this.containerService.updateHostIpByName(container);
-			}
 		}
 	}
 	
@@ -772,7 +761,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				container.setHostId(hostModel.getId());
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw new PythonException("add HandContianer exception:"+ e.getMessage());
 		}
 		this.containerService.insert(container);
 	}
