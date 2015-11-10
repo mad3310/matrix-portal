@@ -572,7 +572,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(map.isEmpty()) {
 			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
 			this.mclusterService.updateBySelective(mcluster);
-			return;
+            return;
 		}
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
@@ -596,7 +596,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Map mapResult = this.transResult(resultVip);
 		if(mapResult.isEmpty()) {
 			mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
-			this.mclusterService.updateBySelective(mcluster);
+            this.mclusterService.updateBySelective(mcluster);
 			return;
 		}
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)mapResult.get("meta")).get("code")))) {
@@ -614,7 +614,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void checkContainerStatus(ContainerModel container) {
-		HostModel host = this.hostService.selectById(container.getHostId());
+        HostModel host = this.hostService.selectById(container.getHostId());
 		String result = this.pythonService.checkContainerStatus(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
 		Map map = this.transResult(result);
 		if(map.isEmpty()) {
@@ -631,7 +631,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	public Integer transStatus(String statusStr){
 		// { "meta": {"code": 200}, "response": {"status": " starting / started / stopping / stopped / destroying / destroyed / not exist / failed", "message": ""  } }
-		Integer status = null;
+        Integer status = null;
 		if("starting".equals(statusStr)) {
 			status = MclusterStatus.STARTING.getValue();
 		} else if("started".equals(statusStr)) {
@@ -706,18 +706,23 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 continue;
             if(StringUtils.isNullOrEmpty(mclusterName))
                 continue;
+
             List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
             if(null == list || list.isEmpty()) {
                 this.addHandMcluster(mm,hcluster.getId());
                 continue;
             }
+
             MclusterModel mcluster = list.get(0);
-            if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus())
+            if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus())
                 continue;
-            if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
+            int status = transStatus((String) mm.get("status"));
+            if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
                 this.mclusterService.delete(list.get(0));
                 continue;
             }
+            mcluster.setStatus(transStatus((String)mm.get("status")));
+            this.mclusterService.updateBySelective(mcluster);
             syncContainer(mm, mcluster);
 		}
 	}
@@ -735,7 +740,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private void addHandMcluster(Map mm,Long hclusterId) {
 		MclusterModel mcluster = new MclusterModel();
 		mcluster.setMclusterName((String) mm.get("clusterName"));
-		mcluster.setStatus(MclusterStatus.RUNNING.getValue());	
+		mcluster.setStatus(transStatus((String)mm.get("status")));
 		mcluster.setAdminUser("root");
 		mcluster.setAdminPassword((String) mm.get("clusterName"));
 		mcluster.setType(MclusterType.HAND.getValue());
@@ -743,7 +748,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		mcluster.setDeleted(true);
 		this.mclusterService.insert(mcluster);
 		List<Map> cms = (List<Map>) mm.get("nodeInfo");
-		for (Map cm : cms) {
+            for (Map cm : cms) {
 			this.addHandContainer(cm,mcluster.getId());
 		}
 	}
