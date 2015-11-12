@@ -7,7 +7,7 @@ define(function(require,exports,module){
     var common = require('../../common');
     var cn = new common();
     var dbUsernames = new Array();
-    
+
     var selectNameDist = 0;
 
     var DataHandler = function(){
@@ -29,50 +29,43 @@ define(function(require,exports,module){
             var $tby = $('#tby');
             var array = data.data;
             if(array.length == 0){
-            	cn.emptyBlock($tby);
-            	if($("#paginatorBlock").length > 0){
-            		$("#paginatorBlock").hide();
-            	}
+                cn.emptyBlock($tby);
+                if($("#paginatorBlock").length > 0){
+                    $("#paginatorBlock").hide();
+                }
             }else{
-            	 if($("#noData").length > 0){
-            		 $("#noData").remove();
-            	 }
-            	 if($("#paginatorBlock").length > 0){
-            		 $("#paginatorBlock").show();
-            	 }
-            	 
-            	 for(var i= 0, len= array.length;i<len;i++){
-                     dbUsernames.push(array[i].username);
-                     var td1 = $("<td>"
-                     		+ array[i].username
-                     		+"</td>");
-                     var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
-                     var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
-                     var td4 = $("<td class='hidden-xs'><span>"+array[i].maxConcurrency+"</span></td>");
-                     var td5 = $("<td class='hidden-xs' style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
-                     		+ "</span>"
-                     		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
-                     		+ "</td>");
-                     console.info(array[i].status);
-                     if(array[i].status != 6) {
-                         var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
-                             + "<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
-                             +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
-                     } else {
-                         var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
-                             + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
-                             + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
-                             + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
-                             + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
-                             +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;"
-                             +"<a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-repeat text-warning'></span></a>&nbsp;"
-                             +"<a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-edit text-success'></span></a>&nbsp;"
-                             +"<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
-                     }
-                     var tr = $("<tr class='data-tr'></tr>");
-                     tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-                     tr.appendTo($tby);
-                 }            	
+                if($("#noData").length > 0){
+                    $("#noData").remove();
+                }
+                if($("#paginatorBlock").length > 0){
+                    $("#paginatorBlock").show();
+                }
+
+                for(var i= 0, len= array.length;i<len;i++){
+                    dbUsernames.push(array[i].username);
+                    var td1 = $("<td>"
+                        + array[i].username
+                        +"</td>");
+                    var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
+                    var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
+                    var td4 = $("<td class='hidden-xs'><span>"+array[i].maxConcurrency+"</span></td>");
+                    var td5 = $("<td class='hidden-xs' style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
+                        + "</span>"
+                        + "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
+                        + "</td>");
+                    var td6 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
+                        + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
+                        + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
+                        + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
+                        + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div>"
+                        +"<div class='hidden-sm hidden-md hidden-lg'><a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;"
+                        +"<a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-repeat text-warning'></span></a>&nbsp;"
+                        +"<a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-edit text-success'></span></a>&nbsp;"
+                        +"<a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><span class='glyphicon glyphicon-trash text-danger'></span></a></div></td>");
+                    var tr = $("<tr class='data-tr'></tr>");
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+                    tr.appendTo($tby);
+                }
             }
             /*获取行信息*/
             function getLineData(obj){
@@ -108,7 +101,7 @@ define(function(require,exports,module){
                 $("#showDbuserIpPrivilegeTitle").html(lineData.username);
             })
             /*初始化删除按钮*/
-            $(".dbuser-list-delete").click(function () {    
+            $(".dbuser-list-delete").click(function () {
                 var lineData = getLineData(this);
                 var title = "确认";
                 var text = "您确定要删除("+lineData.username+")账户";
@@ -133,12 +126,12 @@ define(function(require,exports,module){
                 $("#modifyDescn").val(lineData.descn);
             });
             /* 编辑描述对话框初始化完毕*/
-            
+
             /*初始化tr hover方法*/
             $("#tby tr").hover(function(){
-            	$(this).find(".glyphicon-pencil").show();
+                $(this).find(".glyphicon-pencil").show();
             },function(){
-            	$(this).find(".glyphicon-pencil").hide();
+                $(this).find(".glyphicon-pencil").hide();
             });
             /*tr hover方法初始化完毕*/
         },
@@ -177,11 +170,11 @@ define(function(require,exports,module){
             for(var i= 0,len=array.length;i<len;i++){
                 if(array[i].used == 1){
                     var td1 =  $("<td>"
-                    + array[i].addr
-                    + "</td>");
+                        + array[i].addr
+                        + "</td>");
                     var td2 =  $("<td>"
-                    + cn.TranslateDbUserType(array[i].type)
-                    + "</td>");
+                        + cn.TranslateDbUserType(array[i].type)
+                        + "</td>");
                     var tr =$("<tr></tr>");
                     tr.append(td1).append(td2);
                     tr.appendTo($tby);
@@ -313,24 +306,24 @@ define(function(require,exports,module){
         $li.appendTo($sl);
     };
     function AddToRightFrame($sr,data){
-    	var ipName = selectNameDist++;
+        var ipName = selectNameDist++;
         var $li = $("<li class=\"select-item\"> "
-        + "<p class=\"pull-left\">"+data.addr+"</p>"
-        + "<p class=\"pull-right\" style=\"margin-right:5px\">"
-        + "<span>"
-        + "<input type=\"radio\" name=\""+ipName+"\" value=\"1\" >"
-        + "<label class=\"mgr\">管理</label>"
-        + "</span>"
-        + "<span>"
-        + "<input type=\"radio\" name=\""+ipName+"\" value=\"2\">"
-        + "<label class=\"ro\">只读</label>"
-        + "</span>"
-        + "<span>"
-        + "<input type=\"radio\" name=\""+ipName+"\" value=\"3\">"
-        + "<label class=\"rw\">读写</label>"
-        + "</span>"
-        + "</p>"
-        + "</li>");
+            + "<p class=\"pull-left\">"+data.addr+"</p>"
+            + "<p class=\"pull-right\" style=\"margin-right:5px\">"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+ipName+"\" value=\"1\" >"
+            + "<label class=\"mgr\">管理</label>"
+            + "</span>"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+ipName+"\" value=\"2\">"
+            + "<label class=\"ro\">只读</label>"
+            + "</span>"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+ipName+"\" value=\"3\">"
+            + "<label class=\"rw\">读写</label>"
+            + "</span>"
+            + "</p>"
+            + "</li>");
         if(data.type == 1){
             $li.find("input:first").attr("checked",true);
         }else if(data.type == 2){

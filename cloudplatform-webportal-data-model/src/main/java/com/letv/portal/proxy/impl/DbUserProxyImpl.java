@@ -32,19 +32,19 @@ import com.mysql.jdbc.StringUtils;
 @Component
 public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		IDbUserProxy{
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(DbUserProxyImpl.class);
 
 	@Autowired
-	private IDbUserService dbUserService; 
+	private IDbUserService dbUserService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	
+
 	@Value("${default.db.ro.name}")
 	private String DEFAULT_DB_RO_NAME;
-	
+
 	@Override
 	public IBaseService<DbUserModel> getService() {
 		return dbUserService;
@@ -52,8 +52,8 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 
 	@Override
 	public void saveAndBuild(DbUserModel dbUserModel) {
-		
-		String[] ips = dbUserModel.getAcceptIp().split(",");	
+
+		String[] ips = dbUserModel.getAcceptIp().split(",");
 		StringBuffer ids = new StringBuffer();
 		String password = PasswordRandom.genStr();
 		for (String ip : ips) {
@@ -64,7 +64,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}
-	
+
 	@Override
 	public void saveAndBuild(List<DbUserModel> users) {
 		if(users.isEmpty()) {
@@ -80,17 +80,17 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}
 
-	
+
 	@Override
 	public void saveAndBuild(DbUserModel dbUserModel, String ips, String types) {
 		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types) || null == dbUserModel) {
 			throw new ValidateException("参数不能为空");
 		}
 		List<DbUserModel> users = this.transToDbUser(dbUserModel, ips, types);
-		
+
 		this.saveAndBuild(users);
 	}
-	
+
 	@Override
 	public void updateUserAuthority(DbUserModel dbUserModel, String ips, String types) {
 		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types) || null == dbUserModel) {
@@ -100,14 +100,14 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<String> arryTypes = Arrays.asList(types.split(","));
 		List<String> formIps = new ArrayList<String>(arryIps);
 		List<String> formTypes = new ArrayList<String>(arryTypes);
-		
+
 		List<DbUserModel> adds = new ArrayList<DbUserModel>();
 		List<DbUserModel> removes = new ArrayList<DbUserModel>();
 		List<DbUserModel> updates = new ArrayList<DbUserModel>();
-		
+
 		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
-		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?null:dbUserModel.getPassword();
+		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?PasswordRandom.genStr():dbUserModel.getPassword();
 		Integer maxConcurrency = dbUserModel.getMaxConcurrency();
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();
@@ -136,7 +136,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		dbUserModel.setMaxConcurrency(maxConcurrency);
 		//剩余的，新增。
 		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
-		
+
 		//分别操作 新增、修改、删除。
 		if(!adds.isEmpty()) {
 			this.saveAndBuild(adds);
@@ -151,14 +151,14 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 				updateIps.add(ip.getAcceptIp());
 			}
 		}
-		if(!updates.isEmpty()) {
-			this.updateDbUser(updates);
-		}
 		if(!removes.isEmpty()) {
 			this.deleteAndBuild(removes);
 		}
+		if(!updates.isEmpty()) {
+			this.updateDbUser(updates);
+		}
 	}
-	
+
 	@Override
 	public void updateDbUser(List<DbUserModel> users) {
 		StringBuffer ids = new StringBuffer();
@@ -167,9 +167,9 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			ids.append(dbUser.getId()).append(",");
 		}
 		this.buildTaskService.updateUser(ids.toString());
-		
+
 	}
-	
+
 	public void deleteDbUser(String dbUserId){
 		this.buildTaskService.deleteDbUser(dbUserId);
 		String[] ids = dbUserId.split(",");
@@ -177,9 +177,9 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			DbUserModel dbUserModel = new DbUserModel();
 			dbUserModel.setId(Long.parseLong(id));
 			this.dbUserService.delete(dbUserModel);
-		}	
+		}
 	}
-	
+
 	@Override
 	public void deleteAndBuild(List<DbUserModel> users) {
 		if(users.isEmpty()) {
@@ -190,13 +190,13 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			ids.append(dbUserModel.getId()).append(",");
 		}
 		this.deleteDbUser(ids.substring(0, ids.length()-1));
-		
+
 	}
-	
+
 	public void buildDbUser(String DbUserId){
 		this.buildTaskService.buildUser(DbUserId);
 	}
-	
+
 	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String ips,String types) {
 		List<DbUserModel> users = new ArrayList<DbUserModel>();
 		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types)) {
@@ -204,7 +204,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		String[] arryIps = ips.split(",");
 		String[] arryTypes = types.split(",");
-		
+
 		return this.transToDbUser(dbUserModel, arryIps, arryTypes);
 	}
 	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String[] ips,String[] types) {
@@ -214,9 +214,9 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			BeanUtils.copyProperties(dbUserModel, dbUser);
 			dbUser.setAcceptIp(ips[i]);
 			dbUser.setType(Integer.parseInt(types[i]));
-			
+
 			List<DbUserModel> existUsers = this.dbUserService.selectByIpAndUsername(dbUser);
-			
+
 			if(existUsers.isEmpty())
 				users.add(dbUser);
 		}
@@ -233,7 +233,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		return users;
 	}
-	
+
 	@Override
 	public void saveOrUpdateIps(Long dbId, String ips) {
 		String[] arrs = ips.split(",");
@@ -250,13 +250,13 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			}
 		}
 		newIps.addAll(tempSet);
-		
+
 		List<String> oldIps = this.dbUserService.selectIpsFromUser(dbId);
-		
+
 		List<String> temp = new ArrayList<String>(newIps);
 		newIps.removeAll(oldIps); //add ips
 		oldIps.removeAll(temp); //remove ips
-		
+
 		//add new ips in dbUser
 		for (String newIp : newIps) {
 			DbUserModel dbUser = new DbUserModel();
@@ -284,7 +284,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			if(!realUsers.isEmpty()) {
 				this.deleteAndBuild(realUsers);
 			}
-			
+
 		}
 	}
 
@@ -307,5 +307,5 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		map.put("username", username);
 		this.deleteAndBuild(this.dbUserService.selectByMap(map));
 	}
-	
+
 }

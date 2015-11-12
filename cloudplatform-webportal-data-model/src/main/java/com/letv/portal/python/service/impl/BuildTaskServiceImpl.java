@@ -220,7 +220,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(analysisResult(transResult(result.getResult()))) {
 				//修改成功
 				dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
-				dbUserModel.setPassword(null);
 				this.dbUserService.updateDbUser(dbUserModel);
 			} else {
 				errorResult.add(dbUserModel);

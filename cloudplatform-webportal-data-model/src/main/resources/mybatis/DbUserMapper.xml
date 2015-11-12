@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.letv.portal.dao.IDbUserDao">
 
 	<!-- Result Map -->
@@ -12,7 +12,7 @@
 		<result column="PASSWORD" property="password" />
 		<result column="SALT" property="salt" />
 		<result column="TYPE" property="type" />
-		
+
 		<result column="ACCEPT_IP" property="acceptIp" />
 		<result column="MAX_CONCURRENCY" property="maxConcurrency" />
 		<result column="READ_WRITER_RATE" property="readWriterRate" />
@@ -20,7 +20,7 @@
 		<result column="MAX_UPDATES_PER_HOUR" property="maxUpdatesPerHour" />
 		<result column="MAX_CONNECTIONS_PER_HOUR" property="maxConnectionsPerHour" />
 		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
-		
+
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -28,7 +28,7 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		<result column="DESCN" property="descn" />
-		
+
 		<association property="db" javaType="Db">
 			<result column="DB_NAME" property="dbName" />
 		</association>
@@ -40,7 +40,7 @@
 		<result column="ADMIN_USER" property="username" />
 		<result column="ADMIN_PASSWORD" property="password" />
 	</resultMap>
-	
+
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
@@ -71,16 +71,16 @@
 			</if>
 		</trim>
 	</sql>
-	
-	
-	
-	
+
+
+
+
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
 		m.ID,m.DB_ID,m.USERNAME,m.PASSWORD,m.SALT,m.TYPE,m.ACCEPT_IP,m.MAX_CONCURRENCY,m.READ_WRITER_RATE,m.MAX_QUERIES_PER_HOUR,m.MAX_UPDATES_PER_HOUR,m.MAX_CONNECTIONS_PER_HOUR,m.MAX_USER_CONNECTIONS,
 		m.STATUS,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER,m.DESCN
 	</sql>
-	
+
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="DbUser" useGeneratedKeys="true" keyProperty="id" >
 		insert into
@@ -90,9 +90,9 @@
 		values
 		(#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
 		#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{descn})
-	    </insert>
-	    
-	    
+	</insert>
+
+
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="DbUser">
 		delete from WEBPORTAL_DB_USER where ID = #{id}
@@ -100,7 +100,7 @@
 	<update id="deleteByDbId" parameterType="java.lang.Long">
 		delete from WEBPORTAL_DB_USER where DB_ID = #{dbId}
 	</update>
-	
+
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="DbUser">
 		update WEBPORTAL_DB_USER set
@@ -109,20 +109,20 @@
 		</if>
 		where ID = #{id}
 	</update>
-	
+
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER m ,WEBPORTAL_DB n where
-		m.DB_ID=n.ID and m.ID = #{id}		
+		m.DB_ID=n.ID and m.ID = #{id}
 	</select>
 	<select id="selectByIpAndUsername" resultMap="BaseResultMap" parameterType="DbUser">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER m WHERE m.USERNAME = #{username} and m.ACCEPT_IP=#{acceptIp} and m.DB_ID=#{dbId}
 	</select>
-	
+
 	<!-- 根据dbId查询-->
 	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
@@ -132,7 +132,7 @@
 	<!-- 查询创建用户所需参数-->
 	<select id="selectCreateParams" resultMap="createParams" parameterType="java.util.Map">
 		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,USER.CREATE_USER
-		from WEBPORTAL_DB_USER USER,WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
+		from WEBPORTAL_DB_USER USER,WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER
 		where
 		USER.DB_ID = DB.ID AND DB.MCLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.MCLUSTER_ID AND USER.Id=#{id}
 		<if test="zookeeperId !=null  ">
@@ -142,28 +142,28 @@
 			and CONTAINER.TYPE=#{type}
 		</if>
 	</select>
-	
+
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
+			parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+
 	<select id="selectGroupByName" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
+			parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER m
 		<include refid="Example_Where_Clause" />
 		group by USERNAME
 	</select>
-	
+
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
-		parameterType="java.util.Map">
+			parameterType="java.util.Map">
 		select count(distinct(username)) from WEBPORTAL_DB_USER m
 		join WEBPORTAL_DB n on n.ID = m.DB_ID
 		<if test="id !=null">
@@ -191,14 +191,14 @@
 			and m.USERNAME = #{name4Ip}
 		</if>
 	</select>
-	
+
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
-		parameterType="com.letv.common.dao.QueryParam">
+			parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
 		,n.DB_NAME
-	    from WEBPORTAL_DB_USER m 
+		from WEBPORTAL_DB_USER m
 		join WEBPORTAL_DB n on n.ID = m.DB_ID
 		<if test="params != null and params.id !=null  ">
 			and m.ID=#{params.id}
@@ -224,91 +224,93 @@
 		<if test="params != null and params.name4Ip != null  ">
 			and m.USERNAME = #{name4Ip}
 		</if>
-			group by USERNAME
-			ORDER BY m.CREATE_TIME DESC
+		group by USERNAME
+		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.recordsPerPage}
-    	</if>
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
 	</select>
-	
-    <!-- 更新DbUser -->
+
+	<!-- 更新DbUser -->
 	<update id="update" parameterType="DbUser">
-		update WEBPORTAL_DB_USER m 
-       <set>
-		<if test="dbId != null  ">
-			m.DB_ID=#{dbId},
-		</if>
-		<if test="username != null  ">
-			m.USERNAME=#{username},
-		</if>
-		m.PASSWORD=#{password},
-		<if test="salt != null  ">
-			m.SALT=#{salt},
-		</if>
-		<if test="type != null  ">
-			m.TYPE=#{type},
-		</if>
-		<if test="acceptIp != null  ">
-			m.ACCEPT_IP=#{acceptIp},
-		</if>
-		<if test="maxConcurrency != null  ">
-			m.MAX_CONCURRENCY=#{maxConcurrency},
-		</if>
-		<if test="readWriterRate != null  ">
-			m.READ_WRITER_RATE=#{readWriterRate},
-		</if>
-		<if test="maxQueriesPerHour != null  ">
-			m.MAX_QUERIES_PER_HOUR=#{maxQueriesPerHour},
-		</if>
-		<if test="maxUserConnections != null  ">
-			m.MAX_USER_CONNECTIONS=#{maxUserConnections},
-		</if>
-		<if test="status != null  ">
-			m.STATUS=#{status},
-		</if>		
-		<if test="deleted != null  ">
-			m.DELETED=#{deleted},
-		</if>				
-		<if test="createTime != null  ">
-		    m.CREATE_TIME=#{createTime},
-		</if>				
-		<if test="createUser != null  ">
-			m.CREATE_USER=#{createUser},
-		</if>		
-		<if test="updateTime != null  ">
-			m.UPDATE_TIME=#{updateTime},
-		</if>		
-		<if test="updateUser != null  ">
-			m.UPDATE_USER=#{updateUser},
-		</if>		
-		<if test="maxUpdatesPerHour != null  ">
-			m.MAX_UPDATES_PER_HOUR=#{maxUpdatesPerHour},
-		</if>		
-		<if test="maxConnectionsPerHour != null  ">
-			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour},
-		</if>	
-		<if test="descn != null  ">
-			m.DESCN=#{descn}
-		</if>	
-		</set>			
+		update WEBPORTAL_DB_USER m
+		<set>
+			<if test="dbId != null  ">
+				m.DB_ID=#{dbId},
+			</if>
+			<if test="username != null  ">
+				m.USERNAME=#{username},
+			</if>
+			<if test="password != null  ">
+				m.PASSWORD=#{password},
+			</if>
+			<if test="salt != null  ">
+				m.SALT=#{salt},
+			</if>
+			<if test="type != null  ">
+				m.TYPE=#{type},
+			</if>
+			<if test="acceptIp != null  ">
+				m.ACCEPT_IP=#{acceptIp},
+			</if>
+			<if test="maxConcurrency != null  ">
+				m.MAX_CONCURRENCY=#{maxConcurrency},
+			</if>
+			<if test="readWriterRate != null  ">
+				m.READ_WRITER_RATE=#{readWriterRate},
+			</if>
+			<if test="maxQueriesPerHour != null  ">
+				m.MAX_QUERIES_PER_HOUR=#{maxQueriesPerHour},
+			</if>
+			<if test="maxUserConnections != null  ">
+				m.MAX_USER_CONNECTIONS=#{maxUserConnections},
+			</if>
+			<if test="status != null  ">
+				m.STATUS=#{status},
+			</if>
+			<if test="deleted != null  ">
+				m.DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				m.CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				m.CREATE_USER=#{createUser},
+			</if>
+			<if test="updateTime != null  ">
+				m.UPDATE_TIME=#{updateTime},
+			</if>
+			<if test="updateUser != null  ">
+				m.UPDATE_USER=#{updateUser},
+			</if>
+			<if test="maxUpdatesPerHour != null  ">
+				m.MAX_UPDATES_PER_HOUR=#{maxUpdatesPerHour},
+			</if>
+			<if test="maxConnectionsPerHour != null  ">
+				m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour},
+			</if>
+			<if test="descn != null  ">
+				m.DESCN=#{descn}
+			</if>
+		</set>
 		where m.ID = #{id}
 	</update>
-	
-	  <!-- 可以删除 -->
+
+	<!-- 可以删除 -->
 	<update id="updateStatus" parameterType="DbUser">
-	 update WEBPORTAL_DB_USER m set
-	 	<if test="status != null  ">
+		update WEBPORTAL_DB_USER m set
+		<if test="status != null  ">
 			m.STATUS=#{status}
 		</if>
 		where m.ID = #{id}
 	</update>
 	<update id="updateDescnByUsername" parameterType="DbUser">
-	 update WEBPORTAL_DB_USER
-		 <set>
-		 	<if test="descn != null">
+		update WEBPORTAL_DB_USER
+		<set>
+			<if test="descn != null">
 				DESCN=#{descn}
 			</if>
-	 	</set>
+		</set>
 		where USERNAME = #{username} and DB_ID = #{dbId}
 	</update>
-</mapper>   
+</mapper>
