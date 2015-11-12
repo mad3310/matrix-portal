@@ -1,11 +1,13 @@
 package com.letv.portal.controller.clouddb;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.portal.model.ContainerModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,8 @@ import com.letv.portal.service.adminoplog.AoLog;
 import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
-@ClassAoLog(module="手动API")
 @Controller
+@ClassAoLog(ignore = true)
 @RequestMapping("/manualApi")
 public class ManualApiController {
 	
@@ -55,8 +57,7 @@ public class ManualApiController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(ManualApiController.class);
 	
-	@AoLog(desc="删除集群zabbix监控",type=AoLogType.DELETE)
-	@RequestMapping(value = "/V1/zabbix/{mclusterName}", method=RequestMethod.DELETE) 
+	@RequestMapping(value = "/V1/zabbix/{mclusterName}", method=RequestMethod.DELETE)
 	public @ResponseBody ResultObject rmZabbix(@PathVariable String mclusterName,ResultObject result) {
 		 List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
 		 if(mclusters.isEmpty())
@@ -70,8 +71,7 @@ public class ManualApiController {
 	     result.getMsgs().add("集群监控删除成功");
 	     return result;
 	}
-	@AoLog(desc="添加集群zabbix监控",type=AoLogType.INSERT)
-	@RequestMapping(value = "/V1/zabbix", method=RequestMethod.POST) 
+	@RequestMapping(value = "/V1/zabbix", method=RequestMethod.POST)
 	public @ResponseBody ResultObject addZabbix(@RequestParam String mclusterName,ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
 		if(mclusters.isEmpty())
@@ -90,8 +90,7 @@ public class ManualApiController {
 		return result;
 	}
 	
-	@AoLog(desc="删除集群固资信息",type=AoLogType.DELETE)
-	@RequestMapping(value = "/V1/fixed/{mclusterName}", method=RequestMethod.DELETE) 
+	@RequestMapping(value = "/V1/fixed/{mclusterName}", method=RequestMethod.DELETE)
 	public @ResponseBody ResultObject rmFixed(@PathVariable String mclusterName,ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
 		if(mclusters.isEmpty())
@@ -105,8 +104,7 @@ public class ManualApiController {
 		result.getMsgs().add("集群固资信息删除成功");
 		return result;
 	}
-	@AoLog(desc="删除集群固资信息",type=AoLogType.DELETE)
-	@RequestMapping(value = "/V1/fixed", method=RequestMethod.DELETE) 
+	@RequestMapping(value = "/V1/fixed", method=RequestMethod.DELETE)
 	public @ResponseBody ResultObject rmFixed(ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
 		int sum = 0;
@@ -128,8 +126,7 @@ public class ManualApiController {
 		result.getMsgs().add("delete mcluster fail:" + fail);
 		return result;
 	}
-	@AoLog(desc="创建集群固资信息",type=AoLogType.INSERT)
-	@RequestMapping(value = "/V1/fixed", method=RequestMethod.POST) 
+	@RequestMapping(value = "/V1/fixed", method=RequestMethod.POST)
 	public @ResponseBody ResultObject addFixed(@RequestParam  String mclusterName,ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
 		if(mclusters.isEmpty())
@@ -147,8 +144,23 @@ public class ManualApiController {
 		}
 		return result;
 	}
-	@AoLog(desc="同步集群固资信息",type=AoLogType.SYNC)
-	@RequestMapping(value = "/V1/fixed/syncAll", method=RequestMethod.POST) 
+    @RequestMapping(value = "/V1/fixed/byDetail", method=RequestMethod.POST)
+	public @ResponseBody ResultObject addFixedByDetail(@RequestParam(required = true)  String ip,@RequestParam(required = true)String name,@RequestParam(required = true)String hostIp,ResultObject result) {
+		List<ContainerModel> containers = new ArrayList<ContainerModel>();
+		ContainerModel containerModel = new ContainerModel();
+		containerModel.setIpAddr(ip);
+		containerModel.setContainerName(name);
+		containerModel.setHostIp(hostIp);
+        containers.add(containerModel);
+		boolean addResult = this.fixedPushService.createMutilContainerPushFixedInfo(containers);
+		if(addResult) {
+			result.getMsgs().add("集群固资信息创建成功");
+		} else {
+			result.getMsgs().add("集群固资信息创建失败");
+		}
+		return result;
+	}
+	@RequestMapping(value = "/V1/fixed/syncAll", method=RequestMethod.POST)
 	public @ResponseBody ResultObject syncAll(ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
 		int sum = 0;
@@ -188,8 +200,7 @@ public class ManualApiController {
 		result.getMsgs().add("add mcluster fail:" + fail);
 		return result;
 	}
-	@AoLog(desc="同步集群zabbix监控",type=AoLogType.SYNC)
-	@RequestMapping(value = "/V1/zabbix/syncAll", method=RequestMethod.POST) 
+	@RequestMapping(value = "/V1/zabbix/syncAll", method=RequestMethod.POST)
 	public @ResponseBody ResultObject syncAllZabbix(ResultObject result) {
 		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
 		int sum = 0;
