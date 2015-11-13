@@ -4,10 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.HostModel;
-import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.*;
 import com.letv.portal.model.monitor.BaseMonitor;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.model.swift.SwiftServer;
@@ -110,7 +107,7 @@ public interface IBuildTaskService {
 	 * Description: 检查container集群数量一致性<br>
 	 * @author name: liuhao1
 	 */
-	public void checkMclusterCount();
+	public void checkMclusterCount(HclusterModel hcluster);
     /**
      * Methods Name: getMonitorData <br>
      * Description: 获得集群的监控数据<br>

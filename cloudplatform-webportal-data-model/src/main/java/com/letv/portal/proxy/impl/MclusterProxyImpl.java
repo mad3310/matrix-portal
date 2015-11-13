@@ -1,7 +1,11 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +23,6 @@ import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
-import com.letv.portal.service.IBaseService;
-import com.letv.portal.service.IBuildService;
-import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IDbService;
-import com.letv.portal.service.IMclusterService;
 
 /**Program Name: MclusterServiceImpl <br>
  * Description:  <br>
@@ -47,9 +46,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
-	private IDbService dbService;
-	@Autowired
-	private IBuildService buildService;
+	private IHclusterService hclusterService;
 	@Autowired
 	private IPythonService pythonService;
 	
@@ -111,9 +108,16 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	
 	@Override
 	public void checkCount() {
-		this.buildTaskService.checkMclusterCount();
+        List<HclusterModel> rdsHcluster = this.getRdsHcluster();
+        for (HclusterModel hcluster : rdsHcluster) {
+            this.buildTaskService.checkMclusterCount(hcluster);
+        }
 	}
-
+    private List<HclusterModel>getRdsHcluster() {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("type", "rds");
+        return this.hclusterService.selectByMap(params);
+    }
 	@Override
 	public void restartDb(Long mclusterId) {
 		if(mclusterId == null) 
