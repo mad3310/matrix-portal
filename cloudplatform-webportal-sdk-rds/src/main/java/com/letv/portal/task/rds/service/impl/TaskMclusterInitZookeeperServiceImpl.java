@@ -69,7 +69,7 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
 				break;
 			} else {
-				container.setZabbixHosts(zks.get(i).getIp());
+				container.setZookeeperIp(zks.get(i).getIp());
 				this.containerService.updateBySelective(container);
 			}
 		}

@@ -10,6 +10,7 @@
 		<result column="CONTAINER_NAME" property="containerName" />
 		<result column="MOUNT_DIR" property="mountDir" />
 		<result column="ZOOKEEPER_ID" property="zookeeperId" />
+		<result column="ZOOKEEPER_IP" property="zookeeperIp" />
 		<result column="IP_ADDR" property="ipAddr" />
 		<result column="GATE_ADDR" property="gateAddr" />
 		<result column="IP_MASK" property="ipMask" />
@@ -52,7 +53,7 @@
 	
 	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
-		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,C.ZABBIXHOSTS,
+		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.ZOOKEEPER_IP,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,C.ZABBIXHOSTS,
 		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.HOST_IP,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
@@ -77,6 +78,9 @@
 			<if test="zookeeperId != null ">
 				and C.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
+			<if test="zookeeperIp != null ">
+				and C.ZOOKEEPER_IP=#{zookeeperIp}
+			</if>
 			<if test="zabbixHosts != null ">
 				and C.ZABBIXHOSTS=#{zabbixHosts}
 			</if>
@@ -86,17 +90,17 @@
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_CONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,ZOOKEEPER_IP,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
+		(#{containerName},#{mountDir},#{zookeeperId},#{zookeeperIp},#{ipAddr},#{gateAddr},#{ipMask},
 		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Container">
 		update WEBPORTAL_CONTAINER set
-		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
+		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},ZOOKEEPER_IP=#{zookeeperIp},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
 		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},MCLUSTER_ID=#{mclusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
@@ -127,6 +131,9 @@
 			</if>
 			<if test="zookeeperId != null  ">
 				ZOOKEEPER_ID=#{zookeeperId},
+			</if>
+			<if test="zookeeperIp != null  ">
+				ZOOKEEPER_IP=#{zookeeperIp},
 			</if>
 			<if test="ipAddr != null  ">
 				IP_ADDR=#{ipAddr},
@@ -256,6 +263,9 @@
 		<if test="zookeeperId != null ">
 			and C.ZOOKEEPER_ID=#{zookeeperId}
 		</if>
+		<if test="zookeeperIp != null ">
+			and C.ZOOKEEPER_IP=#{zookeeperIp}
+		</if>
 		<if test="status != null and status != '' ">
 				and C.STATUS=#{status}
 		</if>
@@ -352,6 +362,9 @@
 			</if>
 			<if test="params !=null and params.zookeeperId != null ">
 				and C.ZOOKEEPER_ID=#{params.zookeeperId}
+			</if>
+			<if test="params !=null and params.zookeeperIp != null ">
+				and C.ZOOKEEPER_IP=#{params.zookeeperIp}
 			</if>
 			<if test="params !=null and params.status != null and params.status != '' ">
 				and C.STATUS=#{params.status}

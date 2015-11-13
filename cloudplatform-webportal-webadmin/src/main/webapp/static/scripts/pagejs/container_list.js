@@ -123,9 +123,9 @@ function queryByPage() {
 				var td6 = $("<td>"
 						+ array[i].hostIp
 						+ "</td>");
-				if(array[i].zabbixHosts != null){
+				if(array[i].zookeeperIp != null){
 					var	td10 = $("<td class='hidden-480'>"
-							+ array[i].zabbixHosts
+							+ array[i].zookeeperIp
 							+ "</td>");
 				}else{
 					var	td10 = $("<td class='hidden-480'>"

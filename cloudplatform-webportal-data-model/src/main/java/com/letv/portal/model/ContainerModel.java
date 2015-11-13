@@ -21,6 +21,7 @@ public class ContainerModel extends BaseModel {
 	private String containerName; //节点名称  
 	private String mountDir; //挂载路径
 	private String zookeeperId;
+	private String zookeeperIp;
 	private String ipAddr; //节点ip  
 	private String gateAddr; //网关
 	private String ipMask; //子网掩码
@@ -242,4 +243,11 @@ public class ContainerModel extends BaseModel {
 		this.serviceType = serviceType;
 	}
 
+    public String getZookeeperIp() {
+        return zookeeperIp;
+    }
+
+    public void setZookeeperIp(String zookeeperIp) {
+        this.zookeeperIp = zookeeperIp;
+    }
 }
