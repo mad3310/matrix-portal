@@ -214,7 +214,13 @@
 				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 	</select>
-
+	<select id="selectCountByStatus" resultType="java.lang.Integer"
+			parameterType="java.lang.Integer">
+		select count(1) from WEBPORTAL_CBASE_BUCKET M
+		<if test="_parameter != null">
+			where STATUS = #{_parameter}
+		</if>
+	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">

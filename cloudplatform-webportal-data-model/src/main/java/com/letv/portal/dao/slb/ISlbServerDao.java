@@ -5,4 +5,5 @@ import com.letv.portal.model.slb.SlbServer;
 
 public interface ISlbServerDao extends IBaseDao<SlbServer> {
 
+    Integer selectCountByStatus(Integer _parameter);
 }

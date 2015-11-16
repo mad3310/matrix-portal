@@ -5,4 +5,5 @@ import com.letv.portal.model.swift.SwiftServer;
 
 public interface ISwiftServerDao extends IBaseDao<SwiftServer> {
 
+    Integer selectCountByStatus(Integer _parameter);
 }

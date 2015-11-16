@@ -56,5 +56,6 @@ public interface IHostService extends IBaseService<HostModel> {
 	
 	
 	public HostModel getHostByHclusterId(Long hclusterId);
-	
+
+	Integer selectCountByHclusterType(String rds);
 }

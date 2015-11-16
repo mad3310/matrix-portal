@@ -12,4 +12,5 @@ public interface ICbaseClusterService extends IBaseService<CbaseClusterModel> {
 	public void asyncClusterCount(Map<String,Object> mm,HclusterModel hcluster);
 	List<CbaseClusterModel> selectByName(String clusterName);
 
+	public Integer selectValidClusterCount();
 }

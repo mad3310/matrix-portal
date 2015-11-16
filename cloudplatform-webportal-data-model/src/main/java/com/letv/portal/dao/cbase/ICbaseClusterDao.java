@@ -9,4 +9,5 @@ public interface ICbaseClusterDao extends IBaseDao<CbaseClusterModel> {
 
 	List<CbaseClusterModel> selectByName(String clusterName);
 
+	Integer selectValidClusterCount();
 }

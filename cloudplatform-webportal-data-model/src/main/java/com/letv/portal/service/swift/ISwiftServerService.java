@@ -5,4 +5,5 @@ import com.letv.portal.service.IBaseService;
 
 public interface ISwiftServerService extends IBaseService<SwiftServer> {
 
+    Integer selectCountByStatus(Integer value);
 }

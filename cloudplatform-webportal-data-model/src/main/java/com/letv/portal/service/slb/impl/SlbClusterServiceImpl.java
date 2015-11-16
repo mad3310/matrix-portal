@@ -75,7 +75,12 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 			addOrUpdateContainer(mm,cluster);
 		}
 	}
-	
+
+	@Override
+	public Integer selectValidClusterCount() {
+		return this.slbClusterDao.selectValidClusterCount();
+	}
+
 	private void addOrUpdateContainer(Map<String,Object> mm,SlbCluster cluster) {
 		List<Map<String,Object>> cms = (List<Map<String,Object>>) mm.get("nodeInfo");
 		for (Map<String,Object> cm : cms) {

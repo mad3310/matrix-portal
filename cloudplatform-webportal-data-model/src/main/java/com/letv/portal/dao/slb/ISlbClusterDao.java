@@ -10,4 +10,5 @@ public interface ISlbClusterDao extends IBaseDao<SlbCluster> {
 
 	List<SlbCluster> selectByName(String clusterName);
 
+	Integer selectValidClusterCount();
 }

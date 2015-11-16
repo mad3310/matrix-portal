@@ -120,4 +120,9 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		this.slbServerDao.updateBySelective(slbServer);
 	}
 
+	@Override
+	public Integer selectCountByStatus(Integer value) {
+		return this.slbServerDao.selectCountByStatus(value);
+	}
+
 }

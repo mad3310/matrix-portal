@@ -195,7 +195,11 @@
 		select count(1) from WEBPORTAL_HOST m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+	<select id="selectCountByHclusterType" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1) from WEBPORTAL_HOST m JOIN WEBPORTAL_HCLUSTER H  ON  m.HCLUSTER_ID=H.ID and H.TYPE like CONCAT('%','${_parameter}','%') escape '^'
+	</select>
+
    <!-- 修改 -->
 	<update id="update" parameterType="Host">
 		update WEBPORTAL_HOST m set

@@ -100,4 +100,9 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		map.put("type", HostType.MASTER.getValue());
 		return this.selectByMap(map).get(0);
 	}
+
+	@Override
+	public Integer selectCountByHclusterType(String type) {
+		return this.hostDao.selectCountByHclusterType(type);
+	}
 }

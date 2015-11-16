@@ -54,6 +54,11 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 	}
 
 	@Override
+	public Integer selectValidClusterCount() {
+		return this.cbaseClusterDao.selectValidClusterCount();
+	}
+
+	@Override
 	public void asyncClusterCount(Map<String,Object> mm,HclusterModel hcluster) {
 		String clusterName = (String) mm.get("clusterName");
 		if(StringUtils.isEmpty(clusterName))

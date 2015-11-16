@@ -10,4 +10,6 @@ public interface ISlbServerService extends IBaseService<SlbServer> {
 
 	Map<String, Object> save(SlbServer slbServer);
 	void updateSlbStatusById(Long id, SlbStatus status);
+
+	Integer selectCountByStatus(Integer value);
 }

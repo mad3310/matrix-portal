@@ -28,5 +28,9 @@ public class SwiftServerServiceImpl extends BaseServiceImpl<SwiftServer> impleme
 	public IBaseDao<SwiftServer> getDao() {
 		return this.swiftServerDao;
 	}
-	
+
+	@Override
+	public Integer selectCountByStatus(Integer value) {
+		return this.swiftServerDao.selectCountByStatus(value);
+	}
 }

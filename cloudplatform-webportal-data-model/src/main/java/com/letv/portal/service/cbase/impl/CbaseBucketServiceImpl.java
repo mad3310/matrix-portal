@@ -139,4 +139,9 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		return moxiParams;
 	}
 
+	@Override
+	public Integer selectCountByStatus(Integer value) {
+		return this.cbaseBucketDao.selectCountByStatus(value);
+	}
+
 }

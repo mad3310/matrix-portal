@@ -8,6 +8,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.letv.portal.enumeration.*;
+import com.letv.portal.model.swift.SwiftServer;
+import com.letv.portal.service.cbase.ICbaseClusterService;
+import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.slb.ISlbClusterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +21,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.enumeration.DbStatus;
-import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -58,8 +61,6 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 	@Autowired
 	private IBuildTaskService buildTaskService;
 	@Autowired
-	private IContainerProxy containerProxy;
-	@Autowired
 	private IMonitorService monitorService;
 	@Autowired
 	private ISlbServerService slbServerService;
@@ -78,14 +79,49 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
 
-	@Override
+    @Autowired
+    private IGceClusterService gceClusterService;
+    @Autowired
+    private ISlbClusterService slbClusterService;
+    @Autowired
+    private ICbaseClusterService cbaseClusterService;
+
+    @Override
 	public Map<String, Integer> selectManagerResource() {
 		Map<String, Integer> statistics = new HashMap<String, Integer>();
-		statistics.put("db", this.dbService.selectCountByStatus(DbStatus.NORMAL.getValue()));
-		statistics.put("mcluster", this.mclusterService.selectValidMclusterCount());
-		statistics.put("hcluster", this.hclusterService.selectByMapCount(null));
-		statistics.put("host", this.hostService.selectByMapCount(null));
-		statistics.put("dbAudit", this.dbService.selectCountByStatus(DbStatus.DEFAULT.getValue()));
+		statistics.put("db_hclusterSum", this.hclusterService.selectCountByType("RDS"));
+        statistics.put("gce_hclusterSum", this.hclusterService.selectCountByType("GCE"));
+        statistics.put("slb_hclusterSum", this.hclusterService.selectCountByType("SLB"));
+        statistics.put("ocs_hclusterSum", this.hclusterService.selectCountByType("CBASE"));
+        statistics.put("oss_hclusterSum", this.hclusterService.selectCountByType("OSS"));
+
+        statistics.put("db_hostSum", this.hostService.selectCountByHclusterType("RDS"));
+        statistics.put("gce_hostSum", this.hostService.selectCountByHclusterType("GCE"));
+        statistics.put("slb_hostSum", this.hostService.selectCountByHclusterType("SLB"));
+        statistics.put("ocs_hostSum", this.hostService.selectCountByHclusterType("CBASE"));
+        statistics.put("oss_hostSum", this.hostService.selectCountByHclusterType("OSS"));
+
+        statistics.put("db_clusterSum", this.mclusterService.selectValidMclusterCount());
+        statistics.put("gce_clusterSum", this.gceClusterService.selectValidClusterCount());
+        statistics.put("slb_clusterSum", this.slbClusterService.selectValidClusterCount());
+        statistics.put("ocs_clusterSum", this.cbaseClusterService.selectValidClusterCount());
+
+        statistics.put("db_dbSum", this.dbService.selectCountByStatus(DbStatus.NORMAL.getValue()));
+        statistics.put("db_unauditeDbSum", this.dbService.selectCountByStatus(DbStatus.DEFAULT.getValue()));
+
+        statistics.put("gce_gceSum", this.gceServerService.selectCountByStatus(GceStatus.NORMAL.getValue()));
+        statistics.put("gce_unauditeGceSum", this.gceServerService.selectCountByStatus(GceStatus.DEFAULT.getValue()));
+
+        statistics.put("slb_slbSum", this.slbServerService.selectCountByStatus(SlbStatus.NORMAL.getValue()));
+        statistics.put("slb_unauditeSlbSum", this.slbServerService.selectCountByStatus(SlbStatus.DEFAULT.getValue()));
+
+        statistics.put("ocs_ocsSum", this.cbaseBucketService.selectCountByStatus(CbaseBucketStatus.NORMAL.getValue()));
+        statistics.put("ocs_unauditeOcsSum", this.cbaseBucketService.selectCountByStatus(CbaseBucketStatus.DEFAULT.getValue()));
+
+        statistics.put("oss_clusterSum", this.swiftServerService.selectCountByStatus(DbStatus.NORMAL.getValue()));
+        statistics.put("oss_ossSum", this.swiftServerService.selectCountByStatus(DbStatus.NORMAL.getValue()));
+		statistics.put("oss_unauditeOssSum", this.swiftServerService.selectCountByStatus(DbStatus.DEFAULT.getValue()));
+
 		return statistics;
 	}
 	

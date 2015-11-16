@@ -200,5 +200,10 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	public GceServerExt selectByGceServerId(Long gceServerId) {
 		return this.gceServerExtDao.selectByGceServerId(gceServerId);
 	}
-	
+
+	@Override
+	public Integer selectCountByStatus(Integer value) {
+		return this.gceServerDao.selectCountByStatus(value);
+	}
+
 }

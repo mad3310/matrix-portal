@@ -31,4 +31,6 @@ public interface IHclusterService extends IBaseService<HclusterModel> {
 	public List<HclusterModel> isExistHostOnHcluster(Map<String,Object> map);
 	public List<HclusterModel> selectHclusterByStatus(HclusterModel hclusterModel);
 	public void updateStatus(HclusterModel hclusterModel);
+
+	Integer selectCountByType(String rds);
 }

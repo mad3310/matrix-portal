@@ -11,4 +11,5 @@ public interface IGceServerDao extends IBaseDao<GceServer> {
 
 	GceServer selectByClusterId(Long clusterId);
 
+	Integer selectCountByStatus(Integer _parameter);
 }

@@ -24,4 +24,6 @@ public interface IGceServerService extends IBaseService<GceServer> {
 	GceServer selectByClusterId(Long clusterId);
 	
 	GceServerExt selectByGceServerId(Long gceServerId);
+
+	Integer selectCountByStatus(Integer value);
 }

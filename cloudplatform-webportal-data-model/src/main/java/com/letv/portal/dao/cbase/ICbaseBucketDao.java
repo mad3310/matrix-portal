@@ -10,4 +10,6 @@ public interface ICbaseBucketDao extends IBaseDao<CbaseBucketModel> {
 
 	public List<CbaseBucketModel> selectByBucketNameForValidate(
 			HashMap<String, Object> params);
+
+	Integer selectCountByStatus(Integer _parameter);
 }

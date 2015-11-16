@@ -67,4 +67,9 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 	public void updateStatus(HclusterModel hclusterModel){
 		this.hclusterDao.update(hclusterModel);
 	}
+
+	@Override
+	public Integer selectCountByType(String type) {
+		return this.hclusterDao.selectCountByType(type);
+	}
 }

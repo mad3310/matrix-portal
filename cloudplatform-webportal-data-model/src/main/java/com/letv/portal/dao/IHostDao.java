@@ -20,4 +20,5 @@ public interface IHostDao extends IBaseDao<HostModel> {
 	public List<HostModel> selectByNameOrIp(Map<String,String> map);
 	public HostModel selectByIp(String hostIp);
 	public List<HostModel> isExistContainerOnHost(HostModel hostModel);
+	public Integer selectCountByHclusterType(String _parameter);
 }

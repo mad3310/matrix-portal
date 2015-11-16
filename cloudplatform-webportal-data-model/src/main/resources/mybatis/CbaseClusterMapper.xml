@@ -170,6 +170,11 @@
 				and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 	</select>
+	<select id="selectValidClusterCount" resultType="java.lang.Integer">
+		select
+		count(1)
+		from WEBPORTAL_CBASECLUSTER_INFO C where C.STATUS IN(1,7,8,9,13,14)
+	</select>
 
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">

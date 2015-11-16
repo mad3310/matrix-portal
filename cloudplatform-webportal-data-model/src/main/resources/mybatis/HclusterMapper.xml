@@ -199,7 +199,11 @@
 		select count(1) from WEBPORTAL_HCLUSTER m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+	<select id="selectCountByType" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1) from WEBPORTAL_HCLUSTER m where m.TYPE like CONCAT('%','${_parameter}','%') escape '^'
+	</select>
+
    <!-- 修改 -->
 	<update id="update" parameterType="Hcluster">
 		update WEBPORTAL_HCLUSTER m set

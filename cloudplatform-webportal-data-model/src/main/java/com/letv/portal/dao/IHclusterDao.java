@@ -20,4 +20,5 @@ public interface IHclusterDao extends IBaseDao<HclusterModel> {
 	public HclusterModel selectHclusterById(Long hclusterId);
 	public List<HclusterModel> selectHclusterByStatus(HclusterModel hclusterModel);
 	public void updateStatus(HclusterModel hclusterModel);
+	public Integer selectCountByType(String _parameter);
 }

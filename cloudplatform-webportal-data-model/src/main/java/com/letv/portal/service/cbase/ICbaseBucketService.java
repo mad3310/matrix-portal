@@ -18,4 +18,5 @@ public interface ICbaseBucketService extends IBaseService<CbaseBucketModel> {
 	
 	public Map<String, Object> getMoxiConfig(Long cacheId);
 
+	Integer selectCountByStatus(Integer value);
 }

@@ -14,4 +14,6 @@ public interface IGceClusterService extends IBaseService<GceCluster> {
 	List<GceCluster> selectByName(String clusterName);
 
 	void asyncClusterCount(Map<String,Object> mm,HclusterModel hcluster);
+
+	public Integer selectValidClusterCount();
 }
