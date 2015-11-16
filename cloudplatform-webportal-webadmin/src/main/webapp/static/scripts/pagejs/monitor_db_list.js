@@ -27,12 +27,12 @@
 					$(this).parent().remove();
 					queryMclusterMonitor();
 					if($('.queryBadge').length<=0){
-						$('.queryOption').find('.widget-title').html('container集群监控列表');
+						$('.queryOption').find('.widget-title').html('数据库预警列表');
 					}
 					return;
 				});
 			}else{
-				$('.queryOption').find('.widget-title').html('container集群监控列表');
+				$('.queryOption').find('.widget-title').html('数据库预警列表');
 			}
 
 		}

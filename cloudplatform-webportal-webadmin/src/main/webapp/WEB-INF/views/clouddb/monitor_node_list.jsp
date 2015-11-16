@@ -17,7 +17,7 @@
 	<div class="row">
 	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
 		<div class="widget-header hidden-md hidden-lg">
-			<h5 class="widget-title">查询条件</h5>
+			<h5 class="widget-title">节点预警查询条件</h5>
 			<div class="widget-toolbar">
 				<a href="#" data-action="collapse">
 					<i class="ace-icon fa fa-chevron-down"></i>
@@ -127,7 +127,7 @@
 
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">container集群监控列表</h5>
+				<h5 class="widget-title">节点预警列表</h5>
 			</div>
 			<div class="widget-body">
 				<div class="widget-main no-padding">
@@ -153,7 +153,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-12">
-			<small><font color="gray">*注：监控数据每分钟刷新一次.</font></small>
+			<small><font color="gray">*注：预警数据每分钟刷新一次.</font></small>
 		</div>
 
 	</div>

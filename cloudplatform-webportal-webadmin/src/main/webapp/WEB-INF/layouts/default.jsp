@@ -241,27 +241,33 @@
 	var path = window.location.pathname;
 	var cookie_skin;
 	var mySkin="mySkin";
-	if(path.indexOf("/list/mcluster/monitor/1") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 1)){
-		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+	if(path.indexOf("/list/mcluster/monitorView") >= 0){
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
 		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#main-content-header li:eq(1)').html("cluster监控列表");
+		$('#main-content-header li:eq(1)').html("预警数据总览");
+	}else if(path.indexOf("/list/mcluster/monitor/1") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 1)){
+		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#sidebar-rds-mgr').addClass("active open hsub");
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#main-content-header li:eq(1)').html("集群预警列表");
 	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 2)){
 		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:eq(1)').html("node监控列表");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:eq(1)').html("节点预警列表");
 	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 3)){
 		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
-		$('#main-content-header li:eq(1)').html("db监控列表");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(3)').addClass("active");
+		$('#main-content-header li:eq(1)').html("数据库预警列表");
 	}else if(path.indexOf("/dashboard") >= 0){
 		$('#sidebar-dashboard').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
