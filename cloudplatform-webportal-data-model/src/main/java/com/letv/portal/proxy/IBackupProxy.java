@@ -23,7 +23,7 @@ public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 	 * Description: 数据库全量备份 <br>
 	 * @author name: liuhao1
 	 */
-	public void wholeBackup4Db(MclusterModel mcluster);
+	public void wholeBackup4Db(MclusterModel mcluster) throws Exception;
 
 	
 	/**Methods Name: checkBackupStatus <br>

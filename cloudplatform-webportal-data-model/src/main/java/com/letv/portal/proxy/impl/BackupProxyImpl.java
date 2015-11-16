@@ -1,15 +1,9 @@
 package com.letv.portal.proxy.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import com.letv.common.exception.CommonException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,33 +86,32 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private void backupByHcluster(int count,HclusterModel hcluster) {
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("hclusterId", hcluster.getId());
-		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count,params);
-		
-		while(mclusters != null && !mclusters.isEmpty()) {
-			for (MclusterModel mclusterModel : mclusters) {
-				//进行备份。
-				this.wholeBackup4Db(mclusterModel);
-			}
-			try {
+
+        List<MclusterModel> mclusters = this.mclusterService.selectValidMclustersByMap(params);
+        List<MclusterModel> backups = new ArrayList<MclusterModel>();
+
+        while(mclusters != null && !mclusters.isEmpty()) {
+            try {
+                for (int i = 0;i<count;i++) {
+                    if(null == mclusters.get(i)) {
+                        break;
+                    }
+                    backups.add(mclusters.get(i));
+                    this.wholeBackup4Db(mclusters.get(i));
+                }
+                mclusters.removeAll(backups);
+                backups.clear();
+
 				Thread.sleep(DB_BACKUP_INTERVAL_TIME);
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
+                logger.error("db backup exception:{}",e.getMessage());
+                throw new CommonException("db backup exception:{"+e.getMessage()+"}");
 			}
-			mclusters = this.addBackupMcluster(null,hcluster.getId(), count);
 		}
 	}
 	
-	private List<MclusterModel> addBackupMcluster(Long mclusterId,Long hclusterId,int addNewCount) {
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.clear();
-		params.put("hclusterId", hclusterId);
-		BackupResultModel recentBackup = this.selectRecentBackup(params);
-		if(recentBackup == null)
-			return null;
-		return  this.mclusterService.selectNextValidMclusterById(null == mclusterId?recentBackup.getMclusterId():mclusterId, hclusterId,addNewCount);
-	}
-
 	@Override
-	public void wholeBackup4Db(MclusterModel mcluster) {
+	public void wholeBackup4Db(MclusterModel mcluster) throws Exception {
 		Date date = new Date();
 		if(mcluster == null)
 			return;
@@ -230,18 +223,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		return backup;
 	}
 	
-	
-	private BackupResultModel selectRecentBackup(Map<String,Object> params) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Calendar curDate = Calendar.getInstance();
-		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
-		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
-		List<BackupResultModel> results = this.backupService.selectByStatusAndDateOrderByMclusterId(params);
-		if(results.isEmpty())
-			return null;
-		return results.get(0);
-	}
-
 	private void sendBackupFaildNotice(String dbName,String mclusterName,String resultDetail,Date startTime,String backupIp) {
 		logger.info("check backup faild:send email--" + dbName + mclusterName);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
