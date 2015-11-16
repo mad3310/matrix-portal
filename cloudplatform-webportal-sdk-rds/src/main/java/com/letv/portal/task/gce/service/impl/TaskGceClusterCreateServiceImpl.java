@@ -57,8 +57,11 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("dictionaryName", "GCE");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
-		if(images != null && images.size()>2)
-			throw new ValidateException("get two Image had many result, params :" + map.toString());
+		if(images == null || images.size()>2) {
+			tr.setResult("get two Image had many result, params :" + map.toString());
+            tr.setSuccess(false);
+			return tr;
+		}
 		String nginxImage = null;
 		String jettyImage = null;
 		for (Image image : images) {
@@ -73,7 +76,7 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("containerClusterName", gceCluster.getClusterName());
 		map.put("componentType", gceType.toString().toLowerCase());
 		map.put("image", gceServer.getGceImageName());
-		map.put("networkMode", "bridge");
+		map.put("networkMode", "ip");
 		map.put("memory",gceServer.getMemorySize()!=null?String.valueOf(gceServer.getMemorySize()):CONTAINER_MEMORY_SIZE);
 		if(StringUtils.isEmpty(gceServer.getGceImageName())) {
 			if(isNginx) {
