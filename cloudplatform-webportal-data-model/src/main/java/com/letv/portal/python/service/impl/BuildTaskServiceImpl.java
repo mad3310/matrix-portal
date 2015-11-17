@@ -244,7 +244,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         this.buildService.updateByStep(buildModel);
         BuildModel nextBuild = new BuildModel();
         nextBuild.setMclusterId(mclusterId);
-        nextBuild.setStep(step+1);
+        nextBuild.setStep(step + 1);
         nextBuild.setStartTime(new Date());
         nextBuild.setStatus(BuildStatus.BUILDING.getValue());
         this.buildService.updateByStep(nextBuild);
@@ -331,7 +331,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
             Map<String, Object>  listsHashMap = (Map<String, Object>)listNode.get(keString);
             NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
             nodeMonitorModel.setMonitorName(keString.toString());
-            nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
+            nodeMonitorModel.setMessage(listsHashMap.get("message") != null ? listsHashMap.get("message").toString() : "");
             nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
             if("sms:email".equals(listsHashMap.get("alarm").toString())){
                 type=MonitorStatus.GENERAL.getValue().toString();
@@ -339,7 +339,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 type=MonitorStatus.SERIOUS.getValue().toString();
             }
             nodeMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
-            nodeMonitorModel.setCtime(listsHashMap.get("ctime")!=null?listsHashMap.get("ctime").toString():"");
+            nodeMonitorModel.setCtime(listsHashMap.get("ctime") != null ? listsHashMap.get("ctime").toString() : "");
             nodeMoList.add(nodeMonitorModel);
         }
         for(Iterator it =  listDb.keySet().iterator();it.hasNext();){
@@ -483,9 +483,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Async
     public void startMcluster(MclusterModel mcluster) {
         HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-        ApiResultObject result = this.pythonService.startMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+        ApiResultObject result = this.pythonService.startMcluster(mcluster.getMclusterName(), host.getHostIp(), host.getName(), host.getPassword());
         if(analysisResult(transResult(result.getResult()))) {
-            this.pythonService.startMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
+            this.pythonService.startMcluster(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
         }else {
             throw new PythonException("集群启动失败：" + result.getUrl());
         }
@@ -495,7 +495,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Async
     public void stopMcluster(MclusterModel mcluster) {
         HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-        ApiResultObject result = this.pythonService.stopMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+        ApiResultObject result = this.pythonService.stopMcluster(mcluster.getMclusterName(), host.getHostIp(), host.getName(), host.getPassword());
         if(analysisResult(transResult(result.getResult()))) {
             this.pythonService.stopMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
         } else {
@@ -508,7 +508,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Async
     public void startContainer(ContainerModel container) {
         HostModel host = this.hostService.selectById(container.getHostId());
-        ApiResultObject result = this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+        ApiResultObject result = this.pythonService.startContainer(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
         if(!analysisResult(transResult(result.getResult())))  {
             throw new PythonException("container启动失败：" + result.getUrl());
         }
@@ -518,7 +518,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Async
     public void stopContainer(ContainerModel container) {
         HostModel host = this.hostService.selectById(container.getHostId());
-        ApiResultObject result = this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+        ApiResultObject result = this.pythonService.stopContainer(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
         if(!analysisResult(transResult(result.getResult())))  {
             throw new PythonException("container停止失败：" + result.getUrl());
         }
@@ -531,7 +531,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
         Map map = this.transResult(result);
         if(map.isEmpty()) {
-            mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+            mcluster.setStatus(MclusterStatus.CRISIS.getValue());
             this.mclusterService.updateBySelective(mcluster);
             return;
         }
@@ -556,18 +556,18 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         String resultVip = this.pythonService.checkMclusterStatus(mcluster.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX, host.getHostIp(), host.getName(), host.getPassword());
         Map mapResult = this.transResult(resultVip);
         if(mapResult.isEmpty()) {
-            mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+            mcluster.setStatus(MclusterStatus.CRISIS.getValue());
             this.mclusterService.updateBySelective(mcluster);
             return;
         }
         if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)mapResult.get("meta")).get("code")))) {
             Integer status = transStatus((String)((Map)mapResult.get("response")).get("status"));
-            if(status != MclusterStatus.NORMAL.getValue()) {
-                mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+            if(status != MclusterStatus.RUNNING.getValue()) {
+                mcluster.setStatus(MclusterStatus.CRISIS.getValue());
                 this.mclusterService.updateBySelective(mcluster);
             }
         } else {
-            mcluster.setStatus(MclusterStatus.ABNORMAL.getValue());
+            mcluster.setStatus(MclusterStatus.CRISIS.getValue());
             this.mclusterService.updateBySelective(mcluster);
         }
     }
@@ -579,7 +579,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         String result = this.pythonService.checkContainerStatus(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
         Map map = this.transResult(result);
         if(map.isEmpty()) {
-            container.setStatus(MclusterStatus.ABNORMAL.getValue());
+            container.setStatus(MclusterStatus.CRISIS.getValue());
             this.containerService.updateBySelective(container);
             return;
         }
@@ -608,7 +608,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         } else if("not exist".equals(statusStr)) {
             status = MclusterStatus.NOTEXIT.getValue();
         } else if("failed".equals(statusStr)) {
-            status = MclusterStatus.ABNORMAL.getValue();
+            status = MclusterStatus.CRISIS.getValue();
         } else if("danger".equals(statusStr)) {
             status = MclusterStatus.DANGER.getValue();
         } else if("crisis".equals(statusStr)) {
@@ -700,7 +700,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     private void addHandMcluster(String mclusterName,Map mm,Long hclusterId) {
         MclusterModel mcluster = new MclusterModel();
         mcluster.setMclusterName(mclusterName);
-        mcluster.setStatus(transStatus((String)mm.get("status")));
+        mcluster.setStatus(transStatus((String) mm.get("status")));
         mcluster.setAdminUser("root");
         mcluster.setAdminPassword(mclusterName);
         mcluster.setType(MclusterType.HAND.getValue());
