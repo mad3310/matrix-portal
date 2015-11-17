@@ -177,9 +177,9 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		this.backupService.updateBySelective(backup);
 		
 		if(BackupStatus.FAILD.equals(backup.getStatus())) {
-			logger.info("check backup faild");
+			logger.error("check backup faild");
 			//发送邮件通知
-			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
+//			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
 		}
 	}
 	
