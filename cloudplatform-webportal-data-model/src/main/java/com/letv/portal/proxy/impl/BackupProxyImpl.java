@@ -93,9 +93,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
         while(mclusters != null && !mclusters.isEmpty()) {
             try {
                 for (int i = 0;i<count;i++) {
-                    if(null == mclusters.get(i)) {
+                    if(mclusters.size()<i+1)
                         break;
-                    }
                     backups.add(mclusters.get(i));
                     this.wholeBackup4Db(mclusters.get(i));
                 }
