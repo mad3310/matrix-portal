@@ -106,6 +106,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 				this.buildTaskService.getContainerServiceData(container, index,date);
 			}
 		}
+		contianers.clear();
 		logger.info("collectMclusterServiceData end");
 	}
 	@Override
@@ -126,6 +127,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 				this.buildTaskService.getClusterServiceData(slbCluster.getClusterName(),slbCluster.getHclusterId(), index,date);
 			}
 		}
+        slbClusters.clear();
+        gceClusters.clear();
 		logger.info("collectClusterServiceData end");
 	}
 	@Override
@@ -146,6 +149,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 				this.buildTaskService.getOSSServiceData(host.getHostIp(),key.toString(), index,date);
 			}
 		}
+        swifts.clear();
 	}
 	
 	@Override
