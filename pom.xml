@@ -1019,7 +1019,7 @@
                 <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
 
-                <task.executor.size>150</task.executor.size>
+                <task.executor.size>300</task.executor.size>
 
                 <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
 
