@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.letv.common.exception.CommonException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,17 +101,15 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
                 }
                 mclusters.removeAll(backups);
                 backups.clear();
-
 				Thread.sleep(DB_BACKUP_INTERVAL_TIME);
 			} catch (Exception e) {
                 logger.error("db backup exception:{}",e.getMessage());
-                throw new CommonException("db backup exception:{"+e.getMessage()+"}");
 			}
 		}
 	}
 	
 	@Override
-	public void wholeBackup4Db(MclusterModel mcluster) throws Exception {
+	public void wholeBackup4Db(MclusterModel mcluster) {
 		Date date = new Date();
 		if(mcluster == null)
 			return;
@@ -130,8 +129,13 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			backup.setDbId(dbModel.getId());
 			backup.setBackupIp(container.getIpAddr());
 			backup.setStartTime(date);
-			super.insert(backup);
-		}
+            try {
+                this.backupService.insert(backup);
+            } catch (Exception e) {
+                logger.error("backupService.insert exception:{}",e.getMessage());
+                this.backupService.insert(backup);
+            }
+        }
 	}
 	
 	private BackupResultModel wholeBackup4Db(MclusterModel mcluster,ContainerModel container){
