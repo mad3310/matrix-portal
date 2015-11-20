@@ -68,7 +68,7 @@ public class LogClusterServiceImpl extends BaseServiceImpl<LogCluster> implement
 			this.addHandMcluster(mm,hcluster.getId());
 		} else {
 			LogCluster cluster = list.get(0);
-			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == cluster.getStatus() || MclusterStatus.DEFAULT.getValue() == cluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == cluster.getStatus())
+			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus())
 				return;
 			addOrUpdateContainer(mm,cluster);
 		}
