@@ -125,6 +125,10 @@
 		</set>
 		where ID=#{id}
 	</update>
+
+	<update id="delete" parameterType="GceCluster">
+		delete from WEBPORTAL_GCECLUSTER where ID = #{id}
+	</update>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select

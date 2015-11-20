@@ -5,4 +5,5 @@ import com.letv.portal.model.gce.GceContainerExt;
 
 public interface IGceContainerExtDao extends IBaseDao<GceContainerExt> {
 
+    void deleteByClusterId(Long _parameter);
 }

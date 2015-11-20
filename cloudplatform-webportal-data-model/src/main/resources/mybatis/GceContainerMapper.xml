@@ -196,7 +196,11 @@
 		</set>
 		where ID=#{id}
 	</update>
-	
+
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_GCECONTAINER where GCECLUSTER_ID = #{_parameter}
+	</update>
+
 	<select id="selectContainerByGceClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
 			<include refid="Base_Column_List" />

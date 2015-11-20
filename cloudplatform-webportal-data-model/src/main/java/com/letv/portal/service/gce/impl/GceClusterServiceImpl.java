@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.service.gce.IGceServerService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 	
 	@Resource
 	private IGceClusterDao gceClusterDao;
+    @Resource
+    private IGceServerService gceServerService;
 	@Resource
 	private IGceContainerService gceContainerService;
 	@Resource
@@ -173,4 +176,11 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 		
 	}
 
+    @Override
+    public void delete(GceCluster gceCluster) {
+        this.gceContainerExtService.deleteByClusterId(gceCluster.getId());
+        this.gceContainerService.deleteByClusterId(gceCluster.getId());
+        this.gceServerService.deleteByClusterId(gceCluster.getId());
+        this.gceClusterDao.delete(gceCluster);
+    }
 }

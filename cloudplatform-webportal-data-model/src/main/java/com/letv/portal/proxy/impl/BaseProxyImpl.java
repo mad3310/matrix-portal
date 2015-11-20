@@ -71,5 +71,5 @@ public abstract class BaseProxyImpl<T> implements IBaseProxy<T>{
 	 * @return
 	 */
 	public abstract IBaseService<T> getService();
-	
+
 }

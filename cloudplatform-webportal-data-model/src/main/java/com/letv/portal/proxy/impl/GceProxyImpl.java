@@ -1,27 +1,17 @@
 package com.letv.portal.proxy.impl;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.GceType;
+import com.letv.portal.enumeration.HostType;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.SlbStatus;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
-import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
@@ -30,15 +20,26 @@ import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.python.service.IGcePythonService;
+import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBaseService;
-import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.gce.IGceClusterService;
-import com.letv.portal.service.gce.IGceContainerExtService;
 import com.letv.portal.service.gce.IGceContainerService;
-import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogServerService;
+import com.letv.portal.util.CommonServiceUtils;
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
@@ -50,10 +51,10 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private IGceServerService gceServerService;
 	@Autowired
 	private IGcePythonService gcePythonService;
+    @Autowired
+    private IPythonService pythonService;
 	@Autowired
 	private IGceClusterService gceClusterService;
-	@Autowired
-	private IGceImageService gceImageService;
 	@Autowired
 	private IGceContainerService gceContainerService;
 	@Autowired
@@ -63,15 +64,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	@Autowired
 	private ITaskEngine taskEngine;
 	@Autowired
-	private IHclusterService hclusterService;
-	@Autowired
 	private IHostService hostService;
-	
-	@Autowired
-	private ITemplateMessageSender defaultEmailSender;
-	
-	@Autowired
-	private IGceContainerExtService gceContainerExtService;
 	
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
@@ -276,4 +269,49 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		this.gceServerService.updateBySelective(gce);
 	}
 
+	@Override
+    @Async
+	public void checkStatus() {
+		List<GceCluster> list = this.gceClusterService.selectByMap(null);
+		for (GceCluster cluster : list) {
+			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus())
+				continue;
+			this.checkGceClusterStatus(cluster);
+		}
+        list.clear();
+	}
+
+	private void checkGceClusterStatus(GceCluster cluster) {
+		HostModel host = this.hostService.getHostByHclusterId(cluster.getHclusterId());
+        if(null == host) {
+            cluster.setStatus(MclusterStatus.CRISIS.getValue());
+            this.gceClusterService.updateBySelective(cluster);
+            return;
+        }
+		String result = this.pythonService.checkMclusterStatus(cluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		Map map = CommonServiceUtils.transResult(result);
+		if(map.isEmpty()) {
+			cluster.setStatus(MclusterStatus.CRISIS.getValue());
+			this.gceClusterService.updateBySelective(cluster);
+			return;
+		}
+
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+			Integer status = CommonServiceUtils.transStatus((String) ((Map) map.get("response")).get("status"));
+			cluster.setStatus(status);
+			this.gceClusterService.updateBySelective(cluster);
+			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
+				this.gceClusterService.delete(cluster);
+			}
+            return;
+		}
+
+        if(null !=result && result.contains("not existed")){
+			this.gceClusterService.delete(cluster);
+            return;
+		}
+
+        cluster.setStatus(MclusterStatus.CRISIS.getValue());
+        this.gceClusterService.updateBySelective(cluster);
+	}
 }

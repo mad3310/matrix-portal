@@ -206,4 +206,9 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		return this.gceServerDao.selectCountByStatus(value);
 	}
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.gceServerDao.deleteByClusterId(id);
+	}
+
 }

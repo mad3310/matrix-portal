@@ -42,4 +42,9 @@ public class GceContainerServiceImpl extends BaseServiceImpl<GceContainer> imple
 		return this.gceContainerDao.selectByName(containerName);
 	}
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.gceContainerDao.deleteByClusterId(id);
+	}
+
 }

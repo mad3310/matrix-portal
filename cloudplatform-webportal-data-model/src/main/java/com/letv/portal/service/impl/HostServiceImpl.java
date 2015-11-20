@@ -98,7 +98,10 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("hclusterId", hclusterId);
 		map.put("type", HostType.MASTER.getValue());
-		return this.selectByMap(map).get(0);
+		List<HostModel> hostModels = this.selectByMap(map);
+		if(null == hostModels || hostModels.isEmpty())
+			return null;
+		return hostModels.get(0);
 	}
 
 	@Override

@@ -11,4 +11,6 @@ public interface IGceContainerService extends IBaseService<GceContainer> {
 	public List<GceContainer> selectByGceClusterId(Long gceClusterId);
 
 	public GceContainer selectByName(String containerName);
+
+	void deleteByClusterId(Long id);
 }

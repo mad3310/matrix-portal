@@ -104,6 +104,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 				continue;
 			this.buildTaskService.checkMclusterStatus(mcluster);
 		}
+		list.clear();
 	}
 	
 	@Override

@@ -180,6 +180,9 @@
 	<update id="delete" parameterType="GceServer">
 		delete from WEBPORTAL_GCE where ID = #{id}
 	</update>
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_GCE where GCECLUSTER_ID = #{_parameter}
+	</update>
 	
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">

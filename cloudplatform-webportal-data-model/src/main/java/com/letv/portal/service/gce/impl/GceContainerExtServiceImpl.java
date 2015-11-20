@@ -30,4 +30,8 @@ public class GceContainerExtServiceImpl extends BaseServiceImpl<GceContainerExt>
 	}
 
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.gceContainerExtDao.deleteByClusterId(id);
+	}
 }

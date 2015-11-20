@@ -9,4 +9,5 @@ public interface IGceProxy extends IBaseProxy<GceServer> {
 	public void stop(Long id);
 	public void restart(Long id);
 	public void capacity(Long clusterId, int multiple);
+	public void checkStatus();
 }

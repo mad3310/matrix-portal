@@ -78,6 +78,10 @@
 			#{containerId},#{bindPort},#{innerPort},#{type},#{descn},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
+
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_GCECONTAINER_EXT where CONTAINER_ID IN (SELECT ID from WEBPORTAL_GCECONTAINER where GCECLUSTER_ID = #{_parameter})
+	</update>
 	
 	
 </mapper>   
