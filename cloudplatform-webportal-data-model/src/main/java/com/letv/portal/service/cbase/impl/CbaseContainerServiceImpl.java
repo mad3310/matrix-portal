@@ -43,4 +43,9 @@ public class CbaseContainerServiceImpl extends
 	public CbaseContainerModel selectByName(String containerName) {
 		return this.cbaseContainerDao.selectByName(containerName);
 	}
+
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.cbaseContainerDao.deleteByClusterId(id);
+	}
 }

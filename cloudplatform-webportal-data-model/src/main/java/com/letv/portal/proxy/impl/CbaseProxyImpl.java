@@ -3,10 +3,19 @@ package com.letv.portal.proxy.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.model.HostModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
+import com.letv.portal.model.slb.SlbCluster;
+import com.letv.portal.python.service.IPythonService;
+import com.letv.portal.service.IHostService;
+import com.letv.portal.util.CommonServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -30,17 +39,15 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 
 	@Autowired
 	private ICbaseBucketService cbaseBucketService;
-	@Autowired
-	private ICbasePythonService cbasePythonService;
-	@Autowired
-	private ICbaseClusterService cbaseClusterService;
-	@Autowired
-	private ICbaseContainerService cbaseContainerService;
+    @Autowired
+    private ICbaseClusterService cbaseClusterService;
+    @Autowired
+    private IHostService hostService;
+    @Autowired
+    private IPythonService pythonService;
 	@Autowired
 	private ITaskEngine taskEngine;
 
-	@Autowired
-	private ITemplateMessageSender defaultEmailSender;
 
 	@Override
 	public void saveAndBuild(CbaseBucketModel cbaseBucketModel) {
@@ -72,4 +79,54 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 		return cbaseBucketService;
 	}
 
+	@Override
+	@Async
+	public void checkStatus() {
+        try {
+            List<CbaseClusterModel> list = this.cbaseClusterService.selectByMap(null);
+            for (CbaseClusterModel cluster : list) {
+                if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == cluster.getStatus())
+                    continue;
+                this.checkCbaseClusterStatus(cluster);
+            }
+            list.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("ocs checkStatus exception:{}",e.getMessage());
+        }
+    }
+
+	private void checkCbaseClusterStatus(CbaseClusterModel cluster) {
+		HostModel host = this.hostService.getHostByHclusterId(cluster.getHclusterId());
+		if(null == host) {
+			cluster.setStatus(MclusterStatus.CRISIS.getValue());
+			this.cbaseClusterService.updateBySelective(cluster);
+			return;
+		}
+		String result = this.pythonService.checkMclusterStatus(cluster.getCbaseClusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		Map map = CommonServiceUtils.transResult(result);
+		if(map.isEmpty()) {
+			cluster.setStatus(MclusterStatus.CRISIS.getValue());
+			this.cbaseClusterService.updateBySelective(cluster);
+			return;
+		}
+
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+			Integer status = CommonServiceUtils.transStatus((String) ((Map) map.get("response")).get("status"));
+			cluster.setStatus(status);
+			this.cbaseClusterService.updateBySelective(cluster);
+			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
+				this.cbaseClusterService.delete(cluster);
+			}
+			return;
+		}
+
+		if(null !=result && result.contains("not existed")){
+			this.cbaseClusterService.delete(cluster);
+			return;
+		}
+
+		cluster.setStatus(MclusterStatus.CRISIS.getValue());
+		this.cbaseClusterService.updateBySelective(cluster);
+	}
 }

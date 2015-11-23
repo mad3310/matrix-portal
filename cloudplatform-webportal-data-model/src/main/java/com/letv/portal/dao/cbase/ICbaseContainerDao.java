@@ -7,8 +7,10 @@ import com.letv.portal.model.cbase.CbaseContainerModel;
 
 public interface ICbaseContainerDao extends IBaseDao<CbaseContainerModel> {
 
-	public List<CbaseContainerModel> selectContainerByCbaseClusterId(
+	 List<CbaseContainerModel> selectContainerByCbaseClusterId(
 			Long clusterId);
 
-	public CbaseContainerModel selectByName(String containerName);
+	 CbaseContainerModel selectByName(String containerName);
+
+	void deleteByClusterId(Long _parameter);
 }

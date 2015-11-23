@@ -186,6 +186,9 @@
 		delete from
 		WEBPORTAL_CBASE_CONTAINER where ID = #{id}
 	</delete>
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_CBASE_CONTAINER where CBASECLUSTER_ID = #{_parameter}
+	</update>
 
 	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">

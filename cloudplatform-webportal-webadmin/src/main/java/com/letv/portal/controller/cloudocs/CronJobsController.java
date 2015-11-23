@@ -1,6 +1,7 @@
 package com.letv.portal.controller.cloudocs;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.proxy.ICbaseProxy;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.adminoplog.ClassAoLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CronJobsController {
 
     @Autowired
-    private IGceProxy gceProxy;
+    private ICbaseProxy cbaseProxy;
 
     @RequestMapping(value="/cluster/status",method= RequestMethod.GET)
 	public @ResponseBody ResultObject checkClusterStatus(ResultObject obj) {
-        this.gceProxy.checkStatus();
+        this.cbaseProxy.checkStatus();
 		return obj;
 	}
 

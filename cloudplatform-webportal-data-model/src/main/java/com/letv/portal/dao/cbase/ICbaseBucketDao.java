@@ -12,4 +12,6 @@ public interface ICbaseBucketDao extends IBaseDao<CbaseBucketModel> {
 			HashMap<String, Object> params);
 
 	Integer selectCountByStatus(Integer _parameter);
+
+	void deleteByClusterId(Long _parameter);
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.service.cbase.ICbaseBucketService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 	private ICbaseClusterDao cbaseClusterDao;
 	@Resource
 	private ICbaseContainerService cbaseContainerService;
+    @Resource
+    private ICbaseBucketService cbaseBucketService;
 	@Resource
 	private IHostService hostService;
 
@@ -121,4 +124,10 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 			this.cbaseContainerService.insert(container);
 	}
 
+	@Override
+	public void delete(CbaseClusterModel cbaseClusterModel) {
+		this.cbaseContainerService.deleteByClusterId(cbaseClusterModel.getId());
+		this.cbaseBucketService.deleteByClusterId(cbaseClusterModel.getId());
+		super.delete(cbaseClusterModel);
+	}
 }

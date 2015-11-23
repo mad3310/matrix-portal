@@ -11,4 +11,6 @@ public interface ICbaseContainerService extends
 	public List<CbaseContainerModel> selectByCbaseClusterId(Long cbaseClusterId);
 
 	public CbaseContainerModel selectByName(String string);
+
+	void deleteByClusterId(Long id);
 }

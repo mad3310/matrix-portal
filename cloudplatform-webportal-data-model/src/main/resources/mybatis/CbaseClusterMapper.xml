@@ -152,6 +152,14 @@
 		where CBASE.CBASECLUSTER_NAME=#{clusterName}
 	</select>
 
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASECLUSTER_INFO CBASE
+		<include refid="Example_Where_Clause" />
+	</select>
 	<!-- 列表总数  -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select

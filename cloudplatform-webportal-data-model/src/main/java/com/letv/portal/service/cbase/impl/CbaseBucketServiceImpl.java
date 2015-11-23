@@ -144,4 +144,9 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		return this.cbaseBucketDao.selectCountByStatus(value);
 	}
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.cbaseBucketDao.deleteByClusterId(id);
+	}
+
 }
