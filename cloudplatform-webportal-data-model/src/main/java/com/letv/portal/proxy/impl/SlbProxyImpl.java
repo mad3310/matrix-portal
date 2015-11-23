@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.model.HostModel;
+import com.letv.portal.python.service.IPythonService;
+import com.letv.portal.service.IHostService;
+import com.letv.portal.util.CommonServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +64,8 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private ISlbPythonService slbPythonService;
+    @Autowired
+    private IPythonService pythonService;
 	@Autowired
 	private ISlbConfigService slbConfigService;
 	@Autowired
@@ -66,10 +74,9 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	private IBaseTaskService baseSlbTaskService;
 	@Autowired
 	private ITaskEngine taskEngine;
-	
-	@Autowired
-	private ITemplateMessageSender defaultEmailSender;
-	
+    @Autowired
+    private IHostService hostService;
+
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
 
@@ -115,6 +122,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		this.start(slb,cluster,containers);
 		this.checkStatus(slb, cluster, containers,"STARTED","SLB服务启动失败");
 	}
+
 	@Override
 	@Async
 	public void stop(Long id) {
@@ -261,7 +269,52 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return params;
 	}
-	
+
+	@Override
+	@Async
+	public void checkStatus() {
+		List<SlbCluster> list = this.slbClusterService.selectByMap(null);
+		for (SlbCluster cluster : list) {
+			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == cluster.getStatus())
+				continue;
+			this.checkSlbClusterStatus(cluster);
+		}
+		list.clear();
+	}
+
+	private void checkSlbClusterStatus(SlbCluster cluster) {
+		HostModel host = this.hostService.getHostByHclusterId(cluster.getHclusterId());
+		if(null == host) {
+			cluster.setStatus(MclusterStatus.CRISIS.getValue());
+			this.slbClusterService.updateBySelective(cluster);
+			return;
+		}
+		String result = this.pythonService.checkMclusterStatus(cluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		Map map = CommonServiceUtils.transResult(result);
+		if(map.isEmpty()) {
+			cluster.setStatus(MclusterStatus.CRISIS.getValue());
+			this.slbClusterService.updateBySelective(cluster);
+			return;
+		}
+
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+			Integer status = CommonServiceUtils.transStatus((String) ((Map) map.get("response")).get("status"));
+			cluster.setStatus(status);
+			this.slbClusterService.updateBySelective(cluster);
+			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
+				this.slbClusterService.delete(cluster);
+			}
+			return;
+		}
+
+		if(null !=result && result.contains("not existed")){
+			this.slbClusterService.delete(cluster);
+			return;
+		}
+
+		cluster.setStatus(MclusterStatus.CRISIS.getValue());
+		this.slbClusterService.updateBySelective(cluster);
+	}
 	
 	
 }

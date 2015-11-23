@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.service.slb.ISlbServerService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 	private ISlbClusterDao slbClusterDao;
 	@Resource
 	private ISlbContainerService slbContainerService;
+	@Resource
+	private ISlbServerService slbServerService;
 	@Resource
 	private IHostService hostService;
 	
@@ -127,4 +130,10 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 		this.slbContainerService.insert(container);
 	}
 
+	@Override
+	public void delete(SlbCluster slbCluster) {
+		this.slbContainerService.deleteByClusterId(slbCluster.getId());
+		this.slbServerService.deleteByClusterId(slbCluster.getId());
+		this.slbClusterDao.delete(slbCluster);
+	}
 }

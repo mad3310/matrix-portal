@@ -125,4 +125,9 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		return this.slbServerDao.selectCountByStatus(value);
 	}
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.slbServerDao.deleteByClusterId(id);
+	}
+
 }

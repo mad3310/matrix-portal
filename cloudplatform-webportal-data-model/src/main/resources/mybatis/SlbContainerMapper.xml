@@ -176,7 +176,9 @@
 	<update id="delete" parameterType="SlbContainer">
 		delete from WEBPORTAL_SLBCONTAINER where ID = #{id}
 	</update>
-	
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_SLBCONTAINER where SLBCLUSTER_ID = #{_parameter}
+	</update>
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="deleteFlag" parameterType="SlbContainer">
 		update WEBPORTAL_SLBCONTAINER set
@@ -203,11 +205,7 @@
 		from WEBPORTAL_SLBCONTAINER SCT 
 		where SCT.SLBCLUSTER_ID = #{slbClusterId}
 	</select>
-	<!-- 物理删除 -->
-	<update id="deleteByClusterId" parameterType="java.lang.Long">
-		delete from WEBPORTAL_SLBCONTAINER where SLBCLUSTER_ID = #{slbClusterId}
-	</update>	
-	
+
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select

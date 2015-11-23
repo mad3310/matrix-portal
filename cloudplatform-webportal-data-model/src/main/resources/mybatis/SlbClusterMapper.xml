@@ -124,7 +124,9 @@
 		</set>
 		where ID=#{id}
 	</update>
-	
+	<update id="delete" parameterType="SlbCluster">
+		delete from WEBPORTAL_SLBCLUSTER where ID = #{id}
+	</update>
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
 			<include refid="Base_Column_List" />

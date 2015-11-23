@@ -12,4 +12,6 @@ public interface ISlbContainerService extends IBaseService<SlbContainer> {
 	public List<SlbContainer> selectBySlbClusterId(Long slbClusterId);
 
 	public SlbContainer selectByName(String containerName);
+
+	void deleteByClusterId(Long id);
 }

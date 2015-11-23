@@ -12,4 +12,6 @@ public interface ISlbServerService extends IBaseService<SlbServer> {
 	void updateSlbStatusById(Long id, SlbStatus status);
 
 	Integer selectCountByStatus(Integer value);
+
+	void deleteByClusterId(Long id);
 }

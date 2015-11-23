@@ -43,4 +43,9 @@ public class SlbContainerServiceImpl extends BaseServiceImpl<SlbContainer> imple
 		return this.slbContainerDao.selectByName(containerName);
 	}
 
+	@Override
+	public void deleteByClusterId(Long id) {
+		this.slbContainerDao.deleteByClusterId(id);
+	}
+
 }

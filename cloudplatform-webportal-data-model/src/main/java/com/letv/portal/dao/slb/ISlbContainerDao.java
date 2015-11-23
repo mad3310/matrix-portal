@@ -12,4 +12,6 @@ public interface ISlbContainerDao extends IBaseDao<SlbContainer> {
 	List<SlbContainer> selectBySlbClusterId(Long slbClusterId);
 
 	SlbContainer selectByName(String containerName);
+
+	void deleteByClusterId(Long _parameter);
 }

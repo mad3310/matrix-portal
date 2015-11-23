@@ -100,7 +100,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	public void checkStatus() {
 		List<MclusterModel> list = this.mclusterService.selectByMap(null);
 		for (MclusterModel mcluster : list) {
-			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus())
+			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus())
 				continue;
 			this.buildTaskService.checkMclusterStatus(mcluster);
 		}

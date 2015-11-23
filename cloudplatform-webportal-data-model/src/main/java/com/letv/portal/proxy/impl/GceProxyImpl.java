@@ -274,7 +274,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	public void checkStatus() {
 		List<GceCluster> list = this.gceClusterService.selectByMap(null);
 		for (GceCluster cluster : list) {
-			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus())
+			if(MclusterStatus.BUILDDING.getValue() == cluster.getStatus()|| MclusterStatus.BUILDFAIL.getValue() == cluster.getStatus())
 				continue;
 			this.checkGceClusterStatus(cluster);
 		}
