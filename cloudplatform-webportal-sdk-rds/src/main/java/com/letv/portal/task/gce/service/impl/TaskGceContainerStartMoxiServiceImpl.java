@@ -83,11 +83,11 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 			map.put("containerId", gceContainer.getId().toString());
 			map.put("type", "moxi");
 			List<GceContainerExt> ext = this.gceContainerExtService.selectByMap(map);
-			if(ext == null) {
-				throw new ValidateException("GceContainerExt-list is null by containerId:" + gceContainer.getId()+" and type:"+map.get("type"));
-			}
-			
-			apiParam = super.getApiParam(gceContainer, ManageType.MOXI, ext.get(0).getBindPort());
+			String port = null;
+			if(null != ext && !ext.isEmpty())
+				port = ext.get(0).getBindPort();
+
+			apiParam = super.getApiParam(gceContainer, ManageType.MOXI, port);
 			
 			//配置moxi
 			map.clear();

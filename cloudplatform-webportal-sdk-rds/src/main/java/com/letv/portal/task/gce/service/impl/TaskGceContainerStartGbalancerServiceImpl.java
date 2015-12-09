@@ -99,11 +99,11 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 			extParam.put("containerId", gceContainer.getId().toString());
 			extParam.put("type", "glb");
 			List<GceContainerExt> ext = this.gceContainerExtService.selectByMap(extParam);
-			if(ext == null || ext.size()==0) {
-				throw new ValidateException("GceContainerExt-list is null by containerId:" + gceContainer.getId()+" and type:"+extParam.get("type"));
-			}
+			String port = null;
+			if(null != ext && !ext.isEmpty())
+				port = ext.get(0).getBindPort();
 			
-			apiParam = super.getApiParam(gceContainer, ManageType.GBALANCER, ext.get(0).getBindPort());
+			apiParam = super.getApiParam(gceContainer, ManageType.GBALANCER, port);
 			
 			ApiResultObject result = this.gcePythonService.startGbalancer(map, apiParam.getIp(),apiParam.getPort(), gceCluster.getAdminUser(), gceCluster.getAdminPassword());
 			logger.info("call startGbalancer, result is : "+result.getResult()+"-"+result.getUrl());
