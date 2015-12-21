@@ -1022,6 +1022,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 String containerName = (String) containerData.get("containerName");
                 for(Iterator it =  value.keySet().iterator();it.hasNext();){
                     String key = (String) it.next();
+                    if("ctime".equals(key)) //ctime is not monitor option.
+                        continue;
                     MonitorDetailModel monitorDetail = new MonitorDetailModel();
                     monitorDetail.setDbName(index.getDetailTable());
                     monitorDetail.setDetailName(key);
