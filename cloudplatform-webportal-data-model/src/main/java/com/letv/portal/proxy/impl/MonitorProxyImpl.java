@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.model.*;
+import com.letv.portal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +23,6 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.enumeration.BackupStatus;
 import com.letv.portal.enumeration.DbStatus;
-import com.letv.portal.model.BackupResultModel;
-import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbModel;
-import com.letv.portal.model.HostModel;
-import com.letv.portal.model.MonitorIndexModel;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
@@ -38,12 +34,6 @@ import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
-import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IDbService;
-import com.letv.portal.service.IHostService;
-import com.letv.portal.service.IMonitorIndexService;
-import com.letv.portal.service.IMonitorService;
-import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -64,6 +54,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private IContainerService containerService;
 	@Autowired
 	private ISlbClusterService slbClusterService;
+	@Autowired
+	private IMclusterService mclusterService;
 	@Autowired
 	private IGceClusterService gceClusterService;
 	@Autowired
@@ -113,7 +105,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectClusterServiceData() {
 		List<SlbCluster> slbClusters = this.slbClusterService.selectByMap(null);
 		List<GceCluster> gceClusters = this.gceClusterService.selectByMap(null);
-		
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters();
+
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 2);
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
@@ -126,9 +119,13 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			for (SlbCluster slbCluster : slbClusters) {
 				this.buildTaskService.getClusterServiceData(slbCluster.getClusterName(),slbCluster.getHclusterId(), index,date);
 			}
+			for (MclusterModel mcluster:mclusters) {
+				this.buildTaskService.getClusterServiceData(mcluster.getMclusterName(),mcluster.getHclusterId(), index,date);
+			}
 		}
         slbClusters.clear();
         gceClusters.clear();
+		mclusters.clear();
 		logger.info("collectClusterServiceData end");
 	}
 	@Override
