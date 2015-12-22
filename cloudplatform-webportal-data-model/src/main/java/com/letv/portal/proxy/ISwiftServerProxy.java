@@ -10,7 +10,7 @@ public interface ISwiftServerProxy extends IBaseProxy<SwiftServer> {
 	public void deleteAndBuild(Long swiftId);
 	public Object getFiles(Long id, String directory);
 	public void changeService(Long id, String level,Long storeSize);
-	public void postFiles(Long id, MultipartFile file, String directory);
+	public String postFiles(Long id, MultipartFile file, String directory);
 	public void addFolder(Long id, String file, String directory);
 	public void deleteFile(Long id, String file,boolean folder);
 }

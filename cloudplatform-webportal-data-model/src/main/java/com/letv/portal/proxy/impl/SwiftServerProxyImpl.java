@@ -203,7 +203,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	}
 
 	@Override
-	public void postFiles(Long id, MultipartFile file, String directory) {
+	public String postFiles(Long id, MultipartFile file, String directory) {
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
@@ -214,12 +214,14 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		FileEntity entity = new FileEntity(localFile);
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getOriginalFilename()),headParams,entity,2000,30000000);
+		String fileUrl = getSwiftDetailFileUrl(server,directory,file.getOriginalFilename());
+		HttpResponse response = HttpsClient.httpPutByHeader(fileUrl,headParams,entity,2000,30000000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
 		//delete from local
 		this.removeFileFromLocal(file.getOriginalFilename());
+		return fileUrl;
 	}
 	private File saveFileToLocal(MultipartFile file) {
         String fileName = file.getOriginalFilename();  
