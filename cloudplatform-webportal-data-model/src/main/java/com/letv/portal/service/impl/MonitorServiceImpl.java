@@ -2,15 +2,14 @@ package com.letv.portal.service.impl;
 
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
+import com.letv.portal.constant.Constant;
+import com.letv.portal.model.monitor.MonitorViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,20 +67,17 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	private String jdbcUrl;
 	@Value("${monitor.statistics.cycle}")
 	private int cycleTime;
+
+    private ICacheService<?> cacheService = CacheFactory.getCache();
 	
 	public MonitorServiceImpl() {
 		super(MonitorDetailModel.class);
 	}
 
-	
 	@Override
 	public IBaseDao<MonitorDetailModel> getDao() {
 		return this.monitorDao;
 	}
-	public List<String> selectDistinct(Map map){
-		return this.monitorDao.selectDistinct(map);
-	}
-	
 
 	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
@@ -127,8 +123,41 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
-	
+
 	@Override
+	public List<MonitorViewYModel> getMonitorTopNViewData(Long hclusterId, Long chartId,String monitorName, Integer strategy,Integer topN) {
+
+        MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);
+        Date end = new Date();
+
+        List<MonitorDetailModel> topNMonitors = getTopN( monitorIndexModel,hclusterId,monitorName,strategy,topN);//get topN from cbase.
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("dbName", monitorIndexModel.getDetailTable());
+        params.put("start", getStartDate(end,strategy));
+        params.put("end", end);
+        params.put("detailName",topNMonitors.get(0).getDetailName());
+
+        List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+        for (MonitorDetailModel monitor : topNMonitors) {
+            MonitorViewYModel ydata = new MonitorViewYModel();
+            params.put("ip", monitor.getIp());
+            List<MonitorDetailModel> list = this.monitorDao.selectDateTime(params);
+            List<List<Object>> datas = new ArrayList<List<Object>>();
+            for (MonitorDetailModel monitorDetail : list) {
+                List<Object> point = new ArrayList<Object>();
+                point.add(monitorDetail.getMonitorDate());
+                point.add(monitorDetail.getDetailValue());
+                datas.add(point);
+            }
+            ydata.setName(MessageFormat.format("{0}:{1}",monitor.getIp(),monitor.getDetailName()));
+            ydata.setData(datas);
+            ydatas.add(ydata);
+        }
+        return ydatas;
+	}
+
+    @Override
 	public List<MonitorViewYModel> getMonitorData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging,int format) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
@@ -220,22 +249,18 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		case 5:
 			now.add(Calendar.MONTH, -1); // one month ago
 			break;
+        case 6:
+            now.add(Calendar.HOUR, -12);  // 12 hour ago
+            break;
+        case 7:
+            now.add(Calendar.HOUR, -72);  // three day ago
+            break;
 		default:
 			now.add(Calendar.HOUR, -1);
 			break;
 		}
 		return now.getTime();
 	}
-	
-	public List<MonitorDetailModel> selectDateTime(Map map){
-		return  this.monitorDao.selectDateTime(map);
-	}
-	
-    public List<MonitorIndexModel> selectMonitorCount(){
-    	return this.monitorIndexService.selectMonitorCount();
-    }
-
-
 	@Override
 	public Float selectDbStorage(Long mclusterId) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
@@ -505,12 +530,10 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		
 	}
 
-
 	@Override
 	public void saveMonitorErrorInfo(MonitorErrorModel error) {
 		this.monitorDao.saveMonitorErrorInfo(error);
 	}
-
 
 	@Override
 	public List<Map<String, Object>> getMonitorErrorModelsByMap(
@@ -518,12 +541,66 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.getMonitorErrorModelsByMap(map);
 	}
 
+    @Override
+    public void updateTopN(MonitorDetailModel monitorDetail,Long hclusterId) {
+        if(null == monitorDetail)
+            return;
+        Map<String,Long> params = new HashMap<String,Long>();
+        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_12H_PREFIX,hclusterId, monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_12H);
+        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_24H_PREFIX,hclusterId,monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_24H);
+        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_3D_PREFIX,hclusterId,monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_3D);
+        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_1W_PREFIX,hclusterId, monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_1W);
+        long now = System.currentTimeMillis();
+        for (Map.Entry<String, Long> param : params.entrySet()) {
+            List<MonitorDetailModel> dataOld = (List<MonitorDetailModel>) this.cacheService.get(param.getKey(),null);
+            List<MonitorDetailModel> dataNow = new ArrayList<MonitorDetailModel>();
+            if(dataOld ==null)
+                dataOld = new ArrayList<MonitorDetailModel>();
 
-	@Override
-	public void deleteMonitorErrorDataByMap(Map<String, Object> map) {
-		this.monitorDao.deleteMonitorErrorDataByMap(map);
-	}
-	
-	
+            for (MonitorDetailModel monitor:dataOld) {
+                if(now-monitor.getMonitorDate().getTime()<param.getValue())
+                    dataNow.add(monitor);
+            }
+            dataNow.add(monitorDetail);
+            Collections.sort(dataNow);
+            if(dataNow.size() > Constant.MONITOR_TOP_MAX)
+                dataNow.remove(0);
+            this.cacheService.set(param.getKey(), dataNow);
+        }
+    }
 
+    @Override
+    public List<MonitorDetailModel> getTopN(MonitorIndexModel monitorIndex,Long hclusterId,String monitorName, Integer strategy, Integer topN) {
+        if(null == hclusterId) {
+            return null;
+        }
+        String topNKey = getTopNKey(monitorIndex,hclusterId,monitorName,strategy,topN);
+        List<MonitorDetailModel> monitors = (List<MonitorDetailModel>) this.cacheService.get(topNKey,null);
+        if(monitors.size()>topN)
+            monitors = monitors.subList(monitors.size()-topN, monitors.size());
+        return monitors;
+    }
+
+    private String getTopNKey(MonitorIndexModel monitorIndex,Long hclusterId, String monitorName,Integer strategy, Integer topN) {
+        StringBuffer key = new StringBuffer();
+        switch (strategy) {
+            case 3:
+                key.append(Constant.MONITOR_TOPBY_24H_PREFIX).append(":");
+                break;
+            case 6:
+                key.append(Constant.MONITOR_TOPBY_12H_PREFIX).append(":");
+                break;
+            case 7:
+                key.append(Constant.MONITOR_TOPBY_3D_PREFIX).append(":");
+                break;
+            case 4:
+                key.append(Constant.MONITOR_TOPBY_1W_PREFIX).append(":");
+                break;
+            default:
+                key.append(Constant.MONITOR_TOPBY_12H_PREFIX).append(":");
+                break;
+        }
+        key.append(hclusterId).append(":").append(monitorIndex.getDetailTable()).append(":'").append(monitorName);
+        return key.toString();
+    }
 }

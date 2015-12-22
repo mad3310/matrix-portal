@@ -1,19 +1,5 @@
 package com.letv.portal.controller.clouddb;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
@@ -23,9 +9,20 @@ import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IMonitorIndexService;
+import com.letv.portal.service.IMonitorService;
 import com.letv.portal.service.adminoplog.ClassAoLog;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -40,16 +37,13 @@ import com.letv.portal.service.adminoplog.ClassAoLog;
 public class MonitorController {
 	
 	@Resource
-	private IMonitorProxy monitorProxy;
+	private IMonitorService monitorService;
 	@Resource
 	private IMonitorIndexService monitorIndexService;
 	@Resource
 	private IContainerProxy containerProxy;
 	@Resource
 	private IContainerService containerService;
-	@Resource
-	private IMclusterService mclusterService;
-	
 	@Autowired
 	private IBuildTaskService buildTaskService;
 	
@@ -57,7 +51,7 @@ public class MonitorController {
 	 * Methods Name: mclusterList <br>
 	 * Description: 集群列表展示<br>
 	 * @author name: wujun
-	 * @param ip
+	 * @param request
 	 * @param result
 	 * @return
 	 */
@@ -131,7 +125,12 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/{mclusterId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
-		result.setData(this.monitorProxy.getMonitorViewData(mclusterId,chartId,strategy));
+		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,strategy));
+		return result;
+	}
+	@RequestMapping(value="/topN/{hclusterId}/{chartId}/{monitorName}/{strategy}/{topN}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorChartsTopN(@PathVariable Long hclusterId,@PathVariable Long chartId,@PathVariable String monitorName,@PathVariable Integer strategy,@PathVariable Integer topN,ResultObject result) {
+		result.setData(this.monitorService.getMonitorTopNViewData(hclusterId, chartId,monitorName, strategy, topN));
 		return result;
 	}
 	
@@ -139,7 +138,6 @@ public class MonitorController {
 	 * Methods Name: mclusterMonitorCharts <br>
 	 * Description: 监控视图数目<br>
 	 * @author name: wujun 
-	 * @param mclusterId
 	 * @param result
 	 * @return
 	 */

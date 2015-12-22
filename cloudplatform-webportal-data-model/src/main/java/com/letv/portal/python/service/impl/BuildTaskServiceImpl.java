@@ -4,8 +4,11 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.monitor.Monitor;
 import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.JsonUtils;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.*;
@@ -29,6 +32,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -66,13 +70,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Autowired
     private IHostService hostService;
     @Autowired
-    private IHclusterService hclusterService;
-    @Autowired
     private IFixedPushService fixedPushService;
     @Autowired
     private IZabbixPushService zabbixPushService;
-    @Autowired
-    private IMonitorIndexService monitorIndexService;
     @Autowired
     private ITaskChainService taskChainService;
     @Autowired
@@ -82,10 +82,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     private String SERVICE_NOTICE_MAIL_ADDRESS;
     @Autowired
     private ITemplateMessageSender defaultEmailSender;
-
-
-    @Autowired
-    private IMonitorDao monitorDao;
 
     @Override
     @Async
@@ -1031,9 +1027,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                     monitorDetail.setDetailValue(Float.parseFloat(value.get(key).toString()));
                     monitorDetail.setIp(containerName);
                     this.monitorService.insert(monitorDetail);
+                    this.monitorService.updateTopN(monitorDetail);
                 }
             }
-            logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
         } else {
             MonitorErrorModel error = new MonitorErrorModel();
             error.setTableName(index.getDetailTable());
@@ -1044,13 +1040,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     }
 
     private String getHclusterMainIp(Long hclusterId) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("hclusterId", hclusterId);
-        params.put("type", HostType.MASTER.getValue());
-        List<HostModel> hosts = this.hostService.selectByMap(params);
+        List<HostModel> hosts = this.hostService.selectByHclusterId(hclusterId);
         if(hosts == null || hosts.isEmpty())
-            throw new ValidateException("hcluster's main host is null.");
-        return hosts.get(0).getHostIp();
+            throw new ValidateException("hcluster's host is null.");
+
+        Random random = new Random();
+        return hosts.get(random.nextInt(hosts.size()-1)).getHostIp();
     }
     private boolean isSelectVip(Long dbId) {
         int step = this.taskChainService.getStepByDbId(dbId);

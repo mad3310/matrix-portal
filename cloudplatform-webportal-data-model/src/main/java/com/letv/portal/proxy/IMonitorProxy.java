@@ -17,18 +17,17 @@ public interface IMonitorProxy {
 	 * @author name: wujun
 	 * @return
 	 */
-	public void collectMclusterServiceData();
+	 void collectMclusterServiceData();
 
-	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId, Long chartId,Integer strategy);
-	public List<MonitorViewYModel> getDbData(Long serverId,Long chartId, Integer strategy,boolean isTimeAveraging,int format);
-	public List<MonitorViewYModel> getData(String type,Long serverId,Long chartId, Integer strategy,boolean isTimeAveraging,int format);
+	 List<MonitorViewYModel> getDbData(Long serverId,Long chartId, Integer strategy,boolean isTimeAveraging,int format);
+	 List<MonitorViewYModel> getData(String type,Long serverId,Long chartId, Integer strategy,boolean isTimeAveraging,int format);
 
 	/**Methods Name: deleteOutData <br>
 	 * Description: 删除过时数据：当前时间往前一个月<br>
 	 * @author name: liuhao1
 	 */
-	public void deleteOutData();
-	public void deleteOutData(String tableName, String columnName, Date date);
+	 void deleteOutData();
+	 void deleteOutData(String tableName, String columnName, Date date);
 
 	void collectClusterServiceData();
 	void collectOSSServiceData();
@@ -83,7 +82,7 @@ public interface IMonitorProxy {
 	  * @author lisuxiao
 	  * @date 2015年8月6日 下午6:24:51
 	  */
-	public void monitorErrorReport();
+	 void monitorErrorReport();
 	
 	/**
 	  * @Title: deleteMonitorErrorData
@@ -92,5 +91,5 @@ public interface IMonitorProxy {
 	  * @author lisuxiao
 	  * @date 2015年8月10日 下午3:57:59
 	  */
-	public void deleteMonitorErrorData();
+	 void deleteMonitorErrorData();
 }

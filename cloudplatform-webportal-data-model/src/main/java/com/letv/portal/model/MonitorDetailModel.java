@@ -11,7 +11,7 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
-public class MonitorDetailModel extends BaseModel {
+public class MonitorDetailModel extends BaseModel implements Comparable {
 
 	private static final long serialVersionUID = 5918229179935808282L;
 	private String detailName;
@@ -60,4 +60,10 @@ public class MonitorDetailModel extends BaseModel {
 	public void setMonitorDate(Date monitorDate) {
 		this.monitorDate = monitorDate;
 	}
+
+    @Override
+    public int compareTo(Object o) {
+        float detailValue = ((MonitorDetailModel)o).getDetailValue();
+        return Float.compare(this.detailValue, detailValue);
+    }
 }

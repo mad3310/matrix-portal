@@ -47,4 +47,14 @@ public class Constant {
 
 	public static String MCLUSTER_INIT_STATUS_RUNNING = "running";
 
+	public static final String  MONITOR_TOPBY_12H_PREFIX = "12h";
+	public static final String  MONITOR_TOPBY_24H_PREFIX = "24h";
+	public static final String  MONITOR_TOPBY_3D_PREFIX = "3d";
+	public static final String  MONITOR_TOPBY_1W_PREFIX = "1w";
+    public static final long  MONITOR_TOPBY_12H = 43200000; //12*60*60*1000
+    public static final long  MONITOR_TOPBY_24H = 86400000;
+    public static final long  MONITOR_TOPBY_3D = 259200000;
+    public static final long  MONITOR_TOPBY_1W = 604800000;
+	public static final int  MONITOR_TOP_MAX = 10;
+
 }

@@ -190,6 +190,11 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_monitor_view");
 		return mav;
 	}
+	@RequestMapping(value="/view/mcluster/monitor/topN",method=RequestMethod.GET)
+	public ModelAndView toMonitorCotainerTopNView(ModelAndView mav){
+		mav.setViewName("/clouddb/mcluster_monitor_view_topN");
+		return mav;
+	}
 	
 	/**
 	 * Methods Name: toMonitorMclusterListDetail <br>

@@ -150,11 +150,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	}
 	
 	@Override
-	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId, Integer strategy) {
-		return this.monitorService.getMonitorViewData(mclusterId, chartId, strategy);
-	}
-	
-	@Override
 	@Async
 	public void deleteOutData() {
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
