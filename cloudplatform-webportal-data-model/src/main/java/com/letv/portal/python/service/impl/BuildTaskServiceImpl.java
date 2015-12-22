@@ -1027,7 +1027,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                     monitorDetail.setDetailValue(Float.parseFloat(value.get(key).toString()));
                     monitorDetail.setIp(containerName);
                     this.monitorService.insert(monitorDetail);
-                    this.monitorService.updateTopN(monitorDetail);
+                    this.monitorService.updateTopN(monitorDetail,hclusterId);
                 }
             }
         } else {

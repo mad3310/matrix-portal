@@ -62,7 +62,7 @@ public class GceImgController {
         return obj;
 	}
 
-	@RequestMapping(value="/image/{id}",method=RequestMethod.POST)
+	@RequestMapping(value="/{id}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateImage(@PathVariable Long id,@Valid @ModelAttribute GceImage gceImage,BindingResult result) {
 		ResultObject obj = new ResultObject();
         if(result.hasErrors())
