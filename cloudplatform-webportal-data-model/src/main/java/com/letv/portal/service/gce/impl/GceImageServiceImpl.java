@@ -2,6 +2,7 @@ package com.letv.portal.service.gce.impl;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.enumeration.GceImageStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,13 @@ public class GceImageServiceImpl extends BaseServiceImpl<GceImage> implements IG
 	@Override
 	public GceImage selectByUrl(String url) {
 		return this.gceImageDao.selectByUrl(url);
+	}
+
+	@Override
+	public void insert(GceImage gceImage) {
+		if(null == gceImage.getStatus()) {
+			gceImage.setStatus(GceImageStatus.AVAILABLE);
+		}
+		super.insert(gceImage);
 	}
 }

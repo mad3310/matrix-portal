@@ -14,19 +14,19 @@ public interface IBaseService<T> {
 //	T create();
 	
 	/**
-	 * 插入记录
-	 * @return
-	 * @throws Exception
-	 */
-	void insert(T t);
-	
-	/**
 	 * 修改记录
 	 * @return
 	 * @throws Exception
 	 */
 	 void update(T t);
-	
+
+	/**
+	 * 插入记录
+	 * @return
+	 * @throws Exception
+	 */
+	void insert(T t);
+
 	/**
 	 * 修改记录，至修改不为空的字段
 	 * @param t

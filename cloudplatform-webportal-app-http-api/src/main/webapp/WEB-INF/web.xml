@@ -38,9 +38,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	<listener>
-		<listener-class>com.letv.portal.listener.SessionListener</listener-class>
-	</listener>
 
 <!-- 配置静态资源访问 -->
 	<servlet-mapping>   
