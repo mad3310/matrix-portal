@@ -140,7 +140,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
         params.put("dbName", monitorIndexModel.getDetailTable());
         params.put("start", getStartDate(end,strategy));
         params.put("end", end);
-        params.put("detailName",topNMonitors.get(0).getDetailName());
+        params.put("detailName", topNMonitors.get(0).getDetailName());
 
         for (MonitorDetailModel monitor : topNMonitors) {
             MonitorViewYModel ydata = new MonitorViewYModel();
@@ -433,7 +433,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		params.put("ip", containerIp);
 		params.put("start", start);
 		params.put("end", d);
-		params.put("count", cols.length*3);//防止监控时，该批数据未全部保存
+		params.put("count", cols.length * 3);//防止监控时，该批数据未全部保存
 		List<MonitorDetailModel> models = this.monitorDao.selectLastestData(params);
 		if("WEBPORTAL_MONITOR_MYSQL_BASE_QUERY".equals(tableName)) {
 			Map<String, Object> computer = new HashMap<String, Object>();
@@ -570,18 +570,21 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             boolean flag = true;
             for (MonitorDetailModel monitor:dataOld) {
                 if(now-monitor.getMonitorDate().getTime()<param.getValue()) {
-                    if(flag && monitor.getId() == monitorDetail.getId()) {
+                    if(flag && monitor.getIp().equals(monitorDetail.getIp())) {
                         dataNow.add(monitor.getDetailValue()>=monitorDetail.getDetailValue()?monitor:monitorDetail);
+						flag = false;
                     } else {
                         dataNow.add(monitor);
                     }
                 }
 
             }
-            dataNow.add(monitorDetail);
-            Collections.sort(dataNow);
-            if(dataNow.size() > Constant.MONITOR_TOP_MAX)
-                dataNow.remove(0);
+			if(flag) {
+                dataNow.add(monitorDetail);
+                Collections.sort(dataNow);
+                if(dataNow.size() > Constant.MONITOR_TOP_MAX)
+                    dataNow.remove(0);
+            }
             this.cacheService.set(param.getKey(), dataNow);
             logger.info("set key:{}-------------",param.getKey());
         }
