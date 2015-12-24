@@ -1,90 +1,27 @@
-var xAxis_min,xAxis_max;
+var split="-";
 function refreshChartForSelect(){
-	var iw=document.body.clientWidth;
-	if(iw>767){//md&&lg
-	}else{
-		$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
-		$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
-		var qryStr='';
-		var qryStr1=$('.monitorHclusterOption:last').val();var qryStr2=$('.mclusterOption:last').val();var qryStr3=$('#queryTime').val();var qryStr4=$('#monitorPointOption').val();
-		if(qryStr1){
-			var temp=$('.monitorHclusterOption:last option[value="'+qryStr1+'"]').text();
-			qryStr+='<span class="label label-success arrowed">'+temp+'</span>&nbsp;'
-		}
-		if(qryStr2){
-			var temp=$('.mclusterOption:last option[value="'+qryStr2+'"]').text();
-			qryStr+='<span class="label label-warning arrowed">'+temp+'</span>&nbsp;'
-		}
-		if(qryStr3){
-			var temp=$('#queryTime').find("option:selected").text();
-			qryStr+='<span class="label label-purple arrowed">'+temp+'</span>&nbsp;'
-		}
-		if(qryStr4){
-			var obj=$('#monitorPointOption').val()
-			for(i in obj){
-				var index=obj[i];
-				var temp=$("#monitorPointOption option[value='"+index+"']").text();
-				qryStr+='<span class="label label-yellow arrowed">'+temp+'<span class="queryBadge" data-rely-index="'+index+'"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
-			}
-		}
-		if(qryStr){
-			$('.queryOption').find('.widget-title').html(qryStr);
-			$('.queryBadge').click(function(event) {
-				var index=$(this).attr('data-rely-index');
-				$("#monitorPointOption option[value='"+index+"']").removeAttr('selected');
-				$(this).parent().remove();
-				//查询
-				var monitorPoint = $('#monitorPointOption').val();
-				$('#monitor-view [name="monitor-view"]').each(function(){
-					if (monitorPoint != null){
-						for (var i = 0,len = monitorPoint.length; i < len ; i++){
-							if($(this).attr('id') == (monitorPoint[i]+"-monitor-view")){
-								$(this).removeClass('hide');
-								var chart = $("#"+monitorPoint[i]).highcharts();
-								setChartData(monitorPoint[i],chart);
-								break
-							}
-							$(this).addClass('hide');
-						}
-					}else{
-						$(this).addClass('hide');
-					}
-				});//end 查询
-				if($('.queryBadge').length<=0){
-					$('.queryOption').find('.widget-title').html('查询条件');
-				}
-				return;
-			});
-		}else{
-			$('.queryOption').find('.widget-title').html('查询条件');
-		}
-	}
-	var monitorPoint = $('#monitorPointOption').val();
-	$('#monitor-view [name="monitor-view"]').each(function(){
-		if (monitorPoint != null){
-			for (var i = 0,len = monitorPoint.length; i < len ; i++){
-				if($(this).attr('id') == (monitorPoint[i]+"-monitor-view")){
-					$(this).removeClass('hide');
-					var chart = $("#"+monitorPoint[i]).highcharts();
-					setChartData(monitorPoint[i],chart);
-					break
-				}
-				$(this).addClass('hide');
-			}
-		}else{
-			$(this).addClass('hide');
-		}
-	});
+    //查询
+    var monitorPoint = $('#monitorPointOption').val();
+    $('#monitor-view [name="monitor-view"]').each(function(){
+            for (var i = 0,len = monitorPoint.length; i < len ; i++){
+                if($(this).attr('id') == (monitorPoint[i]+"-monitor-view")){
+                    $(this).removeClass('hide');
+                    var chart = $("#"+monitorPoint[i]).highcharts();
+                    console.info(monitorPoint[i]);
+                    setChartData(monitorPoint[i],chart);
+                    break
+                }
+                $(this).addClass('hide');
+            }
+    });
 }
-
 function queryHcluster(){
 	$.ajax({
 		cache:false,
 		type:"get",		
-		url:"/hcluster/byType/RDS",
+		url:"/hcluster",
 		dataType:"json",
 		success:function(data){
-			//removeLoading();
 			if(error(data)) return;
 			var hclusterInfo = data.data;
 			for(var i=0,len=hclusterInfo.length;i<len;i++){
@@ -96,65 +33,43 @@ function queryHcluster(){
 		}
 	});	
 }
-function queryMcluster(){
-	//getLoading();
-	var hclusterId = $('.monitorHclusterOption:visible').val();
-	$(".mclusterOption").empty();
-	$(".mclusterOption").append("<option></option>");
-	$.ajax({
-		cache:false,
-		type:"get",		
-		url:"/mcluster/valid/" + hclusterId,
-		dataType:"json",
-		success:function(data){
-			//removeLoading();
-			if(error(data)) return;
-			var mclustersInfo = data.data;
-			for(var i=0,len=mclustersInfo.length;i<len;i++){
-				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
-				$(".mclusterOption").append(option);
-			}
-			initChosen();
-		}
-	});	
-}
-
 function queryMonitorPoint(){
 	//getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",		
-		url : "/monitor/index",
+		url : "/monitor/index/2",
 		dataType:"json",
 		success:function(data){
 			//removeLoading();
 			if(error(data)) return;
-			var monitorPoint = data.data;
-			for(var i=0,len=monitorPoint.length;i<len;i++){
-				var option = $("<option value=\""+monitorPoint[i].id+"\">"+monitorPoint[i].titleText+"</option>");
-				$("#monitorPointOption").append(option);
-				//init all charts
-				initCharts(monitorPoint[i]);
+			var monitor = data.data;
+			for(var i=0,len=monitor.length;i<len;i++){
+                var monitorPoints = monitor[i].monitorPoint.split(",");
+                for(var j=0,len1=monitorPoints.length;j<len1;j++) {
+                    var option = $("<option value=\"" + monitor[i].id +split+monitorPoints[j]+ "\">" + monitor[i].titleText +split+ monitorPoints[j]+  "</font></option>");
+                    $("#monitorPointOption").append(option);
+                    initCharts(monitor[i], monitorPoints[j]);
+                }
 			}
 			initChosen();
 		}
 	});	
 }
 
-function initCharts(data){
-	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id",data.id+"-monitor-view").appendTo($('#monitor-view'));
-	var div = $(viewDemo).find('[name="data-chart"]');
-	$(div).attr("id",data.id);
-	//init div to chart
-	initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
-	
-	/*隐藏图表*/
-	$('div[name="monitor-view"]').each(function(){
-		$(this).addClass("hide");
-	});
-	var chart = $(div).highcharts();
-	setChartData(data.id,chart);
-	draggable(viewDemo);
+function initCharts(data,monitorPoint){
+    var id = data.id+split+monitorPoint;
+    var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id",id+"-monitor-view").appendTo($('#monitor-view'));
+    var div = $(viewDemo).find('[name="data-chart"]');
+    $(div).attr("id",id);
+    initChart(div,data.titleText+split+monitorPoint,data.yAxisText,data.tooltipSuffix);
+    /*隐藏图表*/
+    $('div[name="monitor-view"]').each(function(){
+        $(this).addClass("hide");
+    });
+    var chart = $(div).highcharts();
+    //setChartData(id,chart);
+    draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
@@ -252,33 +167,34 @@ function initChart(obj,title,ytitle,unit){
 } 
 
 function setChartData(indexId,chart){
-	var mclusterId= $('.mclusterOption').val();
+    var param = indexId.split(split);
+	var hclusterId= $('.monitorHclusterOption').val();
 	var queryTime= $('#queryTime').val();
-	if(queryTime == ''){
-		var queryTime = 1;
+	var topN= $('#topN').val();
+	if(!queryTime){
+		queryTime = 1;
 	}
-	if(mclusterId != ''){
-		chart.showLoading();
-		$.ajax({
-			cache:false,
-			type : "get",
-			url : "/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
-			dataType : "json", 
-			contentType : "application/json; charset=utf-8",
-			success:function(data){	
-				chart.hideLoading();
-		 		if(error(data)) return;
-		 		var ydata = data.data;
-		 		for(var i=chart.series.length-1;i>=0;i--){
-		 			chart.series[i].remove(false);
-	 			}
-		 		for(var i=0;i<ydata.length;i++){
-		 			chart.addSeries(ydata[i],false);
-	 			}
-		 		chart.redraw();
-			}
-		});
-	}	
+    console.info(indexId);
+    chart.showLoading();
+    $.ajax({
+        cache:false,
+        type : "get",
+        url : "/monitor/topN/"+hclusterId+"/"+param[0]+"/"+param[1]+"/"+queryTime+"/"+topN,
+        dataType : "json",
+        contentType : "application/json; charset=utf-8",
+        success:function(data){
+            chart.hideLoading();
+            if(error(data)) return;
+            var ydata = data.data;
+            for(var i=chart.series.length-1;i>=0;i--){
+                chart.series[i].remove(false);
+            }
+            for(var i=0;i<ydata.length;i++){
+                chart.addSeries(ydata[i],false);
+            }
+            chart.redraw();
+        }
+    });
 }
 
 function draggable(obj){
@@ -325,7 +241,4 @@ function updateChartSize(obj){
 $(function(){
 	$('#nav-search').addClass("hidden");
 	queryHcluster();
-	$(".monitorHclusterOption").change(function() {
-		queryMcluster();
-	})
 });

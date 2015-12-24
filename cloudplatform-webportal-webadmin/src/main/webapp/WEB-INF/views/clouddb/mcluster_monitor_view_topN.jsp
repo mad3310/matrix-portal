@@ -54,7 +54,7 @@
 										</select>
 									</div>
                                     <div class="form-group col-sm-12 col-xs-12 col-md-2">
-                                        <select id="topN" name="queryTime" class="form-control">
+                                        <select id="topN" name="topN" class="form-control">
                                             <option value="3">top3</option>
                                             <option value="5">top5</option>
                                             <option value="8">top8</option>

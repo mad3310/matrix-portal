@@ -137,14 +137,21 @@ public class MonitorController {
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>
 	 * Description: 监控视图数目<br>
-	 * @author name: wujun 
+	 * @author name: wujun
 	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value="/index",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
+	 public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", 1);
+		result.setData(this.monitorIndexService.selectByMap(map));
+		return result;
+	}
+	@RequestMapping(value="/index/{type}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject monitorCountByType(@PathVariable int type,ResultObject result) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("status", type);
 		result.setData(this.monitorIndexService.selectByMap(map));
 		return result;
 	}
