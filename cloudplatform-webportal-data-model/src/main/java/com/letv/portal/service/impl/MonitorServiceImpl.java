@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
@@ -131,14 +132,16 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
         Date end = new Date();
 
         List<MonitorDetailModel> topNMonitors = getTopN( monitorIndexModel,hclusterId,monitorName,strategy,topN);//get topN from cbase.
-
+        List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+        if(null == topNMonitors || topNMonitors.isEmpty()) {
+            return ydatas;
+        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("dbName", monitorIndexModel.getDetailTable());
         params.put("start", getStartDate(end,strategy));
         params.put("end", end);
         params.put("detailName",topNMonitors.get(0).getDetailName());
 
-        List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
         for (MonitorDetailModel monitor : topNMonitors) {
             MonitorViewYModel ydata = new MonitorViewYModel();
             params.put("ip", monitor.getIp());
@@ -566,6 +569,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             if(dataNow.size() > Constant.MONITOR_TOP_MAX)
                 dataNow.remove(0);
             this.cacheService.set(param.getKey(), dataNow);
+            logger.info("set key:{}-------------",param.getKey());
         }
     }
 
@@ -574,33 +578,33 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
         if(null == hclusterId) {
             return null;
         }
-        String topNKey = getTopNKey(monitorIndex,hclusterId,monitorName,strategy,topN);
+        String topNKey = getTopNKey(monitorIndex,hclusterId,monitorName,strategy);
         List<MonitorDetailModel> monitors = (List<MonitorDetailModel>) this.cacheService.get(topNKey,null);
-        if(monitors.size()>topN)
+        if(monitors !=null && monitors.size()>topN)
             monitors = monitors.subList(monitors.size()-topN, monitors.size());
         return monitors;
     }
 
-    private String getTopNKey(MonitorIndexModel monitorIndex,Long hclusterId, String monitorName,Integer strategy, Integer topN) {
+    private String getTopNKey(MonitorIndexModel monitorIndex,Long hclusterId, String monitorName,Integer strategy) {
         StringBuffer key = new StringBuffer();
         switch (strategy) {
             case 3:
-                key.append(Constant.MONITOR_TOPBY_24H_PREFIX).append(":");
+                key.append(Constant.MONITOR_TOPBY_24H_PREFIX);
                 break;
             case 6:
-                key.append(Constant.MONITOR_TOPBY_12H_PREFIX).append(":");
+                key.append(Constant.MONITOR_TOPBY_12H_PREFIX);
                 break;
             case 7:
-                key.append(Constant.MONITOR_TOPBY_3D_PREFIX).append(":");
+                key.append(Constant.MONITOR_TOPBY_3D_PREFIX);
                 break;
             case 4:
-                key.append(Constant.MONITOR_TOPBY_1W_PREFIX).append(":");
+                key.append(Constant.MONITOR_TOPBY_1W_PREFIX);
                 break;
             default:
-                key.append(Constant.MONITOR_TOPBY_12H_PREFIX).append(":");
+                key.append(Constant.MONITOR_TOPBY_12H_PREFIX);
                 break;
         }
-        key.append(hclusterId).append(":").append(monitorIndex.getDetailTable()).append(":'").append(monitorName);
+        key.append(":").append(hclusterId).append(":").append(monitorIndex.getDetailTable()).append(":").append(monitorName);
         return key.toString();
     }
 }
