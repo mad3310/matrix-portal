@@ -50,7 +50,7 @@
 											<option value="3">12小时</option>
                                             <option value="6">24小时</option>
                                             <option value="7">3天</option>
-                                            <%--<option value="4">7天</option>--%>
+                                            <option value="4">7天</option>
 										</select>
 									</div>
                                     <div class="form-group col-sm-12 col-xs-12 col-md-2">

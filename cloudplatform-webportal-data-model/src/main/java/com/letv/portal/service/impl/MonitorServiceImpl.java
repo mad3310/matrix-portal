@@ -549,20 +549,34 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
         if(null == monitorDetail)
             return;
         Map<String,Long> params = new HashMap<String,Long>();
-        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_12H_PREFIX,hclusterId, monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_12H);
-        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_24H_PREFIX,hclusterId,monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_24H);
-        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_3D_PREFIX,hclusterId,monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_3D);
-        params.put(MessageFormat.format("{0}:{1}:{2}:{3}", Constant.MONITOR_TOPBY_1W_PREFIX,hclusterId, monitorDetail.getDbName(), monitorDetail.getDetailName()), Constant.MONITOR_TOPBY_1W);
+        String split = ":";
+        String key;
+        StringBuffer keySuffix = new StringBuffer().append(split).append(hclusterId).append(split).append(monitorDetail.getDbName()).append(split).append(monitorDetail.getDetailName());
+        key = new StringBuffer().append(Constant.MONITOR_TOPBY_12H_PREFIX).append(keySuffix).toString();
+        params.put(key,Constant.MONITOR_TOPBY_12H);
+        key = new StringBuffer().append(Constant.MONITOR_TOPBY_24H_PREFIX).append(keySuffix).toString();
+        params.put(key,Constant.MONITOR_TOPBY_24H);
+        key = new StringBuffer().append(Constant.MONITOR_TOPBY_3D_PREFIX).append(keySuffix).toString();
+        params.put(key,Constant.MONITOR_TOPBY_3D);
+        key = new StringBuffer().append(Constant.MONITOR_TOPBY_1W_PREFIX).append(keySuffix).toString();
+        params.put(key,Constant.MONITOR_TOPBY_1W);
+
         long now = System.currentTimeMillis();
         for (Map.Entry<String, Long> param : params.entrySet()) {
             List<MonitorDetailModel> dataOld = (List<MonitorDetailModel>) this.cacheService.get(param.getKey(),null);
             List<MonitorDetailModel> dataNow = new ArrayList<MonitorDetailModel>();
             if(dataOld ==null)
                 dataOld = new ArrayList<MonitorDetailModel>();
-
+            boolean flag = true;
             for (MonitorDetailModel monitor:dataOld) {
-                if(now-monitor.getMonitorDate().getTime()<param.getValue())
-                    dataNow.add(monitor);
+                if(now-monitor.getMonitorDate().getTime()<param.getValue()) {
+                    if(flag && monitor.getId() == monitorDetail.getId()) {
+                        dataNow.add(monitor.getDetailValue()>=monitorDetail.getDetailValue()?monitor:monitorDetail);
+                    } else {
+                        dataNow.add(monitor);
+                    }
+                }
+
             }
             dataNow.add(monitorDetail);
             Collections.sort(dataNow);
