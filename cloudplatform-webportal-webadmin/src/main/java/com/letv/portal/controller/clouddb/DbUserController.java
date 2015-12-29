@@ -96,6 +96,51 @@ public class DbUserController {
 		this.dbUserProxy.saveAndBuild(dbUserModel,ips,types);
 		return obj;
 	}
+	@AoLog(desc="修改db用户密码",type=AoLogType.UPDATE)
+	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
+	public  @ResponseBody ResultObject updateSecurity(Long dbId,String username,String password,ResultObject obj) {
+		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.updateSecurity(dbId,username,password);
+		return obj;
+	}
+
+
+	/**Methods Name: updateDbUser <br>
+	 * Description: 用户账户更新<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 * @param types
+	 * @param ips
+	 * @param obj
+	 * @return
+	 */
+	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
+	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips) || types.contains("undefined") || ips.contains("undefined")) {
+			throw new ValidateException("参数不合法");
+		}
+		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
+		return obj;
+	}
+	/**Methods Name: updateDbUser <br>
+	 * Description: 修改数据库用户描述<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 * @param obj
+	 * @return
+	 */
+	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
+	@RequestMapping(value="/descn/{username}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateUserDescn(DbUserModel dbUserModel,ResultObject obj) {
+		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserService.updateDescnByUsername(dbUserModel);
+		return obj;
+	}
 	/**
 	 * Methods Name: validate <br>
 	 * Description: 校验dbUser用户是否存在
@@ -139,52 +184,5 @@ public class DbUserController {
 		this.dbUserProxy.deleteAndBuild(dbId,username);
 		return obj;
 	}
-	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
-	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
-	public  @ResponseBody ResultObject updateSecurity(Long dbId,String username,String password,ResultObject obj) {
-		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
-			throw new ValidateException("参数不能为空");
-		}
-		this.dbUserProxy.updateSecurity(dbId,username,password);
-		return obj;
-	}
 
-	
-	/**Methods Name: updateDbUser <br>
-	 * Description: 用户账户更新<br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 * @param types
-	 * @param ips
-	 * @param obj
-	 * @return
-	 */
-	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
-	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
-	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
-		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips) || types.contains("undefined") || ips.contains("undefined")) {
-			throw new ValidateException("参数不合法");
-		}
-		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
-		return obj;
-	}
-	/**Methods Name: updateDbUser <br>
-	 * Description: 用户账户更新<br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 * @param types
-	 * @param ips
-	 * @param obj
-	 * @return
-	 */
-	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
-	@RequestMapping(value="/descn/{username}",method=RequestMethod.POST)
-	public @ResponseBody ResultObject updateUserDescn(DbUserModel dbUserModel,ResultObject obj) {
-		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {
-			throw new ValidateException("参数不能为空");
-		}
-		this.dbUserService.updateDescnByUsername(dbUserModel);
-		return obj;
-	}
-	
 }
