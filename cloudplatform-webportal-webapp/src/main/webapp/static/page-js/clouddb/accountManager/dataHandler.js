@@ -230,10 +230,8 @@ define(function(require,exports,module){
                 "username":username,
                 "maxConcurrency": maxConcurrency,
                 "readWriterRate": readWriterRate,
-                "password":password,
                 "ips":ips,
-                "types":types,
-                "descn":descn
+                "types":types
             }
             return data;
         }
