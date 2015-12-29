@@ -30,7 +30,7 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 * @param ids
 	 */
-	public void updateUser(String ids);
+	public void updateAuthority(String ids);
 
 	/**Methods Name: buildDb <br>
 	 * Description: 创建数据库<br>

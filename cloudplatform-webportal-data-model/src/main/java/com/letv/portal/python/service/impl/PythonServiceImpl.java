@@ -193,6 +193,32 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(url.toString(), map,username,password);
 		return new ApiResultObject(result,url.toString());
 	}
+	@Override
+	public ApiResultObject updateAuthority(DbUserModel dbUser, String dbName, String nodeIp, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser");
+
+		Map<String,String> map = new HashMap<String,String>();
+		if(DbUserRoleStatus.WR.getValue() == dbUser.getType()) {
+			map.put("role", "wr");
+		}
+		if(DbUserRoleStatus.MANAGER.getValue() == dbUser.getType()) {
+			map.put("role", "manager");
+		}
+		if(DbUserRoleStatus.RO.getValue() == dbUser.getType()) {
+			map.put("role", "ro");
+		}
+		map.put("dbName", dbName);
+		map.put("userName", dbUser.getUsername());
+		map.put("ip_address", dbUser.getAcceptIp());
+		map.put("max_queries_per_hour", String.valueOf(dbUser.getMaxQueriesPerHour()));
+		map.put("max_updates_per_hour", String.valueOf(dbUser.getMaxUpdatesPerHour()));
+		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
+		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
+
+		String result = HttpClient.put(url.toString(), map,username,password);
+		return new ApiResultObject(result,url.toString());
+	}
 
 	@Override
 	public ApiResultObject startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password) {

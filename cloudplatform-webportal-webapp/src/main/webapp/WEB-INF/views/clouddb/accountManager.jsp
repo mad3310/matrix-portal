@@ -372,32 +372,6 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
-				</label>
-				<div class="">
-					<!-- 密码输入框 -->
-					<div class="col-xs-12 col-sm-4">
-						<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
-					</div>
-					<!-- 密码规则提示 -->
-					<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-						<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
-					</div>
-				</div>
-			</div>
-			<!-- 密码输入模块end -->
-			<!-- 确认密码模块 -->
-			<div class="form-group">
-				<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 确认密码：
-				</label>
-				<div class="">
-					<!-- 确认密码输入框 -->
-					<div class="col-xs-12 col-sm-4">
-						<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off" />
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
 				<label class="col-xs-12 col-sm-2 control-label">备注说明：</label>
 				<div class="">
 					<div class="col-xs-12 col-sm-4">

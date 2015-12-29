@@ -147,8 +147,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         this.buildUser(ids, "create");
     }
     @Override
-    public void updateUser(String ids) {
-        this.buildUser(ids,"update");
+    public void updateAuthority(String ids) {
+        this.buildUser(ids,"updateAuthority");
     }
     @Override
     public void deleteDbUser(String ids) {
@@ -172,8 +172,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
             ApiResultObject result = null;
             if("delete".equals(type)) {
                 result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
-            } else {
+            } else if("create".equals(type)) {
                 result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
+            } else {
+                result = this.pythonService.updateAuthority(dbUserModel, (String) params.get("dbName"), (String) params.get("nodeIp"), (String) params.get("username"), (String) params.get("password"));
             }
             if(analysisResult(transResult(result.getResult()))) {
                 //修改成功

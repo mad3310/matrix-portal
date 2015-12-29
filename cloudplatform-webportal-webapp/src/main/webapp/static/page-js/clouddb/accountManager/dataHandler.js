@@ -215,8 +215,6 @@ define(function(require,exports,module){
             var username =$("#modifyFormDbUsername").html();
             var readWriterRate = $("#modifydbUserReadWriterRate").val();
             var maxConcurrency = $("#modifydbUserMaxConcurrency").val();
-            var password = $("#modifyFormNewPwd1").val();
-            var descn = $("#modifyFormDbDesc").html();
 
             var ips = "";
             var types = "";

@@ -22,15 +22,15 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public ApiResultObject createContainer(String mclusterName,String ip,String username,String password);
-	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password);
+	ApiResultObject createContainer(String mclusterName,String ip,String username,String password);
+	ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
+	ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>
@@ -39,7 +39,7 @@ public interface IPythonService {
 	 * @return
 	 */
 
-	public ApiResultObject initZookeeper(String nodeIp,Map<String,String> params);
+	ApiResultObject initZookeeper(String nodeIp,Map<String,String> params);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>
@@ -49,7 +49,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject initUserAndPwd4Manager(String nodeIp,String username,String password);
+	ApiResultObject initUserAndPwd4Manager(String nodeIp,String username,String password);
 	
 	/**Methods Name: postMclusterInfo <br>
 	 * Description: 提交mcluster集群信息<br>
@@ -61,7 +61,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password);
+	ApiResultObject postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password);
 	
 	/**Methods Name: initMcluster <br>
 	 * Description: 初始化集群<br>
@@ -71,7 +71,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject initMcluster(String nodeIp,String username,String password);
+	ApiResultObject initMcluster(String nodeIp,String username,String password);
 
 	/**Methods Name: postContainerInfo <br>
 	 * Description: 提交节点信息<br>
@@ -80,7 +80,7 @@ public interface IPythonService {
 	 * @param nodeName 节点名称
 	 * @return
 	 */
-	public ApiResultObject postContainerInfo(String nodeIp,String nodeName,String username,String password);
+	ApiResultObject postContainerInfo(String nodeIp,String nodeName,String username,String password);
 	
 	/**Methods Name: syncContainer <br>
 	 * Description: 同步节点信息<br>
@@ -90,7 +90,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject syncContainer(String nodeIp,String username,String password);
+	ApiResultObject syncContainer(String nodeIp,String username,String password);
 	
 	/**Methods Name: startMcluster <br>
 	 * Description: 启动集群<br>
@@ -100,7 +100,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject startMcluster(String nodeIp,String username,String password);
+	ApiResultObject startMcluster(String nodeIp,String username,String password);
 	/**Methods Name: restartMcluster <br>
 	 * Description: 重新启动集群<br>
 	 * @author name: liuhao1
@@ -109,7 +109,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject restartMcluster(String nodeIp,String username,String password);
+	ApiResultObject restartMcluster(String nodeIp,String username,String password);
 	
 	/**Methods Name: checkContainerStatus <br>
 	 * Description: 检查集群状态：检查节点状态<br>
@@ -119,7 +119,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject checkContainerStatus(String nodeIp,String username,String password);
+	ApiResultObject checkContainerStatus(String nodeIp,String username,String password);
 	
 	/**Methods Name: createDb <br>
 	 * Description: 创建数据库<br>
@@ -132,7 +132,7 @@ public interface IPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public ApiResultObject createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password);
+	ApiResultObject createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password);
 	
 
 	/**Methods Name: createDbUser <br>
@@ -144,7 +144,7 @@ public interface IPythonService {
 	 * @param password
 	 * @return
 	 */
-	public ApiResultObject createDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username,String password);
+	ApiResultObject createDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username,String password);
 	
 	/**Methods Name: startGbalancer <br>
 	 * Description: 启动gbalancer<br>
@@ -159,7 +159,7 @@ public interface IPythonService {
 	 * @param password
 	 * @return
 	 */
-	public ApiResultObject startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password);
+	ApiResultObject startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password);
 	/**
 	 * Methods Name: deleteDbUser <br>
 	 * Description: 删除DbUser<br>
@@ -171,14 +171,14 @@ public interface IPythonService {
 	 * @param username
 	 * @param password
 	 */
-	public ApiResultObject deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password);
+	ApiResultObject deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password);
 
 	/**Methods Name: removeMcluster <br>
 	 * Description: 删除container集群<br>
 	 * @author name: liuhao1
 	 * @param mclusterName
 	 */
-	public ApiResultObject removeMcluster(String mclusterName,String ip,String username,String password);
+	ApiResultObject removeMcluster(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: startMcluster <br>
 	 * Description: 启动container集群<br>
@@ -186,7 +186,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public ApiResultObject startMcluster(String mclusterName,String ip,String username,String password);
+	ApiResultObject startMcluster(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: stopMcluster <br>
 	 * Description: 停止container集群<br>
@@ -194,7 +194,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public ApiResultObject stopMcluster(String mclusterName,String ip,String username,String password);
+	ApiResultObject stopMcluster(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: startContainer <br>
 	 * Description: 启动container<br>
@@ -202,7 +202,7 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public ApiResultObject startContainer(String containerName,String ip,String username,String password);
+	ApiResultObject startContainer(String containerName,String ip,String username,String password);
 
 	/**Methods Name: stopContainer <br>
 	 * Description: 停止container<br>
@@ -210,7 +210,7 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public ApiResultObject stopContainer(String containerName,String ip,String username,String password);
+	ApiResultObject stopContainer(String containerName,String ip,String username,String password);
 
 	/**Methods Name: checkMclusterStatus <br>
 	 * Description: 检查container集群状态<br>
@@ -218,7 +218,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String checkMclusterStatus(String mclusterName,String ip,String username,String password);
+	String checkMclusterStatus(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: checkContainerStatus <br>
 	 * Description: 检查container状态<br>
@@ -226,20 +226,20 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public String checkContainerStatus(String containerName,String ip,String username,String password);
+	String checkContainerStatus(String containerName,String ip,String username,String password);
 	/**
 	 * Methods Name: initHcluster <br>
 	 * Description: 创建host之前做接口验证<br>
 	 * @author name: wujun
 	 * @return
 	 */
-	public ApiResultObject initHcluster(String hostIp);
+	ApiResultObject initHcluster(String hostIp);
 	/**
 	 * Methods Name: createHost <br>
 	 * Description: 创建host<br>
 	 * @author name: wujun
 	 */
-	public ApiResultObject createHost(HostModel hostModel);
+	ApiResultObject createHost(HostModel hostModel);
 
 	/**Methods Name: checkMclusterCount <br>
 	 * Description: 检查container集群一致性<br>
@@ -249,7 +249,7 @@ public interface IPythonService {
 	 * @param password
 	 * @return
 	 */
-	public String checkMclusterCount(String hostIp, String name, String password);
+	String checkMclusterCount(String hostIp, String name, String password);
 	/**
 	 * Methods Name: MonitorMclusterStatus <br>
 	 * Description: 通过vip结点Ip抓取集群状态<br>
@@ -257,7 +257,7 @@ public interface IPythonService {
 	 * @param ip
 	 * @return
 	 */
-	public String getMclusterStatus(String ip);
+	String getMclusterStatus(String ip);
     /**
      * Methods Name: getMclusterMonitor <br>
      * Description: 通过vip结点ip抓取集群数据库状态<br>
@@ -265,7 +265,7 @@ public interface IPythonService {
      * @param ip
      * @return
      */
-	public String getMclusterMonitor(String ip);
+	String getMclusterMonitor(String ip);
 	
 	
 	/**Methods Name: getMonitorData <br>
@@ -275,8 +275,8 @@ public interface IPythonService {
 	 * @param index
 	 * @return
 	 */
-	public ApiResultObject getMonitorData(String ip,String index);
-	public ApiResultObject getClusterMonitorData(String ip, String index);
+	ApiResultObject getMonitorData(String ip,String index);
+	ApiResultObject getClusterMonitorData(String ip, String index);
 
 	/**Methods Name: wholeBackup4Db <br>
 	 * Description: db数据库备份<br>
@@ -285,17 +285,15 @@ public interface IPythonService {
 	 * @param name
 	 * @param password
 	 */
-	public ApiResultObject wholeBackup4Db(String ipAddr,String name, String password);
+	ApiResultObject wholeBackup4Db(String ipAddr,String name, String password);
 
 	/**Methods Name: checkBackup4Db <br>
 	 * Description: 检查db备份结果<br>
 	 * @author name: liuhao1
 	 * @param ipAddr
-	 * @param name
-	 * @param password
 	 */
-	public ApiResultObject checkBackup4Db(String ipAddr);
-	public ApiResultObject getOSSData(String ip, String index);
+	ApiResultObject checkBackup4Db(String ipAddr);
+	ApiResultObject getOSSData(String ip, String index);
 	
 	/**
 	  * @Title: getMysqlMonitorData
@@ -308,8 +306,8 @@ public interface IPythonService {
 	  * @author lisuxiao
 	  * @date 2015年7月28日 下午6:54:54
 	  */
-	public ApiResultObject getMysqlMonitorData(String ip,String index, Map<String, String> params);
-	
-	
-	
+	ApiResultObject getMysqlMonitorData(String ip,String index, Map<String, String> params);
+
+
+	ApiResultObject updateAuthority(DbUserModel dbUserModel, String dbName, String nodeIp, String username, String password);
 }

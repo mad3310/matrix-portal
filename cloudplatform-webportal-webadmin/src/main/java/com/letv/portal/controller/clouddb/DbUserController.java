@@ -46,9 +46,7 @@ public class DbUserController {
 	private IDbUserService dbUserService;
 	@Resource
 	private IDbUserProxy dbUserProxy;
-	@Resource
-	private IBuildTaskService buildTaskService;
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 
 	/**Methods Name: list <br>
@@ -141,9 +139,9 @@ public class DbUserController {
 		this.dbUserProxy.deleteAndBuild(dbId,username);
 		return obj;
 	}
-	@AoLog(desc="删除db用户",type=AoLogType.DELETE)
+	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
 	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
-	public  @ResponseBody ResultObject deleteDbUserById(Long dbId,String username,String password,ResultObject obj) {
+	public  @ResponseBody ResultObject updateSecurity(Long dbId,String username,String password,ResultObject obj) {
 		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
 			throw new ValidateException("参数不能为空");
 		}

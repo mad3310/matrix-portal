@@ -107,21 +107,17 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 
 		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
-		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?PasswordRandom.genStr():dbUserModel.getPassword();
 		Integer maxConcurrency = dbUserModel.getMaxConcurrency();
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();
 			for (int i = 0; i < arryIps.size(); i++) {
 				if(ip.equals(arryIps.get(i))) {
 					int formType = Integer.parseInt(arryTypes.get(i));
-					//fix password reset start
 					dbUser.setType(formType);
-					dbUser.setPassword(pwd);
 					dbUser.setMaxConcurrency(maxConcurrency);
 					updates.add(dbUser);
 					formIps.remove(arryIps.get(i));
 					formTypes.remove(arryTypes.get(i));
-					//fix password reset end
 					flag = false;
 					break;
 				}
@@ -132,17 +128,15 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			}
 			flag = true;
 		}
-		dbUserModel.setPassword(pwd);
-		dbUserModel.setMaxConcurrency(maxConcurrency);
 		//剩余的，新增。
 		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
 
 		//分别操作 新增、修改、删除。
 		if(!adds.isEmpty()) {
-			this.saveAndBuild(adds);
+			this.addUserAuthority(adds);
 		}
 		if(!updates.isEmpty()) {
-			//去掉重复违法数据。
+			//兼容老数据,去掉重复违法数据。
 			Set<String> updateIps = new HashSet<String>();
 			for (DbUserModel ip : updates) {
 				if(updateIps.contains(ip.getAcceptIp())) {
@@ -151,11 +145,11 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 				updateIps.add(ip.getAcceptIp());
 			}
 		}
+		if(!updates.isEmpty()) {
+			this.updateUserAuthority(updates);
+		}
 		if(!removes.isEmpty()) {
 			this.deleteAndBuild(removes);
-		}
-		if(!updates.isEmpty()) {
-			this.updateDbUser(updates);
 		}
 	}
 
@@ -166,12 +160,36 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			this.dbUserService.update(dbUser);
 			ids.append(dbUser.getId()).append(",");
 		}
-		this.buildTaskService.updateUser(ids.toString());
-
+		this.buildTaskService.buildUser(ids.toString());
 	}
 
+    private void addUserAuthority(List<DbUserModel> users) {
+        if(users.isEmpty()) {
+            throw new ValidateException("参数不能为空：users is null");
+        }
+        StringBuffer ids = new StringBuffer();
+        for (DbUserModel dbUser : users) {
+            dbUser.setCreateUser(sessionService.getSession().getUserId());
+            dbUser.setStatus(DbUserStatus.DEFAULT.getValue());
+            this.dbUserService.insert(dbUser);
+            ids.append(dbUser.getId()).append(",");
+        }
+        this.buildTaskService.updateAuthority(ids.substring(0, ids.length() - 1));
+    }
+
+    private void updateUserAuthority(List<DbUserModel> users) {
+        if(users.isEmpty()) {
+            throw new ValidateException("参数不能为空：users is null");
+        }
+        StringBuffer ids = new StringBuffer();
+        for (DbUserModel dbUser : users) {
+            this.dbUserService.update(dbUser);
+            ids.append(dbUser.getId()).append(",");
+        }
+        this.buildTaskService.updateAuthority(ids.toString());
+    }
 	public void deleteDbUser(String dbUserId){
-		this.buildTaskService.deleteDbUser(dbUserId);
+        this.buildTaskService.deleteDbUser(dbUserId);
 		String[] ids = dbUserId.split(",");
 		for (String id : ids) {
 			DbUserModel dbUserModel = new DbUserModel();
