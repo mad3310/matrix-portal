@@ -159,7 +159,7 @@ function initChart(obj,title,ytitle,unit){
             }
         },
         tooltip: {
-            valueSuffix: "/s",
+            valueSuffix: unit,
             shared: true
         }
     });
