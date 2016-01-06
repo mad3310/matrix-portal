@@ -231,11 +231,11 @@
 											<div class="pull-left" style="height: 36px;">
 												<span class="sleBG"> <span class="sleHid">
 													<div class="divselect">
-														<span>2G</span>
+														<span>4G</span>
 														<ul style="display: none;">
-															<li class="bk-select-option"><a href="javascript:;" selectid="2147483648">2G</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="4294967296">4G</a></li>
 														</ul>
-														<input name="memorySize" type="hidden" value="2147483648" />
+														<input name="memorySize" type="hidden" value="4294967296" />
 													</div>
 											</span>
 												</span> <span class="bk-select-arrow"></span>
