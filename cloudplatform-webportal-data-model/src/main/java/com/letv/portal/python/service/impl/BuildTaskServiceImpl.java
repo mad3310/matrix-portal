@@ -6,6 +6,8 @@ import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.monitor.Monitor;
 import com.letv.common.result.ApiResultObject;
+import com.letv.common.util.DataFormat;
+import com.letv.common.util.ESUtil;
 import com.letv.common.util.JsonUtils;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
@@ -995,8 +997,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));
                 monitorDetail.setIp(container.getIpAddr());
                 this.monitorService.insert(monitorDetail);
+                ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase()+"_"+DataFormat.compactDate(new Date()), monitorDetail.getDetailName().toLowerCase(), monitorDetail);
             }
-            logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
         } else {
             MonitorErrorModel error = new MonitorErrorModel();
             error.setTableName(index.getDetailTable());

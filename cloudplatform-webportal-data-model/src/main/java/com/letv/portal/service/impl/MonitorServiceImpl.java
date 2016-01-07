@@ -7,10 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.util.DataFormat;
+import com.letv.common.util.ESUtil;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.monitor.MonitorViewModel;
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +88,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
-		logger.info("get Data-------start");
-		Date start = new Date();
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
@@ -95,13 +99,11 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 	    
 		Map<String, Object> params = new HashMap<String, Object>();
-		
+
 		params.put("dbName", monitorIndexModel.getDetailTable());
 		params.put("start", getStartDate(end,strategy));
 		params.put("end", end);
-		Date prepare = new Date();
-		logger.info("get Data-------prepare" + (prepare.getTime()-start.getTime())/1000);
-		
+
 		for (ContainerModel c : containers) {
 			for (String s : detailNames) {
 				MonitorViewYModel ydata = new MonitorViewYModel();
@@ -121,11 +123,67 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				ydatas.add(ydata);
 			}
 		}
-		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
 
-	@Override
+    /*@Override
+    public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+        List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("mclusterId", mclusterId);
+        map.put("type", "mclusternode");
+        List<ContainerModel> containers = this.containerService.selectByMap(map);
+
+        MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);
+        Date end = new Date();
+        String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
+
+
+        for (ContainerModel c : containers) {
+            for (String s : detailNames) {
+                MonitorViewYModel ydata = new MonitorViewYModel();
+
+                AndFilterBuilder andFilterBuilder = FilterBuilders.andFilter(
+                        FilterBuilders.termFilter("ip", c.getIpAddr().toLowerCase()),
+                        FilterBuilders.termFilter("detailName", s.toLowerCase().toLowerCase()),
+                        FilterBuilders.rangeFilter("monitorDate").gte(getStartDate(end, strategy).getTime()),
+                        FilterBuilders.rangeFilter("monitorDate").lt(end.getTime())
+                );
+                SearchHits searchHits = ESUtil.getFilterResult(getIndexs(Constant.ES_RDS_MONITOR_INDEX + monitorIndexModel.getDetailTable().toLowerCase(),getStartDate(end,strategy),end), andFilterBuilder);
+                List<List<Object>> datas = new ArrayList<List<Object>>();
+                for (SearchHit hit : searchHits) {
+                    List<Object> point = new ArrayList<Object>();
+                    Map<String, Object> source = hit.getSource();
+                    point.add(source.get("monitorDate"));
+                    point.add(source.get("detailValue"));
+                    datas.add(point);
+                }
+                ydata.setName(c.getIpAddr() +":"+s);
+                ydata.setData(datas);
+                ydatas.add(ydata);
+            }
+        }
+        return ydatas;
+    }*/
+    private  String[] getIndexs(String indexPrefix,Date start,Date end) {
+        Calendar startTime = Calendar.getInstance();
+        startTime.setTime(start);
+        Calendar endTime = Calendar.getInstance();
+        endTime.setTime(end);
+        List<String> list = new ArrayList<String>();
+        while(true) {
+            list.add(indexPrefix +"_"+ DataFormat.compactDate(startTime.getTime()));
+            startTime.add(Calendar.DATE, 1);
+            if (startTime.compareTo(endTime) > 0) {
+                break;
+            }
+        }
+        return list.toArray(new String[list.size()]);
+    }
+
+
+
+    @Override
 	public List<MonitorViewYModel> getMonitorTopNViewData(Long hclusterId, Long chartId,String monitorName, Integer strategy,Integer topN) {
 
         MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);
@@ -264,6 +322,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		}
 		return now.getTime();
 	}
+
 	@Override
 	public Float selectDbStorage(Long mclusterId) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();

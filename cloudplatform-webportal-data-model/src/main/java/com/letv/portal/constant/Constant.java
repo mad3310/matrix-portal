@@ -57,4 +57,6 @@ public class Constant {
     public static final long  MONITOR_TOPBY_1W = 604800000;
 	public static final int  MONITOR_TOP_MAX = 10;
 
+	public static final String ES_RDS_MONITOR_INDEX = "matrix_rds_monitor_";
+
 }
