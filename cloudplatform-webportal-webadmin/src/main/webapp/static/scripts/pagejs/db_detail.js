@@ -57,7 +57,7 @@ var dbUser={
         var username =$("#modifyFormDbUsername").html();
         var readWriterRate = $("#modifydbUserReadWriterRate").val();
         var maxConcurrency = $("#modifydbUserMaxConcurrency").val();
-        var password = $("#modifyFormNewPwd1").val();
+        //var password = $("#modifyFormNewPwd1").val();
         var descn = $("#modifyFormDbDesc").html();
 
         var ips = "";
@@ -74,7 +74,7 @@ var dbUser={
             "username":username,
             "maxConcurrency": maxConcurrency,
             "readWriterRate": readWriterRate,
-            "password":password,
+            //"password":password,
             "ips":ips,
             "types":types,
             "descn":descn
@@ -116,16 +116,16 @@ $(function(){
                 }
             },
             password: {
-                validators: {
-                    notEmpty: {
-                        message: 'The question required and cannot be empty'
-                    },
-			          stringLength: {
-		              max: 20,
-		              message: '密码太长了!'
-		          }
-                }
-            },
+             validators: {
+             notEmpty: {
+             message: 'The question required and cannot be empty'
+             },
+             stringLength: {
+             max: 20,
+             message: '密码太长了!'
+             }
+             }
+             },
             readWriterRate: {
                 validMessage: 'The business_description looks great',
                 validators: {
@@ -332,7 +332,7 @@ $(function(){
                     }
                 }
             },
-            modifyFormNewPwd1: {
+           /* modifyFormNewPwd1: {
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
@@ -340,10 +340,10 @@ $(function(){
                         regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z@#$%^&*!~_-]{6,32}$/,
                         message: "由字母、数字或特殊字符如：@#$%^&*!~ 组成,要求6-32位，必须要包含数字，大小写字母"
                     }
-            		/*,regexp: {
+            		/!*,regexp: {
                         regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,32}$/,
                         message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
-                    }*/
+                    }*!/
                 }
             },
             modifyFormNewPwd2: {
@@ -356,7 +356,7 @@ $(function(){
                         message: '两次输入密码不同'
                     }
                 }
-            }
+            }*/
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();

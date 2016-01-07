@@ -349,7 +349,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="form-group overfl">
+										<%--<div class="form-group overfl">
 											<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
 											</label>
 											<div class="">
@@ -382,7 +382,7 @@
 													<label id="modifyFormDbDesc" style="padding-top:7px"></label>
 												</div>
 											</div>
-										</div>
+										</div>--%>
 										<!-- 按钮模块 -->
 										<div class="form-group overfl">
 											<label class="col-xs-12 col-sm-2 control-label"></label>

@@ -23,11 +23,16 @@ public class ESUtil {
     static {
         Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name","elasticsearch")
                 .put("client.transport.sniff",true) //自动探测其他节点，加入到机器列表
-                .put("client",true)
+                .put("client", true)
                 .put("data",false)
                 .build();
+        /*client = new TransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress("localhost", 9300));*/
         client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("10.140.62.34", 9300))
+                .addTransportAddress(new InetSocketTransportAddress("10.140.62.32", 9300))
+                .addTransportAddress(new InetSocketTransportAddress("10.140.62.31", 9300));
+
     }
 
     public static Client getClient() {
