@@ -1,29 +1,12 @@
 package com.letv.portal.service.impl;
 
 
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.letv.common.exception.ValidateException;
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.ESUtil;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.model.monitor.MonitorViewModel;
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
@@ -34,13 +17,22 @@ import com.letv.portal.model.monitor.mysql.MysqlDbSpaceMonitor;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlDbSpaceMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlGaleraMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlHealthMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlInnoDBMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlKeyBufferMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlResourceMonitorService;
-import com.letv.portal.service.monitor.mysql.IMysqlTableSpaceMonitorService;
+import com.letv.portal.service.monitor.mysql.*;
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service("monitorService")
 public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> implements IMonitorService {
@@ -86,7 +78,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao;
 	}
 
-	@Override
+	/*@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
@@ -124,9 +116,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			}
 		}
 		return ydatas;
-	}
+	}*/
 
-    /*@Override
+    @Override
     public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
         List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -164,7 +156,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             }
         }
         return ydatas;
-    }*/
+    }
     private  String[] getIndexs(String indexPrefix,Date start,Date end) {
         Calendar startTime = Calendar.getInstance();
         startTime.setTime(start);
@@ -179,6 +171,51 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             }
         }
         return list.toArray(new String[list.size()]);
+    }
+
+    @Override
+    public void syncMonitorFromDbToEs(String dbName,int strategy) {
+        Date end = new Date();
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("dbName", dbName);
+        params.put("start", getStartDate(end,strategy));
+        params.put("end", end);
+
+        List<MonitorDetailModel> list = this.monitorDao.selectDateTime(params);
+
+        for (MonitorDetailModel monitorDetail:list) {
+            Map<String,Object> monitorMap = new HashMap<String,Object>();
+            monitorMap.put("detailName",monitorDetail.getDetailName());
+            monitorMap.put("detailValue",monitorDetail.getDetailValue());
+            monitorMap.put("ip",monitorDetail.getIp());
+            monitorMap.put("monitorDate",monitorDetail.getMonitorDate());
+            String dataStr = DataFormat.compactDate(monitorDetail.getMonitorDate());
+            String add = ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + dbName.toLowerCase() + "_" + dataStr, monitorDetail.getDetailName().toLowerCase(), monitorMap);
+            logger.info("current Thread:{},insert id:{}",Thread.currentThread().getName(),add);
+        }
+
+    }
+    @Override
+    public void syncMonitorFromDbToEs(String dbName,Date start,Date end) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("dbName", dbName);
+        params.put("start", start);
+        params.put("end", end);
+
+        List<MonitorDetailModel> list = this.monitorDao.selectDateTime(params);
+
+        for (MonitorDetailModel monitorDetail:list) {
+            Map<String,Object> monitorMap = new HashMap<String,Object>();
+            monitorMap.put("detailName",monitorDetail.getDetailName());
+            monitorMap.put("detailValue",monitorDetail.getDetailValue());
+            monitorMap.put("ip",monitorDetail.getIp());
+            monitorMap.put("monitorDate",monitorDetail.getMonitorDate());
+            String dataStr = DataFormat.compactDate(monitorDetail.getMonitorDate());
+            String add = ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + dbName.toLowerCase() + "_" + dataStr, monitorDetail.getDetailName().toLowerCase(), monitorMap);
+            logger.info("current Thread:{},insert id:{}",Thread.currentThread().getName(),add);
+        }
+
     }
 
 

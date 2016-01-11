@@ -1,5 +1,7 @@
 package com.letv.portal.controller.clouddb;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,10 +10,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.common.util.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,6 +71,23 @@ public class CronJobsController {
 		this.monitorProxy.collectMclusterServiceData();
 		return obj;
 	}
+	@RequestMapping(value="/monitor/syncToEs/{dbName}/{strategy}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject syncToEs(@PathVariable String dbName,@PathVariable int strategy,ResultObject obj) {
+		this.monitorService.syncMonitorFromDbToEs(dbName,strategy);
+		return obj;
+	}
+    @RequestMapping(value="/monitor/syncToEs/{dbName}/{start}/{end}",method=RequestMethod.GET)
+     public @ResponseBody ResultObject syncToEs1(@PathVariable String dbName,@PathVariable String start,@PathVariable String end,ResultObject obj) {
+        try {
+            SimpleDateFormat compactDate = new SimpleDateFormat(
+                    "yyyyMMddHHmm");
+
+            this.monitorService.syncMonitorFromDbToEs(dbName,compactDate.parse(start),compactDate.parse(end));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 	/**Methods Name: collectMclusterMonitorData <br>
 	 * Description: 收集图表监控数据2<br>
 	 * @author name: liuhao1

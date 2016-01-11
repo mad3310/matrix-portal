@@ -997,7 +997,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));
                 monitorDetail.setIp(container.getIpAddr());
                 this.monitorService.insert(monitorDetail);
-                ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase()+"_"+DataFormat.compactDate(new Date()), monitorDetail.getDetailName().toLowerCase(), monitorDetail);
+
+                //save into es
+                Map<String,Object> monitorMap = new HashMap<String,Object>();
+                monitorMap.put("detailName",monitorDetail.getDetailName());
+                monitorMap.put("detailValue",monitorDetail.getDetailValue());
+                monitorMap.put("ip",monitorDetail.getIp());
+                monitorMap.put("monitorDate",monitorDetail.getMonitorDate());
+                ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase()+"_"+DataFormat.compactDate(new Date()), monitorDetail.getDetailName().toLowerCase(), monitorMap);
             }
         } else {
             MonitorErrorModel error = new MonitorErrorModel();

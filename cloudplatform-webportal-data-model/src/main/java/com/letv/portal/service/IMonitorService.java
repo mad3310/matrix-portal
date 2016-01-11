@@ -15,6 +15,8 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	List<MonitorViewYModel> getMonitorViewData(Long MclusterId,Long chartId,Integer strategy);
 	List<MonitorViewYModel>  getMonitorTopNViewData(Long hclusterId, Long chartId,String monitorName, Integer strategy,Integer topN);
+	void syncMonitorFromDbToEs(String dbName,int strategy);
+    void syncMonitorFromDbToEs(String dbName,Date start,Date end);
 
 	List<MonitorViewYModel> getMonitorData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging,int format);
 
