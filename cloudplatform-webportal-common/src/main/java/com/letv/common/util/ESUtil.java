@@ -18,7 +18,7 @@ import org.elasticsearch.search.sort.SortBuilder;
  * Created by liuhao1 on 2015/12/31.
  */
 public class ESUtil {
-    private static final Client client;
+    private static TransportClient client;
 
     static {
         Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name","elasticsearch")
@@ -27,7 +27,7 @@ public class ESUtil {
                 .put("data",false)
                 .build();
         client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("10.58.185.86", 9300));
         /*client = new TransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress("10.140.62.34", 9300))
                 .addTransportAddress(new InetSocketTransportAddress("10.140.62.32", 9300))
@@ -35,7 +35,7 @@ public class ESUtil {
 
     }
 
-    public static Client getClient() {
+    public static  synchronized TransportClient getClient() {
         return client;
     }
 
@@ -46,7 +46,7 @@ public class ESUtil {
         } else {
             source = JsonUtil.transToString(o);
         }
-        IndexResponse indexResponse = client.prepareIndex(index.toLowerCase(), type.toLowerCase())
+        IndexResponse indexResponse = getClient().prepareIndex(index.toLowerCase(), type.toLowerCase())
                 .setSource(source)
                 .execute()
                 .actionGet();
@@ -54,9 +54,9 @@ public class ESUtil {
     }
 
     public static SearchHits getFilterResult(String[] indexs, FilterBuilder filterBuilder) {
-        SearchResponse response = client.prepareSearch(indexs)
+        SearchResponse response = getClient().prepareSearch(indexs)
                 .setPostFilter(filterBuilder)
-                .setSize(1000)
+                .setSize(10000)
                 .execute().actionGet();
         return response.getHits();
     }
@@ -80,7 +80,7 @@ public class ESUtil {
     }
 
     public static String delete(String index,String type,String id) {
-        DeleteResponse response = client.prepareDelete(index,type,id)
+        DeleteResponse response = getClient().prepareDelete(index,type,id)
                 .execute()
                 .actionGet();
         return response.getId();

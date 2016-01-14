@@ -19,6 +19,7 @@ import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
 import com.letv.portal.service.monitor.mysql.*;
 import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -135,13 +136,15 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             for (String s : detailNames) {
                 MonitorViewYModel ydata = new MonitorViewYModel();
 
-                AndFilterBuilder andFilterBuilder = FilterBuilders.andFilter(
+                /*AndFilterBuilder andFilterBuilder = FilterBuilders.andFilter(
                         FilterBuilders.termFilter("ip", c.getIpAddr().toLowerCase()),
                         FilterBuilders.termFilter("detailName", s.toLowerCase().toLowerCase()),
-                        FilterBuilders.rangeFilter("monitorDate").gte(getStartDate(end, strategy).getTime()),
-                        FilterBuilders.rangeFilter("monitorDate").lt(end.getTime())
-                );
-                SearchHits searchHits = ESUtil.getFilterResult(getIndexs(Constant.ES_RDS_MONITOR_INDEX + monitorIndexModel.getDetailTable().toLowerCase(),getStartDate(end,strategy),end), andFilterBuilder);
+                      FilterBuilders.rangeFilter("monitorDate").from(getStartDate(end, strategy).getTime()).to(end.getTime())
+                );*/
+                BoolFilterBuilder must = FilterBuilders.boolFilter().must(FilterBuilders.termFilter("ip", c.getIpAddr().toLowerCase()))
+                        .must(FilterBuilders.termFilter("detailName", s.toLowerCase().toLowerCase()))
+                        .must(FilterBuilders.rangeFilter("monitorDate").from(getStartDate(end, strategy).getTime()).to(end.getTime()));
+                SearchHits searchHits = ESUtil.getFilterResult(getIndexs(Constant.ES_RDS_MONITOR_INDEX + monitorIndexModel.getDetailTable().toLowerCase(),getStartDate(end,strategy),end), must);
                 List<List<Object>> datas = new ArrayList<List<Object>>();
                 for (SearchHit hit : searchHits) {
                     List<Object> point = new ArrayList<Object>();
@@ -342,7 +345,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			now.add(Calendar.HOUR, -24);  // one day ago
 			break;
 		case 4:
-			now.add(Calendar.HOUR, -168); // one week ago
+//			now.add(Calendar.HOUR, -168); // one week ago
+			now.add(Calendar.HOUR, -120); // one week ago
 			break;
 		case 5:
 			now.add(Calendar.MONTH, -1); // one month ago
