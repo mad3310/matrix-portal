@@ -26,12 +26,12 @@ public class ESUtil {
                 .put("client", true)
                 .put("data",false)
                 .build();
-        client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("10.58.185.86", 9300));
         /*client = new TransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress("10.58.185.86", 9300));*/
+        client = new TransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress("10.140.62.34", 9300))
                 .addTransportAddress(new InetSocketTransportAddress("10.140.62.32", 9300))
-                .addTransportAddress(new InetSocketTransportAddress("10.140.62.31", 9300));*/
+                .addTransportAddress(new InetSocketTransportAddress("10.140.62.31", 9300));
 
     }
 
