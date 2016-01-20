@@ -79,7 +79,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao;
 	}
 
-	/*@Override
+	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
@@ -117,9 +117,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			}
 		}
 		return ydatas;
-	}*/
+	}
 
-    @Override
+    /*@Override
     public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
         List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -136,11 +136,11 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             for (String s : detailNames) {
                 MonitorViewYModel ydata = new MonitorViewYModel();
 
-                /*AndFilterBuilder andFilterBuilder = FilterBuilders.andFilter(
+                *//*AndFilterBuilder andFilterBuilder = FilterBuilders.andFilter(
                         FilterBuilders.termFilter("ip", c.getIpAddr().toLowerCase()),
                         FilterBuilders.termFilter("detailName", s.toLowerCase().toLowerCase()),
                       FilterBuilders.rangeFilter("monitorDate").from(getStartDate(end, strategy).getTime()).to(end.getTime())
-                );*/
+                );*//*
                 BoolFilterBuilder must = FilterBuilders.boolFilter().must(FilterBuilders.termFilter("ip", c.getIpAddr().toLowerCase()))
                         .must(FilterBuilders.termFilter("detailName", s.toLowerCase().toLowerCase()))
                         .must(FilterBuilders.rangeFilter("monitorDate").from(getStartDate(end, strategy).getTime()).to(end.getTime()));
@@ -159,7 +159,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
             }
         }
         return ydatas;
-    }
+    }*/
     private  String[] getIndexs(String indexPrefix,Date start,Date end) {
         Calendar startTime = Calendar.getInstance();
         startTime.setTime(start);
