@@ -21,7 +21,7 @@ public class ESUtil {
     private static TransportClient client;
 
     static {
-        Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name","elasticsearch")
+        Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name","matrixlogs")//.put("cluster.name","elasticsearch")
                 .put("client.transport.sniff",true) //自动探测其他节点，加入到机器列表
                 .put("client", true)
                 .put("data",false)
