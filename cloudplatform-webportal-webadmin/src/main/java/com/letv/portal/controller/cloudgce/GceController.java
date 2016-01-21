@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,16 @@ public class GceController {
 		if(oldGceImage == null)
 			throw new ValidateException("参数不合法");
 		this.gceImageService.updateBySelective(gceImage);
+		return obj;
+	}
+	@AoLog(desc="上传GCE镜像",type=AoLogType.UPDATE)
+	@RequestMapping(value="/image/push/{id}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject pushImage(@PathVariable Long id,String hclusterIds) {
+		ResultObject obj = new ResultObject();
+		if(null == id || StringUtils.isEmpty(hclusterIds))
+			throw new ValidateException("参数不合法");
+		this.gceImageService.pushImage(id,hclusterIds);
+		obj.addMsg("镜像上传中，需1-2分钟后方可使用该镜像");
 		return obj;
 	}
 	

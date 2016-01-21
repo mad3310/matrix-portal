@@ -28,6 +28,16 @@ public interface IGcePythonService {
 	 * @return
 	 */
 	public ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
+
+	/**
+	 * push image
+	 * @param params
+	 * @param ip
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	ApiResultObject pushImage(Map<String,String> params,String ip,String username,String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>

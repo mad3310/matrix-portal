@@ -37,6 +37,14 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	}
 
 	@Override
+	public ApiResultObject pushImage(Map<String, String> params, String ip, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/server/image/pull");
+		String result = HttpClient.post(url.toString(), params);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
 	public ApiResultObject initZookeeper(String nodeIp,String port,Map<String,String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/conf");
