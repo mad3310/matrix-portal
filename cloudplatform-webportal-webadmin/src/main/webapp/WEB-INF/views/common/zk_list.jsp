@@ -81,10 +81,10 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">zookeeper地址</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<input class="form-control" name="ip" id="ip" type="text" />
+									<textarea class="form-control" name="ip" id="ip"></textarea>
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传zookeeper的版本号tag" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传zookeeper的版本号tag,逗号分隔" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -100,7 +100,6 @@
 									</a>
 								</label>
 							</div>
-							
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">所属物理机集群</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
@@ -113,6 +112,34 @@
 									</a>
 								</label>
 							</div>
+							<!-- <div class="form-group">
+								<label class="col-md-3 control-label">zookeeper地址</label>
+
+								<div class="col-md-6">
+									<input class="col-md-6" name="ip" id="ip" type="text">
+									<label class="col-md-3 control-label">端口</label>
+									<input class="col-md-3" name="port" id="port" type="text">
+									<div class="clearfix"></div>
+								</div>
+
+								<div class="col-md-2" style="padding-left:0">
+									<button type="button" id="addzkitem" class="btn btn-sm btn-white btn-default" style="border-radius:50%;width:30px;height:30px;text-align:center;padding:0;"><i class="ace-icon fa fa-plus" style="font-size:20px;margin:0;line-height:30px;"></i></button>
+								</div>
+								<div class="clearfix"></div>
+								<div style="margin-top:5px;" class="zkitem">
+									<div class="col-md-offset-3 col-md-6">
+										<input class="col-md-6" name="ip" id="ip1" type="text">
+										<label class="col-md-3 control-label">端口</label>
+										<input class="col-md-3" name="port" id="port1" type="text">
+										<div class="clearfix"></div>
+									</div>
+									<div class="col-md-2" style="padding-left:0">
+										<button type="button" id="addzkitem" class="btn btn-sm btn-white btn-default hide" style="border-radius:50%;width:30px;height:30px;text-align:center;padding:0;"><i class="ace-icon fa fa-minus" style="font-size:20px;margin:0;line-height:30px;"></i></button>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div> -->
+							
 							
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>

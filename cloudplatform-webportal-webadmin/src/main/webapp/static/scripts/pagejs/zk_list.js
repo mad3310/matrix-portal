@@ -193,13 +193,31 @@ function formValidate() {
              validating: 'glyphicon glyphicon-refresh'
          },
          fields: {
+         	name: {
+                validators: {
+                    notEmpty: {
+                        message: 'name 为必填字段'
+                    }
+                }
+            },
+            ip: {
+                validators: {
+                    notEmpty: {
+                        message: 'ip 为必填字段'
+                    },
+                    regexp: {
+                        regexp: /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3},{0,1}){1,}$/,
+                        message: "ip地址，用英文逗号隔开"
+                    }
+                }
+            }
          }
      }).on('success.form.bv', function(e) {
-    	 e.preventDefault();
+    	e.preventDefault();
     	$.ajax({
     		cache:false,
     		type : "post",
-    		url : "/zk",
+    		url : "/zk/batch",
     		data: {
     			name:$('#name').val(),
     			descn:$('#descn').val(),
@@ -210,8 +228,9 @@ function formValidate() {
     			port:$('#port').val()
     		},
     		success : function(data) {
+    			console.log(data);
     			location.href = "/list/zk";
-    		}
+    		},
     	})
      });
 }
