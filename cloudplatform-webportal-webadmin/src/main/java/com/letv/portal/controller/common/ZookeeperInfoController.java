@@ -4,14 +4,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
@@ -53,9 +51,19 @@ public class ZookeeperInfoController {
 		this.zookeeperInfoService.insert(zk);
 		return obj;
 	}
+	@AoLog(desc="批量创建zookeeper信息",type=AoLogType.INSERT)
+	@RequestMapping(value = "/batch",method=RequestMethod.POST)
+	public @ResponseBody ResultObject batchInsert(String name,String ip,Long hclusterId,ResultObject obj) {
+		if(StringUtils.isEmpty(name) || StringUtils.isEmpty(ip) || null == hclusterId) {
+			obj.setResult(0);
+			obj.addMsg("参数不合法");
+		}
+		this.zookeeperInfoService.batchInsert(name,ip,hclusterId);
+		return obj;
+	}
 	
-	@AoLog(desc="修改zookeeper信息",type=AoLogType.UPDATE)
-	@RequestMapping(value="/{id}",method=RequestMethod.POST)   
+	/*@AoLog(desc="修改zookeeper信息",type=AoLogType.UPDATE)
+	@RequestMapping(value="/{id}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject update(@PathVariable Long id,ZookeeperInfo zk,ResultObject obj) {
 		if(id == null)
 			throw new ValidateException("参数不合法");
@@ -64,8 +72,8 @@ public class ZookeeperInfoController {
 			throw new ValidateException("参数不合法");
 		this.zookeeperInfoService.updateBySelective(zk);
 		return obj;
-	}
-	
+	}*/
+
 	@AoLog(desc="删除zookeeper信息",type=AoLogType.DELETE)
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE) 
 	public @ResponseBody ResultObject delete(@PathVariable Long id,ResultObject obj) {

@@ -9,4 +9,6 @@ public interface IZookeeperInfoService extends IBaseService<ZookeeperInfo> {
 
 	ZookeeperInfo selectMinusedZk();
 	List<ZookeeperInfo> selectMinusedZkByHclusterId(Long hclusterId,int number);
+
+	void batchInsert(String name, String ip, Long hclusterId);
 }

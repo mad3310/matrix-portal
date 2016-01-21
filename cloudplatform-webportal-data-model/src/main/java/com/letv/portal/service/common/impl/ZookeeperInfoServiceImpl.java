@@ -6,6 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.ZookeeperStatus;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.service.IHclusterService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,8 @@ public class ZookeeperInfoServiceImpl extends BaseServiceImpl<ZookeeperInfo> imp
 	
 	@Resource
 	private IZookeeperInfoDao zookeeperInfoDao;
+	@Resource
+	private IHclusterService hclusterService;
 
 	public ZookeeperInfoServiceImpl() {
 		super(ZookeeperInfo.class);
@@ -44,5 +51,28 @@ public class ZookeeperInfoServiceImpl extends BaseServiceImpl<ZookeeperInfo> imp
 		params.put("hclusterId", hclusterId);
 		params.put("number", number);
 		return this.zookeeperInfoDao.selectMinusedZkByHclusterId(params);
+	}
+
+	@Override
+	public void batchInsert(String name, String ip, Long hclusterId) {
+		if(StringUtils.isEmpty(name) || StringUtils.isEmpty(ip) || null == hclusterId)
+			throw new ValidateException("参数不合法");
+		String[] ips = ip.split(",");
+		if(null == ips || 0 == ips.length)
+			throw new ValidateException("参数不合法");
+		HclusterModel hclusterModel = this.hclusterService.selectById(hclusterId);
+		if(null == hclusterModel)
+			throw new ValidateException("参数不合法");
+
+		for (String ipStr:ips) {
+			ZookeeperInfo zk = new ZookeeperInfo();
+			zk.setStatus(ZookeeperStatus.AVAILABLE);
+			zk.setHclusterId(hclusterId);
+			zk.setIp(ipStr);
+			zk.setName(name);
+			zk.setPort("2181");
+			zk.setUsed(0);
+			this.insert(zk);
+		}
 	}
 }
