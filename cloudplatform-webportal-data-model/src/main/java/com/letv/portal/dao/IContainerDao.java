@@ -31,4 +31,6 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	public  List<ContainerModel> selectAllByMap(Map map);
 	public List<ContainerModel> selectVipIps4Monitor();
 	public List<ContainerModel> selectValidByMap(Map<String, Object> params);
+
+	List<ContainerModel> selectVipByClusterId(Long mclusterId);
 }
