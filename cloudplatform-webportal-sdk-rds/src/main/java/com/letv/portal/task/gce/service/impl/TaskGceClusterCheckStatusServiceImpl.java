@@ -158,5 +158,12 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 		tr.setSuccess(isSucess);
 		return tr;
 	}
-	
+
+	@Override
+	public void callBack(TaskResult tr) {
+		Map<String,Object> params = (Map<String, Object>) tr.getParams();
+		String type = (String) params.get("type");
+		if("tomcat".equals(type.toLowerCase()) || "resin".equals(type.toLowerCase()))
+			super.rollBack(tr);
+	}
 }

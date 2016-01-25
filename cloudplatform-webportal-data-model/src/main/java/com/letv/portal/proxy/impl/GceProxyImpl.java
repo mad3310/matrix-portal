@@ -72,6 +72,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private String NGINX4JETTY_CODE;
 	@Value("${gce.engine.category}")
 	private String GCE_ENGINE_CATEGORY;
+	@Value("${cluster.engine.category}")
+	private String CLUSTER_ENGINE_CATEGORY;
 	
 	@Override
 	public void saveAndBuild(GceServer gceServer,Long rdsId,Long ocsId) {
@@ -103,7 +105,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			this.gceServerService.saveGceExt(gse);
 		}
 		
-		if(GceType.JETTY.equals(gceServer.getType()) && gceServer.isCreateNginx()) {
+		if(gceServer.isCreateNginx()) {
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
 			gceServer.setGceImageName("");
@@ -123,7 +125,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			params.put("isContinue", false);
 		}
 		
-		this.build(params);
+		this.build(params,gceServer.getType());
 	}
 
 	public void delete(GceServer gceServer) {
@@ -135,8 +137,12 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		this.gceServerService.delete(gceServer);
 	}
 	
-	private void build(Map<String,Object> params) {
-    	this.taskEngine.run(GCE_ENGINE_CATEGORY,params);
+	private void build(Map<String,Object> params,GceType type) {
+		if(type.equals(GceType.JETTY)) {
+			this.taskEngine.run(GCE_ENGINE_CATEGORY, params);
+		} else {
+			this.taskEngine.run(CLUSTER_ENGINE_CATEGORY, params);
+		}
 	}
 	
 	@Override
