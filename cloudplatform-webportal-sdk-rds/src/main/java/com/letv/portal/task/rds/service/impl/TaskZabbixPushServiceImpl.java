@@ -24,8 +24,6 @@ public class TaskZabbixPushServiceImpl extends BaseTask4RDSServiceImpl implement
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
-	private IHostService hostService;
-	@Autowired 
 	private IZabbixPushService zabbixPushService;
 	@Autowired
 	private IMclusterService mclusterService;
@@ -46,7 +44,7 @@ public class TaskZabbixPushServiceImpl extends BaseTask4RDSServiceImpl implement
 		if(mclusterModel == null)
 			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
 		
-		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
+		List<ContainerModel> containers = this.containerService.selectVipByClusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
 		

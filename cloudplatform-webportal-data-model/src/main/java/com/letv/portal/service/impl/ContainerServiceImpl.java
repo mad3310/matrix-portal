@@ -1,34 +1,24 @@
 package com.letv.portal.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IContainerDao;
-import com.letv.portal.dao.IDbDao;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IMclusterService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("containerService")
 public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implements
-		IContainerService{
+		IContainerService {
 	
 	@Resource
 	private IContainerDao containerDao;
-	@Resource
-	private IMclusterService mclusterService;
-	@Resource
-	private IDbDao dbDao;
 
 	public ContainerServiceImpl() {
 		super(ContainerModel.class);
@@ -50,9 +40,6 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	
 	@Override
 	public void insert(ContainerModel t) {
-		
-//		if(StringUtils.isNullOrEmpty(toTest))
-		
 		super.insert(t);
 	}
 
@@ -60,11 +47,9 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
 		return this.containerDao.selectByMclusterId(mclusterId);
 	}
-
 	@Override
-	public List<ContainerModel> selectNormalByClusterId(Long mclusterId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ContainerModel> selectVipByClusterId(Long mclusterId) {
+		return this.containerDao.selectVipByClusterId(mclusterId);
 	}
 
 	@Override
@@ -73,10 +58,6 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		
 	}
 
-	@Override
-	public void updateHostIpByName(ContainerModel container) {
-		this.containerDao.updateHostIpByName(container);
-	}
 	@Override
 	public ContainerModel selectByName(String containerName) {
 		return this.containerDao.selectByName(containerName);
@@ -87,11 +68,6 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	
 	public  List<ContainerModel> selectAllByMap(Map<String, Object> map){
 		return this.containerDao.selectAllByMap(map);	
-	}
-
-	@Override
-	public List<ContainerModel> selectVipIps4Monitor() {
-		return this.containerDao.selectVipIps4Monitor();
 	}
 
 	@Override

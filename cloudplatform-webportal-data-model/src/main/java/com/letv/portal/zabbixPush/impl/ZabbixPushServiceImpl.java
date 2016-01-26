@@ -75,24 +75,24 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 			}
 			HostParam params = new HostParam(templateId,ZABBIX_HOST_GROUPID,ZABBIX_HOST_PROXY_HOSTID);
 			params.setHost(c.getContainerName());
-			
+
 			InterfacesModel interfacesModel = new InterfacesModel();
 			interfacesModel.setIp(c.getIpAddr());
-			
+
 			List<InterfacesModel> list = new ArrayList<InterfacesModel>();
 			list.add(interfacesModel);
 			params.setInterfaces(list);
-			
-			zabbixPushModel.setParams(params);  
+
+			zabbixPushModel.setParams(params);
 			String hostId =	pushZabbixInfo(zabbixPushModel,c.getId());
-			
+
 			if(StringUtils.isNullOrEmpty(hostId))
 				return false;
 			UserMacroParam macro = new UserMacroParam(hostId,ZABBIX_HOST_USERMACRO);
 			zabbixPushModel.setParams(macro);
 			zabbixPushModel.setMethod("usermacro.create");
 			usermacroCreate(zabbixPushModel);
-		}		
+		}
 		return true;
 	}
 	@Override
@@ -112,7 +112,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * Methods Name: deleteMutilContainerPushZabbixInfo <br>
 	 * Description: 删除多个zabbix信息<br>
 	 * @author name: wujun
-	 * @param containerModel
+	 * @param list
 	 * @return
 	 */
 	@Override
@@ -170,7 +170,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * Methods Name: createContainerPushZabbixInfo <br>
 	 * Description: 创建container时向zabbix系统推送信息<br>
 	 * @author name: wujun
-	 * @param zabbixPushModel
+	 * @param zabbixPushDeleteModel
 	 * @return
 	 */
 	public Boolean pushDeleteZabbixInfo(ZabbixPushDeleteModel zabbixPushDeleteModel){
@@ -211,7 +211,6 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>
 	 * @author name: wujun
-	 * @param zabbixPushModel
 	 * @return
 	 */
 	public String loginZabbix(){

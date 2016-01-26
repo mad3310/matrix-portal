@@ -227,6 +227,14 @@
 		ON M.ID = C.MCLUSTER_ID
 		where C.MCLUSTER_ID = #{mclusterId} ORDER BY C.TYPE,C.ZOOKEEPER_ID
 	</select>
+	<select id="selectVipByClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		,M.MCLUSTER_NAME
+		from WEBPORTAL_CONTAINER C left join WEBPORTAL_MCLUSTER_INFO M
+		ON M.ID = C.MCLUSTER_ID
+		where C.MCLUSTER_ID = #{mclusterId} and C.TYPE='mclustervip' ORDER BY C.TYPE,C.ZOOKEEPER_ID
+	</select>
 	<!-- 物理删除 -->
 	<update id="deleteByMclusterId" parameterType="java.lang.Long">
 		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}

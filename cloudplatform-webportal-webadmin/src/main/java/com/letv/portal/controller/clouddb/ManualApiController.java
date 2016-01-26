@@ -41,13 +41,7 @@ import com.letv.portal.zabbixPush.IZabbixPushService;
 public class ManualApiController {
 	
 	@Autowired
-	private IMclusterProxy mclusterProxy;
-	@Autowired
 	private IMclusterService mclusterService;
-	
-	@Autowired
-	private IBuildTaskService buildTaskService;
-	
 	@Autowired
 	public IZabbixPushService zabbixPushService;
 	@Autowired
@@ -67,6 +61,7 @@ public class ManualApiController {
 		 }
 		 Map<String, Object> map = new HashMap<String, Object>();
 		 map.put("mclusterId", mclusters.get(0).getId());
+		 map.put("type","mclustervip");
 	     this.zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
 	     result.getMsgs().add("集群监控删除成功");
 	     return result;
@@ -81,6 +76,7 @@ public class ManualApiController {
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mclusterId", mclusters.get(0).getId());
+		map.put("type","mclustervip");
 		boolean addResult = this.zabbixPushService.createMultiContainerPushZabbixInfo(this.containerService.selectByMap(map));
 		if(addResult) {
 			result.getMsgs().add("集群监控添加成功");
@@ -209,6 +205,7 @@ public class ManualApiController {
 		for (MclusterModel mclusterModel : mclusters) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("mclusterId", mclusterModel.getId());
+			map.put("type","mclustervip");
 			boolean isSuccess = this.zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
 			if(isSuccess) {
 				success++;
@@ -227,6 +224,7 @@ public class ManualApiController {
 		for (MclusterModel mclusterModel : mclusters) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("mclusterId", mclusterModel.getId());
+			map.put("type","mclustervip");
 			boolean isSuccess = this.zabbixPushService.createMultiContainerPushZabbixInfo(this.containerService.selectByMap(map));
 			if(isSuccess) {
 				success++;
@@ -238,6 +236,29 @@ public class ManualApiController {
 		result.getMsgs().add("add mcluster sum:" + sum);
 		result.getMsgs().add("add mcluster success:" + success);
 		result.getMsgs().add("add mcluster fail:" + fail);
+		return result;
+	}
+	@RequestMapping(value = "/V1/zabbix/delDataContainer", method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delDataContainer(ResultObject result) {
+		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
+		int sum = 0;
+		int success = 0;
+		int fail = 0;
+		for (MclusterModel mclusterModel : mclusters) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mclusterId", mclusterModel.getId());
+			map.put("type","mclusternode");
+			boolean isSuccess = this.zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
+			if(isSuccess) {
+				success++;
+			} else {
+				fail ++;
+			}
+			sum++;
+		}
+		result.getMsgs().add("delete mcluster sum:" + sum);
+		result.getMsgs().add("delete mcluster success:" + success);
+		result.getMsgs().add("delete mcluster fail:" + fail);
 		return result;
 	}
 	
