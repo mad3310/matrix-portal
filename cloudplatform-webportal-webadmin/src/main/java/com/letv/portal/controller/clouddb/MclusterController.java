@@ -41,17 +41,11 @@ public class MclusterController {
 	private IMclusterProxy mclusterProxy;
 	@Autowired
 	private IMclusterService mclusterService;
-	
-	@Autowired
-	private IBuildTaskService buildTaskService;
-	
 	@Autowired
 	public IZabbixPushService zabbixPushService;
 	@Autowired
 	public IFixedPushService fixedPushService;
-	@Autowired
-	private IContainerService containerService;
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)   
@@ -63,14 +57,12 @@ public class MclusterController {
 	
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(ResultObject result) {
-		Map<String,Object> map = new HashMap<String,Object>();
 		result.setData(this.mclusterService.select4Run());
 		return result;
 	}	
 	
 	@RequestMapping(value="/valid",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject validList(ResultObject result) {
-		Map<String,Object> map = new HashMap<String,Object>();
 		result.setData(this.mclusterService.selectValidMclusters());
 		return result;
 	}	
@@ -89,7 +81,6 @@ public class MclusterController {
 	 * Description:  保存并创建mcluster<br>
 	 * @author name: liuhao1
 	 * @param mclusterModel
-	 * @param request
 	 */
 	@AoLog(desc="保存并创建mcluster",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)   
@@ -102,7 +93,6 @@ public class MclusterController {
 	 * Description: 根据mclusterName验证重复性<br>
 	 * @author name: liuhao1
 	 * @param mclusterName
-	 * @param request
 	 * @return
 	 */
 	@AoLog(desc="根据mclusterName验证重复性",type=AoLogType.VALIDATE,ignore = true)
@@ -162,7 +152,6 @@ public class MclusterController {
 	/**Methods Name: restartDb <br>
 	 * Description: <br>
 	 * @author name: liuhao1
-	 * @param dbId
 	 * @return
 	 */
 	@AoLog(desc="重启container集群",type=AoLogType.RESTART)

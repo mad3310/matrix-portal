@@ -40,15 +40,8 @@ import com.letv.portal.service.IMclusterService;
 @RequestMapping("/db")
 public class DbController {
 	
-	@Resource
+	@Autowired
 	private IDbService dbService;
-	@Resource
-	private IContainerService containerService;
-	@Resource
-	private IMclusterService mclusterService;
-	@Resource
-	private IDbUserService dbUserService;
-	
 	@Autowired
 	private IDbProxy dbProxy;
 	@Autowired(required=false)
@@ -59,9 +52,6 @@ public class DbController {
 	/**Methods Name: list <br>
 	 * Description: http://localhost:8080/db/list/${currentPage}/${recordsPerPage}/${dbName}<br>
 	 * @author name: liuhao1
-	 * @param currentPage
-	 * @param recordsPerPage
-	 * @param dbName
 	 * @param request
 	 * @return
 	 */
@@ -91,8 +81,6 @@ public class DbController {
 	/**Methods Name: save <br>
 	 * Description: 保存创建信息  http://localhost:8080/db/<br>
 	 * @author name: liuhao1
-	 * @param dbApplyStandardModel
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
@@ -112,7 +100,6 @@ public class DbController {
 	 * Description: 根据id获取db信息 http://localhost:8080/db/detail/{dbId}<br>
 	 * @author name: liuhao1
 	 * @param dbId
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)

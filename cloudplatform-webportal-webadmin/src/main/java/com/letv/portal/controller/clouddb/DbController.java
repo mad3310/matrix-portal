@@ -47,8 +47,6 @@ public class DbController {
 	@Autowired
 	private IDbService dbService;
 	@Autowired
-	private IMclusterProxy mclusterProxy;
-	@Autowired
 	private IMclusterService mclusterService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
@@ -60,7 +58,6 @@ public class DbController {
 	 * @param currentPage
 	 * @param recordsPerPage
 	 * @param dbName
-	 * @param request
 	 */
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject oldList(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,ResultObject obj) {
@@ -73,7 +70,6 @@ public class DbController {
 	/**Methods Name: list <br>
 	 * Description: 查询db列表<br>
 	 * @author name: yaokuo
-	 * @param dbName
 	 * @param request
 	 */
 	@RequestMapping(method=RequestMethod.GET)   
@@ -87,7 +83,6 @@ public class DbController {
 	 * Description: 查看Db详情<br>
 	 * @author name: liuhao1
 	 * @param dbId
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
@@ -100,7 +95,6 @@ public class DbController {
 	/**Methods Name: save <br>
 	 * Description:审批db
 	 * @author name: liuhao1
-	 * @param request
 	 * @return
 	 */
 	@AoLog(desc="审批db",type=AoLogType.UPDATE)
@@ -124,15 +118,5 @@ public class DbController {
 		return obj;
 		
 	}
-	
-	@AoLog(ignore=true)
-	@RequestMapping(value="/xx",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject testXx() {
-		ResultObject obj = new ResultObject();
-//		this.dbProxy.auditAndBuild(params);		
-		return obj;
-		
-	}
-	
-	
+
 }
