@@ -19,11 +19,15 @@ public interface IPythonService {
 	/**Methods Name: createContainer <br>
 	 * Description: 创建container，执行一次,传入mclusterName<br>
 	 * @author name: liuhao1
-	 * @param mclusterName
+	 * @param params
+	 * @param ip
+	 * @param username
+	 * @param password
 	 * @return
 	 */
-	ApiResultObject createContainer(String mclusterName,String ip,String username,String password);
 	ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password);
+
+	ApiResultObject addContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
@@ -31,6 +35,7 @@ public interface IPythonService {
 	 * @return
 	 */
 	ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
+	ApiResultObject checkContainerAddStatus(String mclusterDataName, String addNames, String hostIp, String name, String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>
@@ -310,4 +315,5 @@ public interface IPythonService {
 
 
 	ApiResultObject updateAuthority(DbUserModel dbUserModel, String dbName, String nodeIp, String username, String password);
+
 }

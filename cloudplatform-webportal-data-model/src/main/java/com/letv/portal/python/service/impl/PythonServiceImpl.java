@@ -28,15 +28,6 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String BEEHIVE_PORT = ":6666";
 
 	@Override
-	public ApiResultObject createContainer(String mclusterName,String ip,String username,String password) {
-		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(url.toString(), map,username,password);
-		return new ApiResultObject(result,url.toString());
-	}
-	@Override
 	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
@@ -45,10 +36,26 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
+	public ApiResultObject addContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/node");
+		String result = HttpClient.post(url.toString(), map,name,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
 	public ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createResult/").append(mclusterName);
 		String result = HttpClient.get(url.toString(),username,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject checkContainerAddStatus(String mclusterDataName, String addNames, String hostIp, String name, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/").append(mclusterDataName).append("/node/").append(addNames);
+		String result = HttpClient.post(url.toString(), null,name,password);
 		return new ApiResultObject(result,url.toString());
 	}
 
