@@ -137,6 +137,8 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");
+		if(email.endsWith("le.com"))
+			email = email.replace("le.com","letv.com");
 		
 		if(StringUtils.isEmpty(username))
 			return null;

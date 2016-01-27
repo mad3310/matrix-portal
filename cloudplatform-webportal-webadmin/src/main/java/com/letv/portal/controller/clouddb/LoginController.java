@@ -60,6 +60,8 @@ public class LoginController{
 		Map<String,Object> userDetailInfo = this.oauthService.getUserdetailinfo(clientId,clientSecret);
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");
+		if(email.endsWith("le.com"))
+			email = email.replace("le.com","letv.com");
 		
 		UserLogin userLogin = new UserLogin();
 		userLogin.setLoginName(username);
