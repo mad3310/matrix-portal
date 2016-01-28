@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -49,6 +50,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IHclusterService hclusterService;
 	@Autowired
 	private IPythonService pythonService;
+    @Autowired
+    private ITaskEngine taskEngine;
 	
 	@Override
 	public IBaseService<MclusterModel> getService() {
@@ -137,5 +140,18 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		if(!result.contains("\"code\": 200")) {
 			throw new PythonException("call restart db service API error:" + result.substring(result.indexOf("\"response\""),  result.length()));
 		}
+	}
+
+	@Override
+	public void addContainerOnMcluster(Long mclusterId, int count) {
+		if(mclusterId == null)
+			throw new ValidateException("参数不合法");
+		MclusterModel mcluster = this.selectById(mclusterId);
+		if(mcluster == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> params = new HashMap<String, Object>();
+        params.put("mclusterId",mclusterId);
+        params.put("nodeCount",count);
+        this.taskEngine.run("RDS_DILATATION",params);
 	}
 }

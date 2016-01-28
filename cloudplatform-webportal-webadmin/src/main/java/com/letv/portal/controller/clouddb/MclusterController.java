@@ -122,6 +122,14 @@ public class MclusterController {
 		this.mclusterProxy.deleteAndRemove(mclusterId);
 		return result;
 	}
+	@AoLog(desc="增加集群节点",type=AoLogType.UPDATE)
+	@RequestMapping(value = "/dilatation", method=RequestMethod.POST)
+	public @ResponseBody ResultObject dilatation(Long mclusterId,int count,ResultObject result) {
+		if(mclusterId == null || count <=0)
+			throw new ValidateException("参数不合法");
+		this.mclusterProxy.addContainerOnMcluster(mclusterId,count);
+		return result;
+	}
 	/**Methods Name: start <br>
 	 * Description: 启动container集群<br>
 	 * @author name: liuhao1
@@ -130,8 +138,8 @@ public class MclusterController {
 	 * @return
 	 */
 	@AoLog(desc="启动container集群",type=AoLogType.START)
-	@RequestMapping(value = "/start", method=RequestMethod.POST) 
-	public @ResponseBody ResultObject start(Long mclusterId,ResultObject result) {
+	 @RequestMapping(value = "/start", method=RequestMethod.POST)
+	 public @ResponseBody ResultObject start(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.start(mclusterId);
 		return result;
 	}

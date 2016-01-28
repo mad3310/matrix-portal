@@ -61,4 +61,5 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 */
 	public void restartDb(Long mclusterId);
 
+	void addContainerOnMcluster(Long mclusterId, int count);
 }
