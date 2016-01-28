@@ -61,8 +61,7 @@ public class TaskDelContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl
 		for (int i = 0; i < containers.size(); i++) {
 			String ipAddr = containers.get(i).getIpAddr();
 			String containerName = containers.get(i).getContainerName();
-
-			ApiResultObject result = this.pythonService.postContainerInfo(ipAddr, containerName, username, password);
+			ApiResultObject result = this.pythonService.delContainerInfo(ipAddr, containerName, username, password);
 
 			tr = analyzeRestServiceResult(result);
 			if(!tr.isSuccess()) {
@@ -70,9 +69,6 @@ public class TaskDelContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl
 				break;
 			}
 		}
-
-
-
 		tr.setParams(params);
 		return tr;
 	}

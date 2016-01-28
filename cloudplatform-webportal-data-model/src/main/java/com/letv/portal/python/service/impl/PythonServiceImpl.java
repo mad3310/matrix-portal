@@ -118,6 +118,24 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
+	public ApiResultObject delContainerInfo(String ipAddr, String containerName, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/cluster/node");
+
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("dataNodeIp", ipAddr);
+		map.put("dataNodeName", containerName);
+
+		String result = HttpClient.detele(url.toString(),username,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject delContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password) {
+		return null;
+	}
+
+	@Override
 	public ApiResultObject syncContainer(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/sync");
