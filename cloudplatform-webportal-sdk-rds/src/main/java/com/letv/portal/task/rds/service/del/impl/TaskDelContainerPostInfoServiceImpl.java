@@ -1,4 +1,4 @@
-package com.letv.portal.task.rds.service.add.impl;
+package com.letv.portal.task.rds.service.del.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service("taskMclusterAddInitAdminUserAndPwdService")
-public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskDelContainerPostInfoService")
+public class TaskDelContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -32,10 +32,10 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitAdminUserAndPwdServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskDelContainerPostInfoServiceImpl.class);
 	
 	@Override
-	public TaskResult execute(Map<String, Object> params) throws Exception{
+	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
@@ -60,7 +60,10 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 		String password = mclusterModel.getAdminPassword();
 		for (int i = 0; i < containers.size(); i++) {
 			String ipAddr = containers.get(i).getIpAddr();
-			ApiResultObject result = this.pythonService.initUserAndPwd4Manager(ipAddr,username,password);
+			String containerName = containers.get(i).getContainerName();
+
+			ApiResultObject result = this.pythonService.postContainerInfo(ipAddr, containerName, username, password);
+
 			tr = analyzeRestServiceResult(result);
 			if(!tr.isSuccess()) {
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
@@ -68,7 +71,8 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 			}
 		}
 
-		//set params
+
+
 		tr.setParams(params);
 		return tr;
 	}
