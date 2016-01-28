@@ -38,7 +38,7 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 		
 		if(userNamePassport == null || "".equals(userNamePassport))
 			throw new ValidateException("userNamePassort should be not null");
-			
+
 		UserModel user = userService.getUserByNameAndEmail(userNamePassport,email);
 		if(null == user) {
 			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp,email);
