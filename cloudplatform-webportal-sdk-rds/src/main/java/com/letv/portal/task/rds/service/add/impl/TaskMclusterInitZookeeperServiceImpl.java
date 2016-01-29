@@ -81,5 +81,14 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		tr.setParams(params);
 		return tr;
 	}
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
+	}
 	
 }

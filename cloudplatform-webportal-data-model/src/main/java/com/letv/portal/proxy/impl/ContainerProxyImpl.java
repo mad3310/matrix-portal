@@ -87,9 +87,9 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 			throw new ValidateException("参数不合法");
 		}
 		Map<String,Object> params = new HashMap<String, Object>();
-		params.put("mclusterId",containerModel.getMcluster());
+		params.put("mclusterId",containerModel.getMclusterId());
         params.put("delName",containerModel.getContainerName());
-		this.taskEngine.run("RDS_DILATATION",params);
+		this.taskEngine.run("RDS_CONTAINER_REMOVE",params);
 	}
 
 }

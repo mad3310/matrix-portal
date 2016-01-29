@@ -85,5 +85,14 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 		tr.setParams(params);
 		return tr;
 	}
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
+	}
 	
 }

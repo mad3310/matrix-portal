@@ -126,5 +126,15 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 		tr.setSuccess(isSucess);
 		return tr;
 	}
+
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
+	}
 	
 }

@@ -32,11 +32,6 @@ public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBas
 	private IMclusterService mclusterService;
 	@Autowired
 	private IDbService dbService;
-	@Autowired
-	private ITemplateMessageSender defaultEmailSender;
-	@Autowired
-	private IZookeeperInfoService zookeeperInfoService;
-	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4RDSServiceImpl.class);
 	
 	@Override

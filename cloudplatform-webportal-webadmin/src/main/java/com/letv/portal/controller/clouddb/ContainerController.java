@@ -91,7 +91,7 @@ public class ContainerController {
 		return result;
 	}
 
-	@AoLog(desc="停止单个容器",type=AoLogType.DELETE)
+	@AoLog(desc="删除单个容器",type=AoLogType.DELETE)
 	@RequestMapping(value="/{containerId}",method=RequestMethod.DELETE)
 	public @ResponseBody ResultObject delete(@PathVariable Long containerId,ResultObject result) {
         if(null == containerId)

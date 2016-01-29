@@ -68,5 +68,14 @@ public class TaskAddFixedPushServiceImpl extends BaseTask4RDSServiceImpl impleme
 		tr.setParams(params);
 		return tr;
 	}
+    @Override
+    public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+    }
+
+    @Override
+    public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
+    }
 	
 }

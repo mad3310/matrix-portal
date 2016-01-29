@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.DataFormat;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.service.IContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +49,14 @@ public class CronJobsController {
 	@Autowired
 	private IContainerProxy containerProxy;
 	@Autowired
+	private IContainerService containerService;
+	@Autowired
 	private IBackupProxy backupProxy;
 	@Autowired
 	private IMonitorService monitorService;
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
-	@Autowired
-	private IGceProxy gceProxy;
-	
+
 	@Autowired
 	private ICronJobsProxy cronJobsProxy;
 	
@@ -347,6 +349,17 @@ public class CronJobsController {
 		if(mclusterId == null || count <=0)
 			throw new ValidateException("参数不合法");
 		this.mclusterProxy.addContainerOnMcluster(mclusterId,count);
+		return result;
+	}
+	@AoLog(desc="删除单个容器",type=AoLogType.DELETE)
+	@RequestMapping(value="/container/{containerId}",method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delete(@PathVariable Long containerId,ResultObject result) {
+		if(null == containerId)
+			throw new ValidateException("参数不合法");
+		ContainerModel containerModel = this.containerService.selectById(containerId);
+		if(null == containerModel)
+			throw new ValidateException("参数不合法");
+		this.containerProxy.deleteAndBuild(containerModel);
 		return result;
 	}
 }
