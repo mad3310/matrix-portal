@@ -126,7 +126,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dataNodeIp", ipAddr);
 		map.put("dataNodeName", containerName);
 
-		String result = HttpClient.detele(url.toString(),username,password);
+		String result = HttpClient.detele(url.toString(),map,username,password);
 		return new ApiResultObject(result,url.toString());
 	}
 
@@ -145,6 +145,18 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.get(url.toString());
 		return new ApiResultObject(result,url.toString());
 	}
+
+    @Override
+    public ApiResultObject startNode(String ipAddr, String username, String password) {
+        StringBuffer url = new StringBuffer();
+        url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/node/start");
+
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("cluster_flag", "false");
+
+        String result = HttpClient.post(url.toString(), map,username,password);
+        return new ApiResultObject(result,url.toString());
+    }
 
 	@Override
 	public ApiResultObject startMcluster(String nodeIp,String username,String password) {
@@ -248,7 +260,8 @@ public class PythonServiceImpl implements IPythonService{
 		return new ApiResultObject(result,url.toString());
 	}
 
-	@Override
+
+    @Override
 	public ApiResultObject startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(GBALANCER_PORT).append("/glb/start");

@@ -60,7 +60,7 @@ public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implem
 		String password = mclusterModel.getAdminPassword();
 		for (int i = 0; i < containers.size(); i++) {
 			String ipAddr = containers.get(i).getIpAddr();
-			ApiResultObject result = this.pythonService.startMcluster(ipAddr, username, password);
+			ApiResultObject result = this.pythonService.startNode(ipAddr, username, password);
 			tr = analyzeRestServiceResult(result);
 			if(!tr.isSuccess()) {
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
