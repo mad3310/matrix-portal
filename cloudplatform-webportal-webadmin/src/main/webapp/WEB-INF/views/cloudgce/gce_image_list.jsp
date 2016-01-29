@@ -297,6 +297,42 @@
 				</div>
 			</div>
 		</div>
+		
+		
+		<div class="modal fade" id="modalGceImagePush" tabindex="-1" aria-labelledby="myModalLabel" style="margin-top:157px">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+           				<button type="button" class="close" data-dismiss="modal">
+           					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+           					<span class="sr-only">关闭</span>
+           				</button>
+           				<h4 class="modal-title">上传镜像 </h4>
+            		</div>
+					<form id="formGceImagePush" name="form_gce_image_push" class="form-horizontal" role="form">
+						<input id="hidInputGceImagePushId" type="hidden" value="">
+						<div class="modal-body">            				            				
+							<div class="form-group">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">物理机集群</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select id="selectHcluster" class="chosen-select" tabindex="8" multiple="" data-placeholder="请选择集群..."></select>
+								</div>								
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="镜像的目的物理机集群" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
+							
+            			</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+						<button type="submit" class="btn btn-sm btn-primary">上传</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="dialog-confirm" class="hide">
 		<div id="dialog-confirm-content" class="alert alert-info bigger-110">

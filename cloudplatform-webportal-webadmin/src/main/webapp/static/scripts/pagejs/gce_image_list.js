@@ -74,6 +74,9 @@ function queryByPage() {
 						+"<a class=\"red\" onclick=\"delGceImage(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
+						+"<a class=\"blue\" onclick=\"showGceImagePushModal(this);\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"上传镜像\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<i class=\"ace-icon fa fa-upload bigger-120\"></i>"
+						+"</a>"
 						+"</div>"
 						+'<div class="hidden-md hidden-lg">'
 							+'<div class="inline pos-rel">'
@@ -94,7 +97,14 @@ function queryByPage() {
 											+'<i class="ace-icon fa fa-trash-o bigger-120"></i>'
 										+'</span>'
 									+'</a></li>'
-									+'</ul></div></div>'
+									+'<li>'
+								+'<li>'
+									+'<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" onfocus=\"this.blur();\" title=\"上传镜像\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="blue">'
+											+'<i class="ace-icon fa fa-upload bigger-120"></i>'
+										+'</span>'
+									+'</a></li>'
+							+'</ul></div></div>'
 						+"</td>");
 				var tr = $("<tr></tr>");
 				
@@ -321,18 +331,105 @@ function updateImage(){
 }
 
 function delGceImage(obj){
-		var gceImageId = $(obj).closest("tr").find("input").val();
-		function delCmd(){
-			$.ajax({
-				cache:false,
-				type : "delete",
-				url : "/gce/image/"+gceImageId,
-				success : function(){
-					location.href = "/list/gce/image";
-				}
-			})
+	var gceImageId = $(obj).closest("tr").find("input").val();
+	function delCmd(){
+		$.ajax({
+			cache:false,
+			type : "delete",
+			url : "/gce/image/"+gceImageId,
+			success : function(){
+				location.href = "/list/gce/image";
+			}
+		})
+	}
+	confirmframe("删除镜像","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
+}
+
+function initGceImagePushModal(){
+	$('#modalGceImagePush').modal({
+		  keyboard: false,
+		  show:false,
+		  backdrop:'static'
+		});
+}
+
+function initGceImagePushHclusterSelector(){
+	var selectHclusterElement=$('#selectHcluster');
+	selectHclusterElement.chosen();
+	$.ajax({
+		cache:false,
+		type : 'get',
+		url : '/hcluster',
+	}).then(function(data){
+		if(data && data.data && data.data.length){
+			var optionHtml=data.data.map(function(option){
+				return '<option value="'+option.id+'">'+option.hclusterName+'</option>';
+			}).join('');
+			selectHclusterElement.html(optionHtml);
+			selectHclusterElement.trigger("chosen:updated");
 		}
-		confirmframe("删除镜像","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
+	});
+}
+
+function formGceImagePushValidate() {
+	$("#formGceImagePush").bootstrapValidator({
+	  message: '无效的输入',
+         feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+         },
+         fields: {
+         }
+     }).on('success.form.bv', function(e) {
+    	 e.preventDefault();
+    	 pushGceImage();
+     });
+}
+
+function enableGceImagePushForm(){
+	//$("#formGceImagePush").data('formValidation').resetForm();
+	$('#formGceImagePush button[type=submit]').prop('disabled', false);
+}
+
+
+function showGceImagePushModal(obj){
+	var gceImageId = $(obj).closest("tr").find("input").val();
+	$('#hidInputGceImagePushId').val(gceImageId);
+	$('#selectHcluster').val('').trigger('chosen:updated');
+	$('#modalGceImagePush').modal('show');
+}
+
+
+function pushGceImage(){
+	var gceImageId = $('#hidInputGceImagePushId').val();
+	var hClusterIds = $('#selectHcluster').val();
+	if(!hClusterIds || !hClusterIds.length){
+		$.gritter.add({title: '警告',text: '请选择物理机集群',sticky: false,time: '2000',class_name: 'gritter-warning'});
+		enableGceImagePushForm();
+		return;
+	}
+	$.gritter.add({title: '提示',text: '镜像上传中，请稍后。',sticky: false,time: '2000',class_name: 'gritter-info'});
+	$.ajax({
+		cache:false,
+		type : "post",
+		url : "/gce/image/push/"+gceImageId,
+		data:{hclusterIds: hClusterIds.join(',')},
+		success : function(data){
+			if(data.result===1){
+				$.gritter.add({title: '提示',text: data.msgs[0],sticky: false,time: '2000',class_name: 'gritter-info'});
+				setTimeout(function(){
+					location.href = "/list/gce/image";
+				}, 2000);
+			}
+			else{
+				$.gritter.add({title: '错误',text: data.msgs[0] || '上传镜像出错',sticky: false,time: '2000',class_name: 'gritter-error'});
+				enableGceImagePushForm();
+			}
+			
+		}
+	});
+	
 }
 
 function page_init(){
@@ -342,4 +439,7 @@ function page_init(){
 	updateFormValidate();
 	pageControl();
 	 getUser();
+	 formGceImagePushValidate();
+	 initGceImagePushModal();
+	 initGceImagePushHclusterSelector();
 }
