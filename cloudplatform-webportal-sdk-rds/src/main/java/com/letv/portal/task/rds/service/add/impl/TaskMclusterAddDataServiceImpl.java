@@ -38,7 +38,7 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterAddDataServiceImpl.class);
 
-	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
+	private final static String  CONTAINER_MEMORY_SIZE = "4294967296";
 	private final static String  CONTAINER_DBDISK_SIZE = "10737418240";
 	
 	@Override
