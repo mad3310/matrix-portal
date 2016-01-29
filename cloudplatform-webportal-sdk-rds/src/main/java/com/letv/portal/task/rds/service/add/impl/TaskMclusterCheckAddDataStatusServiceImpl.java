@@ -65,7 +65,7 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
 		String mclusterDataName = mclusterModel.getMclusterName();
 		String addNames = (String) params.get("addNames");
-		ApiResultObject result = pythonService.checkContainerAddStatus(mclusterDataName,addNames, host.getHostIp(), host.getName(), host.getPassword());
+		ApiResultObject result = pythonService.checkContainerAddStatus(mclusterDataName,addNames.substring(0,addNames.length()-1), host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		Long start = new Date().getTime();
@@ -75,7 +75,7 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 				tr.setResult("check time over:"+result.getUrl());
 				break;
 			}
-			result = pythonService.checkContainerAddStatus(mclusterDataName,addNames, host.getHostIp(), host.getName(), host.getPassword());
+			result = pythonService.checkContainerAddStatus(mclusterDataName,addNames.substring(0,addNames.length()-1), host.getHostIp(), host.getName(), host.getPassword());
 			tr = analyzeRestServiceResult(result);
 		}
 		if(tr.isSuccess()) {
@@ -125,6 +125,16 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 		}
 		tr.setSuccess(isSucess);
 		return tr;
+	}
+
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
 	}
 	
 }

@@ -55,7 +55,7 @@ public class PythonServiceImpl implements IPythonService{
 	public ApiResultObject checkContainerAddStatus(String mclusterDataName, String addNames, String hostIp, String name, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/").append(mclusterDataName).append("/node/").append(addNames);
-		String result = HttpClient.post(url.toString(), null,name,password);
+		String result = HttpClient.get(url.toString(), name, password);
 		return new ApiResultObject(result,url.toString());
 	}
 
@@ -114,6 +114,27 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dataNodeName", nodeName);
 
 		String result = HttpClient.post(url.toString(), map,username,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject delContainerInfo(String ipAddr, String containerName, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/cluster/node");
+
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("dataNodeIp", ipAddr);
+		map.put("dataNodeName", containerName);
+
+		String result = HttpClient.detele(url.toString(),username,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject delContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/cluster/node/remove");
+		String result = HttpClient.post(url.toString(), map,name,password);
 		return new ApiResultObject(result,url.toString());
 	}
 

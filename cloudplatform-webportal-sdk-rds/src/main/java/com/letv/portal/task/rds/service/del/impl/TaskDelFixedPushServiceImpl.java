@@ -1,12 +1,11 @@
-package com.letv.portal.task.rds.service.add.impl;
+package com.letv.portal.task.rds.service.del.impl;
 
 import com.letv.common.exception.ValidateException;
-import com.letv.common.result.ApiResultObject;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
-import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
@@ -20,22 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service("taskMclusterAddInitAdminUserAndPwdService")
-public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskDelFixedPushService")
+public class TaskDelFixedPushServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
-	@Autowired
-	private IPythonService pythonService;
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
-	private IHostService hostService;
+	private IFixedPushService fixedPushService;
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitAdminUserAndPwdServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskDelFixedPushServiceImpl.class);
 	
 	@Override
-	public TaskResult execute(Map<String, Object> params) throws Exception{
+	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
@@ -48,38 +45,27 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 		if(mclusterModel == null)
 			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
 
-		String namesstr = (String)params.get("addNames");
-		String[] addNames = namesstr.split(",");
+		String namesstr = (String)params.get("delName");
 		List<ContainerModel> containers = new ArrayList<ContainerModel>();
-		for (String addName:addNames) {
-			containers.add(this.containerService.selectByName(addName));
-		}
+		containers.add(this.containerService.selectByName(namesstr));
+
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by name:" + namesstr);
-		String username = mclusterModel.getAdminUser();
-		String password = mclusterModel.getAdminPassword();
-		for (int i = 0; i < containers.size(); i++) {
-			String ipAddr = containers.get(i).getIpAddr();
-			ApiResultObject result = this.pythonService.initUserAndPwd4Manager(ipAddr,username,password);
-			tr = analyzeRestServiceResult(result);
-			if(!tr.isSuccess()) {
-				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
-				break;
+		
+		boolean isSuccess = fixedPushService.deleteMutilContainerPushFixedInfo(containers);
+		if(!isSuccess) {
+			//发送推送失败邮件，流程继续。
+			buildResultToMgr("RDS服务相关系统推送异常", mclusterModel.getMclusterName() +"集群固资系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+			tr.setResult("固资系统数据推送失败");
+		} else {
+			for(ContainerModel containerModel:containers) {
+				this.containerService.delete(containerModel);
 			}
 		}
 
-		//set params
+		tr.setSuccess(true);
 		tr.setParams(params);
 		return tr;
-	}
-	@Override
-	public void callBack(TaskResult tr) {
-//		super.callBack(tr);
-	}
-
-	@Override
-	public void rollBack(TaskResult tr) {
-//		super.rollBack(tr);
 	}
 	
 }

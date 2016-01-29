@@ -56,5 +56,9 @@ public class MclusterTest extends AbstractTest{
     public void testRestartDb() {
     	this.mclusterProxy.restartDb(22L);
     }
+	@Test
+	public void testAddContainer() {
+		this.mclusterProxy.addContainerOnMcluster(3378L,1);
+	}
     
 }

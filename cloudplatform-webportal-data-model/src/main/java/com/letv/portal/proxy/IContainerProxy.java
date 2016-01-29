@@ -59,5 +59,6 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @return
 	 */
 	public ContainerMonitorModel selectMonitorDetailClusterData(String ip);
-	
+
+	void deleteAndBuild(ContainerModel containerModel);
 }

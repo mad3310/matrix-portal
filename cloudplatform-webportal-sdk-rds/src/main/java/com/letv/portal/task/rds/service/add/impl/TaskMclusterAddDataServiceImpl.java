@@ -38,7 +38,7 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterAddDataServiceImpl.class);
 
-	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
+	private final static String  CONTAINER_MEMORY_SIZE = "4294967296";
 	private final static String  CONTAINER_DBDISK_SIZE = "10737418240";
 	
 	@Override
@@ -70,6 +70,7 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
+		map.put("nodeCount", String.valueOf(params.get("nodeCount")));
 		map.put("memory", params.get("memory")==null || params.get("memory")=="" ? CONTAINER_MEMORY_SIZE : String.valueOf(params.get("memory")));
 		map.put("dbDisk", params.get("dbDisk")==null || params.get("dbDisk")=="" ? CONTAINER_DBDISK_SIZE : String.valueOf(params.get("dbDisk")));
 		map.put("image", images==null||images.size()==0||images.get(0).getUrl()==null ? MATRIX_RDS_DATA_DEFAULT_IMAGE : images.get(0).getUrl());
@@ -83,6 +84,15 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 		params.put("addNames",names);
 		tr.setParams(params);
 		return tr;
+	}
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
 	}
 	
 }

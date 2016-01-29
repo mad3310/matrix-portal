@@ -86,6 +86,8 @@ public interface IPythonService {
 	 * @return
 	 */
 	ApiResultObject postContainerInfo(String nodeIp,String nodeName,String username,String password);
+	ApiResultObject delContainerInfo(String ipAddr, String containerName, String username, String password);
+	ApiResultObject delContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password);
 	
 	/**Methods Name: syncContainer <br>
 	 * Description: 同步节点信息<br>

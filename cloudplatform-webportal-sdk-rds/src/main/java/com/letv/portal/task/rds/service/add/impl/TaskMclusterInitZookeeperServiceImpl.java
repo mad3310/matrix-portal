@@ -58,7 +58,7 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by name:" + namesstr);
-		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),containers.size()-1);
+		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),containers.size());
 	
 		for (int i = 0; i < containers.size(); i++) {
 			ContainerModel container = containers.get(i);
@@ -80,6 +80,15 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		
 		tr.setParams(params);
 		return tr;
+	}
+	@Override
+	public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
 	}
 	
 }
