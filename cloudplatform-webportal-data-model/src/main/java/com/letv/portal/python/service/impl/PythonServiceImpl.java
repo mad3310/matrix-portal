@@ -55,7 +55,7 @@ public class PythonServiceImpl implements IPythonService{
 	public ApiResultObject checkContainerAddStatus(String mclusterDataName, String addNames, String hostIp, String name, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/").append(mclusterDataName).append("/node/").append(addNames);
-		String result = HttpClient.post(url.toString(), null,name,password);
+		String result = HttpClient.get(url.toString(),name,password);
 		return new ApiResultObject(result,url.toString());
 	}
 

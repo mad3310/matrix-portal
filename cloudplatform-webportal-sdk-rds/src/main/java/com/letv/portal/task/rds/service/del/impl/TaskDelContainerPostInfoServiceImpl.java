@@ -48,26 +48,17 @@ public class TaskDelContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl
 		if(mclusterModel == null)
 			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
 
-		String namesstr = (String)params.get("addNames");
-		String[] addNames = namesstr.split(",");
-		List<ContainerModel> containers = new ArrayList<ContainerModel>();
-		for (String addName:addNames) {
-			containers.add(this.containerService.selectByName(addName));
-		}
-		if(containers.isEmpty())
-			throw new ValidateException("containers is empty by name:" + namesstr);
+		String namesstr = (String)params.get("delName");
+		ContainerModel containerModel = this.containerService.selectByName(namesstr);
+
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
-		for (int i = 0; i < containers.size(); i++) {
-			String ipAddr = containers.get(i).getIpAddr();
-			String containerName = containers.get(i).getContainerName();
-			ApiResultObject result = this.pythonService.delContainerInfo(ipAddr, containerName, username, password);
-
-			tr = analyzeRestServiceResult(result);
-			if(!tr.isSuccess()) {
-				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
-				break;
-			}
+		String ipAddr = containerModel.getIpAddr();
+		String containerName = containerModel.getContainerName();
+		ApiResultObject result = this.pythonService.delContainerInfo(ipAddr, containerName, username, password);
+		tr = analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			tr.setResult("node error:" + tr.getResult());
 		}
 		tr.setParams(params);
 		return tr;

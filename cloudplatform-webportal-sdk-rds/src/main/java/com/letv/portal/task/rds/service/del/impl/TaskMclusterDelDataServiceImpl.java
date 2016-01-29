@@ -58,7 +58,7 @@ public class TaskMclusterDelDataServiceImpl extends BaseTask4RDSServiceImpl impl
 		//从数据库获取image
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterModel.getMclusterName());
-		map.put("containerNameList", (String) params.get("delNames"));
+		map.put("containerNameList", (String) params.get("delName"));
 		ApiResultObject result = this.pythonService.delContainerOnMcluster(map, host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		if(tr.isSuccess())

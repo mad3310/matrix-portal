@@ -5,6 +5,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.common.exception.ValidateException;
+import com.letv.portal.model.ContainerModel;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -85,6 +88,18 @@ public class ContainerController {
 	@RequestMapping(value = "/stop", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject stop(Long containerId,ResultObject result) {
 		this.containerProxy.stop(containerId);
+		return result;
+	}
+
+	@AoLog(desc="停止单个容器",type=AoLogType.DELETE)
+	@RequestMapping(value="/{containerId}",method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delete(@PathVariable Long containerId,ResultObject result) {
+        if(null == containerId)
+            throw new ValidateException("参数不合法");
+        ContainerModel containerModel = this.containerService.selectById(containerId);
+        if(null == containerModel)
+            throw new ValidateException("参数不合法");
+        this.containerProxy.deleteAndBuild(containerModel);
 		return result;
 	}
 }

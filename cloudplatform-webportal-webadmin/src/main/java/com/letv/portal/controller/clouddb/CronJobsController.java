@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.util.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -339,5 +340,13 @@ public class CronJobsController {
 		this.monitorProxy.deleteMonitorErrorData();
 		return obj;
 	}
-	
+
+	@AoLog(desc="增加集群节点",type=AoLogType.UPDATE)
+	@RequestMapping(value = "/dilatation", method=RequestMethod.POST)
+	public @ResponseBody ResultObject dilatation(Long mclusterId,int count,ResultObject result) {
+		if(mclusterId == null || count <=0)
+			throw new ValidateException("参数不合法");
+		this.mclusterProxy.addContainerOnMcluster(mclusterId,count);
+		return result;
+	}
 }

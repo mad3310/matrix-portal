@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.exception.ValidateException;
+import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.task.service.ITaskEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	private IContainerService containerService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	@Autowired
+	private ITaskEngine taskEngine;
 	
 	@Override
 	public IBaseService<ContainerModel> getService() {
@@ -75,5 +80,16 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public ContainerMonitorModel selectMonitorDetailClusterData(String ip){
 		return this.buildTaskService.getMonitorDetailClusterData(ip);
 	}
-	
+
+	@Override
+	public void deleteAndBuild(ContainerModel containerModel) {
+		if(containerModel == null) {
+			throw new ValidateException("参数不合法");
+		}
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("mclusterId",containerModel.getMcluster());
+        params.put("delName",containerModel.getContainerName());
+		this.taskEngine.run("RDS_DILATATION",params);
+	}
+
 }
