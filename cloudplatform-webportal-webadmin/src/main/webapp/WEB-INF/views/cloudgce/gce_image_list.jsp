@@ -315,7 +315,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">物理机集群</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select id="selectHcluster" class="chosen-select" tabindex="8" multiple="" data-placeholder="请选择集群..."></select>
+									<select id="selectHcluster" class="chosen-select form-control" multiple="" data-placeholder="请选择集群..."></select>
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="镜像的目的物理机集群" style="cursor:pointer; text-decoration:none;">
