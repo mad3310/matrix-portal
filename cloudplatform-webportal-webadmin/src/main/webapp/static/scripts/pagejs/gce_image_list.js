@@ -99,7 +99,7 @@ function queryByPage() {
 									+'</a></li>'
 									+'<li>'
 								+'<li>'
-									+'<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" onfocus=\"this.blur();\" title=\"上传镜像\" data-toggle=\"tooltip\" data-placement=\"right\">'
+									+'<a class=\"blue\" href=\"#\" onclick=\"showGceImagePushModal(this);\" onfocus=\"this.blur();\" title=\"上传镜像\" data-toggle=\"tooltip\" data-placement=\"right\">'
 										+'<span class="blue">'
 											+'<i class="ace-icon fa fa-upload bigger-120"></i>'
 										+'</span>'
