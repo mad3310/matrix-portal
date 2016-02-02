@@ -13,7 +13,11 @@ public enum MclusterStatus implements ByteEnum{
 	DESTROYED(11),
 	NOTEXIT(12),
 	DANGER(13),
-	CRISIS(14);
+	CRISIS(14),
+	ADDING(15),
+    ADDINGFAILED(16),
+	DELETING(17),
+    DELETINGFAILED(18);
 	
 	private final Integer value;
 	

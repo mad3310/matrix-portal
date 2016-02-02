@@ -87,7 +87,7 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 				container.setType("mclusternode");
 				container.setIpMask((String) map.get("netMask"));
 				container.setContainerName((String) map.get("containerName"));
-				container.setStatus(MclusterStatus.RUNNING.getValue());
+				container.setStatus(MclusterStatus.ADDING.getValue());
 				//物理机集群维护完成后，修改此处，需要关联物理机id
 				container.setHostIp((String) map.get("hostIp"));
 				HostModel hostModel = this.hostService.selectByIp((String) map.get("hostIp"));
@@ -134,6 +134,10 @@ public class TaskMclusterCheckAddDataStatusServiceImpl extends BaseTask4RDSServi
 
 	@Override
 	public void rollBack(TaskResult tr) {
+		Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+		this.mclusterService.updateBySelective(mcluster);
 //		super.rollBack(tr);
 	}
 	

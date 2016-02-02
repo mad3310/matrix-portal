@@ -2,12 +2,15 @@ package com.letv.portal.task.rds.service.del.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.image.Image;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.image.IImageService;
@@ -30,12 +33,10 @@ public class TaskMclusterDelDataServiceImpl extends BaseTask4RDSServiceImpl impl
 	@Autowired
 	private IHostService hostService;
 	@Autowired
-	private IMclusterService mclusterService;
+	private IContainerService containerService;
 	@Autowired
-	private IImageService imageService;
-	@Value("${matrix.rds.data.default.image}")
-	private String MATRIX_RDS_DATA_DEFAULT_IMAGE;
-	
+	private IMclusterService mclusterService;
+
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterDelDataServiceImpl.class);
 
 	@Override
@@ -65,5 +66,27 @@ public class TaskMclusterDelDataServiceImpl extends BaseTask4RDSServiceImpl impl
 		tr.setParams(params);
 		return tr;
 	}
-	
+	@Override
+	public void callBack(TaskResult tr) {
+		Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.RUNNING.getValue());
+		this.mclusterService.updateBySelective(mcluster);
+//		super.callBack(tr);
+	}
+
+	@Override
+	public void rollBack(TaskResult tr) {
+		String namesstr  =  (String) ((Map<String, Object>) tr.getParams()).get("delName");
+		ContainerModel containerModel = this.containerService.selectByName(namesstr);
+		if(MclusterStatus.ADDING.getValue() == containerModel.getStatus()) {
+			containerModel.setStatus(MclusterStatus.DELETINGFAILED.getValue());
+			this.containerService.updateBySelective(containerModel);
+		}
+		Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.DELETINGFAILED.getValue());
+		this.mclusterService.updateBySelective(mcluster);
+//		super.rollBack(tr);
+	}
 }

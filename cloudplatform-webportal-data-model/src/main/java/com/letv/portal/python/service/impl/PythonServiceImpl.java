@@ -133,7 +133,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public ApiResultObject delContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/cluster/node/remove");
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/node/remove");
 		String result = HttpClient.post(url.toString(), map,name,password);
 		return new ApiResultObject(result,url.toString());
 	}
@@ -152,7 +152,7 @@ public class PythonServiceImpl implements IPythonService{
         url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/node/start");
 
         Map<String,String> map = new HashMap<String,String>();
-        map.put("cluster_flag", "false");
+        map.put("isNewCluster", "false");
 
         String result = HttpClient.post(url.toString(), map,username,password);
         return new ApiResultObject(result,url.toString());

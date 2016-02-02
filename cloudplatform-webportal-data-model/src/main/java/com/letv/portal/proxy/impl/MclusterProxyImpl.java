@@ -149,6 +149,12 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		MclusterModel mcluster = this.selectById(mclusterId);
 		if(mcluster == null)
 			throw new ValidateException("参数不合法");
+        if(MclusterStatus.DELETING.getValue() == mcluster.getStatus() || MclusterStatus.ADDING.getValue() == mcluster.getStatus() ||
+                MclusterStatus.DELETINGFAILED.getValue() == mcluster.getStatus() || MclusterStatus.ADDINGFAILED.getValue() == mcluster.getStatus())
+            throw new ValidateException("当前集群正在进行扩容缩容操作，请稍后操作");
+
+        mcluster.setStatus(MclusterStatus.ADDING.getValue());
+        this.mclusterService.updateBySelective(mcluster);
 		Map<String,Object> params = new HashMap<String, Object>();
         params.put("mclusterId",mclusterId);
         params.put("nodeCount",count);
