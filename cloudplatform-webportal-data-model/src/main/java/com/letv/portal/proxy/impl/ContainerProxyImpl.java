@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.IMclusterService;
@@ -97,6 +98,12 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
                 MclusterStatus.DELETINGFAILED.getValue() == mclusterModel.getStatus() || MclusterStatus.ADDINGFAILED.getValue() == mclusterModel.getStatus())
             throw new ValidateException("当前集群正在进行扩容缩容操作，请稍后操作");
 
+        Map<String, Object> totalParams = new HashMap<String, Object>();
+        totalParams.put("mclusterId",containerModel.getMclusterId());
+        totalParams.put("type","mclusternode");
+        Integer total = this.containerService.selectByMapCount(totalParams);
+        if(total <=3)
+            throw new ValidateException("RDS集群数据节点最少为三个");
         containerModel.setStatus(MclusterStatus.DELETING.getValue());
         this.containerService.updateBySelective(containerModel);
         mclusterModel.setStatus(MclusterStatus.DELETING.getValue());

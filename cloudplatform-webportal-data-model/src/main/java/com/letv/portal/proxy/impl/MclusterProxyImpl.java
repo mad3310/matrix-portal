@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.*;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +49,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IContainerService containerService;
 	@Autowired
 	private IHclusterService hclusterService;
+    @Autowired
+    private IHostService hostService;
 	@Autowired
 	private IPythonService pythonService;
     @Autowired
@@ -152,6 +155,15 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
         if(MclusterStatus.DELETING.getValue() == mcluster.getStatus() || MclusterStatus.ADDING.getValue() == mcluster.getStatus() ||
                 MclusterStatus.DELETINGFAILED.getValue() == mcluster.getStatus() || MclusterStatus.ADDINGFAILED.getValue() == mcluster.getStatus())
             throw new ValidateException("当前集群正在进行扩容缩容操作，请稍后操作");
+
+        List<HostModel> hostModels = this.hostService.selectByHclusterId(mcluster.getHclusterId());
+        Map<String, Object> totalParams = new HashMap<String, Object>();
+        totalParams.put("mclusterId",mclusterId);
+        totalParams.put("type","mclusternode");
+        Integer total = this.containerService.selectByMapCount(totalParams);
+
+        if(total+count >= hostModels.size())
+            throw new ValidateException("当前集群所在物理机集群最高数据节点为"+hostModels.size() +"个");
 
         mcluster.setStatus(MclusterStatus.ADDING.getValue());
         this.mclusterService.updateBySelective(mcluster);
