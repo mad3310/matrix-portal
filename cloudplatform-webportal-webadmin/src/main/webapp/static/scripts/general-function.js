@@ -244,6 +244,44 @@ function translateStatus(status) {
 		return "未知";
 	}
 }
+// 状态翻译重写
+function stateTransform(status,type){
+	var defaultStatus={
+		"0":"未审核",
+		"1":"运行中",
+		"2":"<i class='ace-icon fa fa-spinner fa-spin green bigger-125'></i>创建中...",
+		"3":"<i class='ace-icon fa fa-warning red bigger-120'></i><font color='red'>创建失败</font>",
+		"4":"<font color='red'>审核失败</font>",
+		"5":"<font color='orange'>异常</font>",
+		"6":"正常",
+		"7":"<i class='ace-icon fa fa-spinner fa-spin green bigger-125'></i>启动中...",
+		"8":"<i class='ace-icon fa fa-spinner fa-spin green bigger-125'></i>停止中...",
+		"9":"已停止",
+		"10":"<i class='ace-icon fa fa-spinner fa-spin green bigger-125'></i>删除中...",
+		"11":"已删除",
+		"12":"不存在",
+		"13":"<font color='orange'>危险</font>",
+		"14":"<font color='red'>严重危险</font>",
+		"15":"禁用",
+		"FAILD":"备份失败",
+		"SUCCESS":"备份成功",
+		"BUILDING":"备份中...",
+		"ABNORMAL":"备份异常",
+		"null":"未知"
+	};
+	var rdsStatus={
+		"15":"<i class='ace-icon fa fa-spinner fa-spin orange bigger-125'></i>扩容中...",
+		"16":"<i class='ace-icon fa fa-warning red bigger-120'></i><font color='red'>扩容失败</font>",
+		"17":"<i class='ace-icon fa fa-spinner fa-spin orange bigger-125'></i>缩容中..."
+	};
+	var statusObj={
+		"default":defaultStatus,
+		'rdsMcluster':rdsStatus
+	};
+	
+	var temp=statusObj[type][status];
+	return temp?temp:statusObj["default"][status];
+}
 /* 错误提示框,一般在异步请求返回信息中用到 */
 function error(errorThrown, time) {
 	if (errorThrown.result == 0) {
