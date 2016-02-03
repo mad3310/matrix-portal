@@ -162,7 +162,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
         totalParams.put("type","mclusternode");
         Integer total = this.containerService.selectByMapCount(totalParams);
 
-        if(total+count >= hostModels.size())
+        if(total+count > hostModels.size())
             throw new ValidateException("当前集群所在物理机集群最高数据节点为"+hostModels.size() +"个");
 
         mcluster.setStatus(MclusterStatus.ADDING.getValue());
