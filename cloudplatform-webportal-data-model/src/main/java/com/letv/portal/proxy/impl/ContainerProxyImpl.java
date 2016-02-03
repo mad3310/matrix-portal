@@ -111,6 +111,7 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
         Map<String,Object> params = new HashMap<String, Object>();
 		params.put("mclusterId",containerModel.getMclusterId());
         params.put("delName",containerModel.getContainerName());
+        params.put("clusterName", mclusterModel.getMclusterName());
 		this.taskEngine.run("RDS_CONTAINER_REMOVE",params);
 	}
 

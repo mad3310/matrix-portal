@@ -170,6 +170,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		Map<String,Object> params = new HashMap<String, Object>();
         params.put("mclusterId",mclusterId);
         params.put("nodeCount",count);
+        params.put("clusterName", mcluster.getMclusterName());
         this.taskEngine.run("RDS_DILATATION",params);
 	}
 }

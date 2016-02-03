@@ -236,8 +236,6 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			tr.setSuccess(false);
 			e.printStackTrace();
 			tr.setResult(e.getMessage());
-			if(baseTask != null)
-				baseTask.rollBack(tr);
 			tc.setResult(e.getMessage());
 			tc.setStatus(TaskExecuteStatus.FAILED);
 			tc.setEndTime(new Date());
@@ -245,6 +243,8 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			tci.setStatus(TaskExecuteStatus.FAILED);
 			tci.setEndTime(new Date());
 			this.taskChainIndexService.updateBySelective(tci);
+			if(baseTask != null)
+				baseTask.rollBack(tr);
 		} 
 	}
 
