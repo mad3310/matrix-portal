@@ -715,13 +715,13 @@
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
 
-                <webportal.local.http>http://10.150.149.120:8080</webportal.local.http>
+                <webportal.local.http>http://10.154.238.45:8080</webportal.local.http>
+                <webportal.admin.http>http://10.154.238.148:8080</webportal.admin.http>
                 <webportal.api.http>http://10.150.149.31:8080</webportal.api.http>
-                <webportal.admin.http>http://10.150.149.242:8080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
 
-                <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
+                <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
+                <service.notice.email.to>liuhao1@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
 
                 <webportal.log.path>/var/log</webportal.log.path>

@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.util.StringUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +165,9 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 	public void callBack(TaskResult tr) {
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		String type = (String) params.get("type");
-		if("tomcat".equals(type.toLowerCase()) || "resin".equals(type.toLowerCase()))
-			super.rollBack(tr);
+        if(!StringUtils.isEmpty(type)) {
+            if("tomcat".equals(type.toLowerCase()) || "resin".equals(type.toLowerCase()))
+                super.rollBack(tr);
+        }
 	}
 }
