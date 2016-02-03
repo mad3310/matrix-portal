@@ -210,6 +210,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			
 			baseTask = (IBaseTaskService)getApplicationContext().getBean(taskBeanName);
 			baseTask.beforExecute(params);
+			tr.setParams(params);
 			tr = baseTask.execute(params);
 			if(tr == null)
 				throw new TaskExecuteException("task execute result is null");
