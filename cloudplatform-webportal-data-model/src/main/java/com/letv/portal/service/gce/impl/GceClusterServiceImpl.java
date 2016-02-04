@@ -5,11 +5,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.service.gce.IGceServerService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -43,8 +45,11 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 	private IHostService hostService;
 	@Resource
 	private IGceContainerExtService gceContainerExtService;
+    @Autowired
+    private IFixedPushService fixedPushService;
 
-	public GceClusterServiceImpl() {
+
+    public GceClusterServiceImpl() {
 		super(GceCluster.class);
 	}
 
@@ -178,7 +183,13 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 
     @Override
     public void delete(GceCluster gceCluster) {
-        this.gceContainerExtService.deleteByClusterId(gceCluster.getId());
+		List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceCluster.getId());
+		for (GceContainer container:gceContainers) {
+            if(container.getIpAddr().startsWith("10.")) {
+                this.fixedPushService.sendFixedInfo(container.getHostIp(),container.getContainerName(),container.getIpAddr(),"delete");
+            }
+		}
+		this.gceContainerExtService.deleteByClusterId(gceCluster.getId());
         this.gceContainerService.deleteByClusterId(gceCluster.getId());
         this.gceServerService.deleteByClusterId(gceCluster.getId());
         this.gceClusterDao.delete(gceCluster);

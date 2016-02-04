@@ -5,11 +5,14 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.letv.portal.fixedPush.IFixedPushService;
+import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.service.slb.ISlbServerService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -41,6 +44,8 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 	private ISlbServerService slbServerService;
 	@Resource
 	private IHostService hostService;
+	@Autowired
+	private IFixedPushService fixedPushService;
 	
 	public SlbClusterServiceImpl() {
 		super(SlbCluster.class);
@@ -132,6 +137,12 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 
 	@Override
 	public void delete(SlbCluster slbCluster) {
+		List<SlbContainer> slbContainers = this.slbContainerService.selectBySlbClusterId(slbCluster.getId());
+		for (SlbContainer container:slbContainers) {
+			if(container.getIpAddr().startsWith("10.")) {
+				this.fixedPushService.sendFixedInfo(container.getHostIp(),container.getContainerName(),container.getIpAddr(),"delete");
+			}
+		}
 		this.slbContainerService.deleteByClusterId(slbCluster.getId());
 		this.slbServerService.deleteByClusterId(slbCluster.getId());
 		this.slbClusterDao.delete(slbCluster);
