@@ -43,78 +43,49 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	private String FIXEDPUSH_SOCKET_IP;
 	@Value("${fixedpush.url.port}")
 	private int FIXEDPUSH_SOCKET_PORT;
-	/**
-	 * Methods Name: createMutilContainerPushFixedInfo <br>
-	 * Description: 备案多个container<br>
-	 * @author name: wujun
-	 * @param fixedPushModel
-	 */
+
 	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers){
-		Boolean flag = false;
-		try {
-			for(ContainerModel c:containers){
-				String servertag = c.getHostIp();
-				List<ContainerPush> list = new ArrayList<ContainerPush>();	
-				FixedPushModel fixedPushModel = new FixedPushModel();
-				ContainerPush containerMode = new ContainerPush();
-				containerMode.setName(c.getContainerName());
-				containerMode.setIp(c.getIpAddr());
-				list.add(containerMode);
-				fixedPushModel.setServertag(servertag);	
-				fixedPushModel.setType("add");
-				fixedPushModel.setIpaddress(list);
-				createContainerPushFixedInfo(fixedPushModel);
-			}
-		} catch (Exception e) {
-			throw new TaskExecuteException("push create fixed exception" + e.getMessage());
-		}
-		flag = true;
-		
-         return flag;
-	}
-	@Override
-	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers){
-		Boolean flag = true;
-		try {
-			for(ContainerModel c:containers){
-				String servertag = c.getHostIp();
-				List<ContainerPush> list = new ArrayList<ContainerPush>();	
-				FixedPushModel fixedPushModel = new FixedPushModel();
-				ContainerPush containerMode = new ContainerPush();
-				containerMode.setName(c.getContainerName());
-				containerMode.setIp(c.getIpAddr());
-				list.add(containerMode);
-				fixedPushModel.setServertag(servertag);	
-				fixedPushModel.setType("delete");
-				fixedPushModel.setIpaddress(list);
-				createContainerPushFixedInfo(fixedPushModel);
-			}
-		} catch (Exception e) {
-			throw new TaskExecuteException("push delete fixed exception" + e.getMessage());
+        boolean flag = true;
+		for(ContainerModel c:containers) {
+			flag = sendFixedInfo(c.getHostIp(), c.getContainerName(), c.getIpAddr(), "add");
+            if(!flag)
+                break;
 		}
 		return flag;
 	}
-	/**
-	 * Methods Name: createContainerPushFixedInfo <br>
-	 * Description: 创建container的相关系统<br>
-	 * @author name: wujun
-	 */
-	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception{
-			String result = sendFixedInfo(fixedPushModel);		
-	}
-	
-	/**
-	 * Methods Name: deleteContainerPushFixedInfo <br>
-	 * Description: 删除container的相关信息<br>
-	 * @author name: wujun
-	 */
-	public Boolean deleteContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception{
-		String result = sendFixedInfo(fixedPushModel);
-		return null;
-	}	
-	
+
 	@Override
-	public String sendFixedInfo(FixedPushModel fixedPushModel)throws Exception{	
+	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers){
+        boolean flag = true;
+		for(ContainerModel c:containers) {
+			flag = sendFixedInfo(c.getHostIp(), c.getContainerName(), c.getIpAddr(), "delete");
+            if(!flag)
+                break;
+		}
+		return flag;
+	}
+	public Boolean sendFixedInfo(String serverTag,String name,String ip,String type) {
+		boolean flag = true;
+		try {
+			List<ContainerPush> list = new ArrayList<ContainerPush>();
+			ContainerPush containerMode = new ContainerPush();
+			containerMode.setName(name);
+			containerMode.setIp(ip);
+			list.add(containerMode);
+
+			FixedPushModel fixedPushModel = new FixedPushModel();
+			fixedPushModel.setServertag(serverTag);
+			fixedPushModel.setType(type);
+			fixedPushModel.setIpaddress(list);
+			sendFixedInfo(fixedPushModel);
+		} catch (Exception e) {
+			flag = false;
+		} finally {
+			return flag;
+		}
+	}
+
+	private String sendFixedInfo(FixedPushModel fixedPushModel)throws Exception{
 	    String sn =	receviceFixedInfo(fixedPushModel);
 	    fixedPushModel.setServertag(sn);
 	    String pushString =  JSON.toJSONString(fixedPushModel);
@@ -122,8 +93,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
         return null;
 	}
  
-	@Override
-	public String receviceFixedInfo(FixedPushModel fixedPushModel) throws Exception{
+	private String receviceFixedInfo(FixedPushModel fixedPushModel) throws Exception{
 		if(fixedPushModel!=null){
 			String hostIp = fixedPushModel.getServertag();
 			String url = FIXEDPUSH_GET+hostIp;
@@ -134,7 +104,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 		}      
 	}
 
-	public void sendSocket(String pushString) throws IOException{
+	private void sendSocket(String pushString) throws IOException{
         Socket s1 = new Socket(FIXEDPUSH_SOCKET_IP, FIXEDPUSH_SOCKET_PORT);
 	    InputStream is = s1.getInputStream();
 	    DataInputStream dis = new DataInputStream(is);
@@ -151,7 +121,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
         }finally{
         	 dis.close();
         	 s1.close();
-        };
+        }
 	}
     private static byte[] int2byte(int i) {
         return new byte[] { (byte) ((i >> 24) & 0xFF),

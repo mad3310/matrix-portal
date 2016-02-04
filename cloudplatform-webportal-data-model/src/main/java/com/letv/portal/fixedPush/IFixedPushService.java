@@ -19,33 +19,18 @@ public interface IFixedPushService {
 	 * Methods Name: createMutilContainerPushFixedInfo <br>
 	 * Description: 备案多个container<br>
 	 * @author name: wujun
-	 * @param fixedPushModel
+	 * @param containers
 	 */
-	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers);
-	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers);
+	Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers);
+	Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers);
+
 	/**
-	 * Methods Name: createContainerPushFixedInfo <br>
-	 * Description: 创建container的相关系统<br>
-	 * @author name: wujun
+	 *固资推送接口
+	 * @param serverTag 该物理机ip
+	 * @param name 该container名称
+	 * @param ip 该contaienr ip
+	 * @param type add or delete
+	 * @return  true,如果推送失败 ,发送邮件,运维手动推送.
 	 */
-	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception;
-	/**
-	 * Methods Name: deleteContainerPushFixedInfo <br>
-	 * Description: 删除container的相关信息<br>
-	 * @author name: wujun
-	 */
-	public Boolean deleteContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception;
-	/**
-	 * Methods Name: sendFixedInfo <br>
-	 * Description: 向固资系统发送固资信息<br>
-	 * @author name: wujun
-	 * @throws Exception 
-	 */
-	public String sendFixedInfo(FixedPushModel fixedPushModel) throws Exception;
-	/**
-	 * Methods Name: receviceFixedInfo <br>
-	 * Description: 接受固资系统的固资信息<br>
-	 * @author name: wujun
-	 */
-	public String receviceFixedInfo(FixedPushModel fixedPushModel)throws Exception;
+	Boolean sendFixedInfo(String serverTag,String name,String ip,String type);
 }

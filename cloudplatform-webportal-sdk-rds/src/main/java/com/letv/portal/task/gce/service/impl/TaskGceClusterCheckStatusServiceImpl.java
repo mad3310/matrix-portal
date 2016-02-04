@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.util.StringUtil;
+import com.letv.portal.fixedPush.IFixedPushService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -37,8 +38,11 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private IGceContainerExtService gceContainerExtService;
-	
-	private final static long PYTHON_CREATE_CHECK_TIME = 300000;
+    @Autowired
+    private IFixedPushService fixedPushService;
+
+
+    private final static long PYTHON_CREATE_CHECK_TIME = 300000;
 	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskGceClusterCheckStatusServiceImpl.class);
@@ -128,7 +132,13 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				} else {
 					this.gceContainerService.insert(container);
 				}
-				
+                boolean flag = this.fixedPushService.sendFixedInfo(container.getHostIp(),container.getContainerName(),container.getIpAddr(),"add");
+                if(!flag) {
+                    //发送推送失败邮件，流程继续。
+                    buildResultToMgr("GCE服务相关系统推送异常", container.getContainerName() +"节点固资系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+                    tr.setResult("固资系统数据推送失败");
+                    break;
+                }
 			}
 		}
 		tr.setParams(params);

@@ -343,7 +343,7 @@ public class CronJobsController {
 		return obj;
 	}
 
-	@AoLog(desc="增加集群节点",type=AoLogType.UPDATE)
+	/*@AoLog(desc="增加集群节点",type=AoLogType.UPDATE)
 	@RequestMapping(value = "/dilatation", method=RequestMethod.POST)
 	public @ResponseBody ResultObject dilatation(Long mclusterId,int count,ResultObject result) {
 		if(mclusterId == null || count <=0)
@@ -361,5 +361,5 @@ public class CronJobsController {
 			throw new ValidateException("参数不合法");
 		this.containerProxy.deleteAndBuild(containerModel);
 		return result;
-	}
+	}*/
 }
