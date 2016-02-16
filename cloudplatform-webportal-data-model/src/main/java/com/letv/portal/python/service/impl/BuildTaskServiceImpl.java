@@ -8,6 +8,7 @@ import com.letv.common.monitor.Monitor;
 import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.ESUtil;
+import com.letv.common.util.JsonUtil;
 import com.letv.common.util.JsonUtils;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
@@ -24,8 +25,13 @@ import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.*;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 import com.mysql.jdbc.StringUtils;
+import net.sf.json.util.JSONBuilder;
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +39,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -919,6 +926,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         Map result = transResult(apiResult.getResult());
         if(analysisResult(result)) {
             Map<String,Object>  data= (Map<String, Object>) result.get("response");
+
+            BulkRequestBuilder bulkRequestBuilder = ESUtil.getClient().prepareBulk();
+
             for(Iterator it =  data.keySet().iterator();it.hasNext();){
                 String key = (String) it.next();
                 MonitorDetailModel monitorDetail = new MonitorDetailModel();
@@ -928,14 +938,32 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));
                 monitorDetail.setIp(container.getIpAddr());
                 this.monitorService.insert(monitorDetail);
-
                 //save into es
-                Map<String,Object> monitorMap = new HashMap<String,Object>();
-                monitorMap.put("detailName",monitorDetail.getDetailName());
-                monitorMap.put("detailValue",monitorDetail.getDetailValue());
-                monitorMap.put("ip",monitorDetail.getIp());
-                monitorMap.put("monitorDate",monitorDetail.getMonitorDate());
-                ESUtil.add(Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase()+"_"+DataFormat.compactDate(new Date()), monitorDetail.getDetailName().toLowerCase(), monitorMap);
+                try {
+                    bulkRequestBuilder.add(ESUtil.getClient().prepareIndex((Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase() + "_" + DataFormat.compactDate(new Date())).toLowerCase(),
+                            monitorDetail.getDetailName().toLowerCase(), UUID.randomUUID().toString())
+                            //                        .setSource(JsonUtil.transToString(monitorMap)));
+                            .setSource(
+                                    XContentFactory.jsonBuilder().startObject()
+                                            .field("detailName", monitorDetail.getDetailName())
+                                            .field("detailValue", monitorDetail.getDetailValue())
+                                            .field("ip", monitorDetail.getIp())
+                                            .field("monitorDate", date)
+                                            .endObject()));
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            BulkResponse bulkResponse = null;
+            try {
+                bulkResponse = bulkRequestBuilder.execute().actionGet();
+            } catch (ElasticsearchException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+            if(bulkResponse.hasFailures()) {
+                logger.error(bulkResponse.buildFailureMessage());
             }
         } else {
             MonitorErrorModel error = new MonitorErrorModel();

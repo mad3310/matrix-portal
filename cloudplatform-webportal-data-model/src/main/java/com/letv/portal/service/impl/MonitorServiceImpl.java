@@ -118,8 +118,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		}
 		return ydatas;
 	}
-
-    /*@Override
+   /* @Override
     public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
         List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
         Map<String, Object> map = new HashMap<String, Object>();
