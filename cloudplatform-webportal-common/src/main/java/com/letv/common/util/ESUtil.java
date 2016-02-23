@@ -5,16 +5,21 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.facet.FacetBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 /**
  * Created by liuhao1 on 2015/12/31.
@@ -70,6 +75,14 @@ public class ESUtil {
     public static SearchHits getFilterResult(String[] indexs, FilterBuilder filterBuilder) {
         SearchResponse response = getClient().prepareSearch(indexs)
                 .setPostFilter(filterBuilder)
+                .setSize(10000)
+                .execute().actionGet();
+        return response.getHits();
+    }
+    public static SearchHits getFilterSortResult(String[] indexs, FilterBuilder filterBuilder,String sortField) {
+        SearchResponse response = getClient().prepareSearch(indexs)
+                .setPostFilter(filterBuilder)
+                .addSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
                 .setSize(10000)
                 .execute().actionGet();
         return response.getHits();
