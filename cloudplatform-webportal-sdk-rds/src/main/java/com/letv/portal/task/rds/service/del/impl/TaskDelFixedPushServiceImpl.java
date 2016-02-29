@@ -1,6 +1,7 @@
 package com.letv.portal.task.rds.service.del.impl;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
@@ -67,5 +68,14 @@ public class TaskDelFixedPushServiceImpl extends BaseTask4RDSServiceImpl impleme
 		tr.setParams(params);
 		return tr;
 	}
+    @Override
+    public void callBack(TaskResult tr) {
+//		super.callBack(tr);
+    }
+
+    @Override
+    public void rollBack(TaskResult tr) {
+//		super.rollBack(tr);
+    }
 	
 }

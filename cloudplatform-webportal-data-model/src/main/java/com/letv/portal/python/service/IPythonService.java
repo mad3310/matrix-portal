@@ -318,4 +318,5 @@ public interface IPythonService {
 
 	ApiResultObject updateAuthority(DbUserModel dbUserModel, String dbName, String nodeIp, String username, String password);
 
+	ApiResultObject startNode(String ipAddr, String username, String password);
 }

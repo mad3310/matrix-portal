@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.*;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +49,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IContainerService containerService;
 	@Autowired
 	private IHclusterService hclusterService;
+    @Autowired
+    private IHostService hostService;
 	@Autowired
 	private IPythonService pythonService;
     @Autowired
@@ -149,9 +152,25 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		MclusterModel mcluster = this.selectById(mclusterId);
 		if(mcluster == null)
 			throw new ValidateException("参数不合法");
+        if(MclusterStatus.DELETING.getValue() == mcluster.getStatus() || MclusterStatus.ADDING.getValue() == mcluster.getStatus() ||
+                MclusterStatus.DELETINGFAILED.getValue() == mcluster.getStatus() || MclusterStatus.ADDINGFAILED.getValue() == mcluster.getStatus())
+            throw new ValidateException("当前集群正在进行扩容缩容操作，请稍后操作");
+
+        List<HostModel> hostModels = this.hostService.selectByHclusterId(mcluster.getHclusterId());
+        Map<String, Object> totalParams = new HashMap<String, Object>();
+        totalParams.put("mclusterId",mclusterId);
+        totalParams.put("type","mclusternode");
+        Integer total = this.containerService.selectByMapCount(totalParams);
+
+        if(total+count > hostModels.size())
+            throw new ValidateException("当前集群所在物理机集群最高数据节点为"+hostModels.size() +"个");
+
+        mcluster.setStatus(MclusterStatus.ADDING.getValue());
+        this.mclusterService.updateBySelective(mcluster);
 		Map<String,Object> params = new HashMap<String, Object>();
         params.put("mclusterId",mclusterId);
         params.put("nodeCount",count);
+        params.put("clusterName", mcluster.getMclusterName());
         this.taskEngine.run("RDS_DILATATION",params);
 	}
 }

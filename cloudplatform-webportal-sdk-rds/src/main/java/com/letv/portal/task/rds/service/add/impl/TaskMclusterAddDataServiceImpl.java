@@ -2,6 +2,7 @@ package com.letv.portal.task.rds.service.add.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.image.Image;
@@ -92,6 +93,10 @@ public class TaskMclusterAddDataServiceImpl extends BaseTask4RDSServiceImpl impl
 
 	@Override
 	public void rollBack(TaskResult tr) {
+		Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+		this.mclusterService.updateBySelective(mcluster);
 //		super.rollBack(tr);
 	}
 	

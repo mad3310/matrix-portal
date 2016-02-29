@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.fixedPush.IFixedPushService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class TaskSlbChecktatusServiceImpl extends BaseTask4SlbServiceImpl implem
 	private ISlbContainerService slbContainerService;
 	@Autowired
 	private IHostService hostService;
+	@Autowired
+	private IFixedPushService fixedPushService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskSlbChecktatusServiceImpl.class);
 	
@@ -77,6 +80,15 @@ public class TaskSlbChecktatusServiceImpl extends BaseTask4SlbServiceImpl implem
 					container.setHostId(hostModel.getId());
 				}
 				this.slbContainerService.insert(container);
+				if(container.getIpAddr().startsWith("10.")) {
+					boolean flag = this.fixedPushService.sendFixedInfo(container.getHostIp(),container.getContainerName(),container.getIpAddr(),"add");
+					if(!flag) {
+						//发送推送失败邮件，流程继续。
+						buildResultToMgr("SLB服务相关系统推送异常", container.getContainerName() +"节点固资系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+						tr.setResult("固资系统数据推送失败");
+						break;
+					}
+				}
 			}
 		}
 		tr.setParams(params);

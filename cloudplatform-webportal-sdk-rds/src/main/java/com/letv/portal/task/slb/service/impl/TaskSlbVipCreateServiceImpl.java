@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.fixedPush.IFixedPushService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class TaskSlbVipCreateServiceImpl extends BaseTask4SlbServiceImpl impleme
 	private ISlbPythonService slbPythonService;
 	@Autowired
 	private ISlbServerService slbServerService;
+	@Autowired
+	private IFixedPushService fixedPushService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskSlbVipCreateServiceImpl.class);
 	
@@ -51,6 +54,15 @@ public class TaskSlbVipCreateServiceImpl extends BaseTask4SlbServiceImpl impleme
 			List<String> ips = (List<String>) data.get("ip");
 			for (String ip : ips) {
 				ipBuffer.append(ip).append(",");
+				if(ip.startsWith("10.")) {
+					boolean flag = this.fixedPushService.sendFixedInfo(host.getHostIp(),server.getSlbName()+"_vip",ip,"add");
+					if(!flag) {
+						//发送推送失败邮件，流程继续。
+						buildResultToMgr("SLB服务相关系统推送异常", server.getSlbName()+"vip ip固资系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+						tr.setResult("固资系统数据推送失败");
+						break;
+					}
+				}
 			}
 			server.setIp(ipBuffer.length()>0?ipBuffer.substring(0, ipBuffer.length()-1):ipBuffer.toString());
 			this.slbServerService.updateBySelective(server);

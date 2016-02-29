@@ -1,5 +1,7 @@
 package com.letv.common.util;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -52,6 +54,18 @@ public class ESUtil {
                 .actionGet();
         return indexResponse.getId();
     }
+  /*  public static void bulkAdd(String index,String type,Object o) {
+        String source;
+        if (o instanceof String) {
+            source = (String) o;
+        } else {
+            source = JsonUtil.transToString(o);
+        }
+        BulkRequestBuilder bulkRequestBuilder = getClient().prepareBulk();
+        bulkRequestBuilder.add(getClient().prepareIndex(index.toLowerCase(), type.toLowerCase())
+                .setSource(source));
+        bulkRequestBuilder.execute().actionGet();
+    }*/
 
     public static SearchHits getFilterResult(String[] indexs, FilterBuilder filterBuilder) {
         SearchResponse response = getClient().prepareSearch(indexs)

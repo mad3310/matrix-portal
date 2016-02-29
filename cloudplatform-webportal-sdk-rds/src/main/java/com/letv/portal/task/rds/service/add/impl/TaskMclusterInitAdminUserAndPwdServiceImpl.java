@@ -2,6 +2,7 @@ package com.letv.portal.task.rds.service.add.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -79,6 +80,19 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 
 	@Override
 	public void rollBack(TaskResult tr) {
+		String namesstr  =  (String) ((Map<String, Object>) tr.getParams()).get("addNames");
+		String[] addNames = namesstr.split(",");
+		for (String addName:addNames) {
+			ContainerModel containerModel = this.containerService.selectByName(addName);
+			if(MclusterStatus.ADDING.getValue() == containerModel.getStatus()) {
+				containerModel.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+				this.containerService.updateBySelective(containerModel);
+			}
+		}
+		Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+		this.mclusterService.updateBySelective(mcluster);
 //		super.rollBack(tr);
 	}
 	

@@ -151,6 +151,15 @@ public class HttpClient {
 		httpclient.getConnectionManager().shutdown();
 		return body;
 	}
+	public static String detele(String url, Map<String, String> params,String username, String password) {
+		DefaultHttpClient httpclient = getHttpclient(username, password);
+		String body;
+        logger.info("create HttpDeleteWithBody:" + url);
+        HttpDeleteWithBody deleteWithBody = deleteForm(url, params);
+        body = invoke(httpclient, deleteWithBody);
+        httpclient.getConnectionManager().shutdown();
+        return body;
+	}
 
 	private static String invoke(DefaultHttpClient httpclient,
 			HttpUriRequest httpost) {
@@ -217,27 +226,49 @@ public class HttpClient {
 
 		return httpost;
 	}
-    private static HttpPut putForm(String url, Map<String, String> params) {
-        HttpPut httpput = new HttpPut(url);
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
-        if (params != null && !params.isEmpty()) {
-            Set<String> keySet = params.keySet();
-            for (String key : keySet) {
-                nvps.add(new BasicNameValuePair(key, params.get(key)));
-                logger.info("param-->" + key + ":" + params.get(key));
-            }
-        }
+	private static HttpPut putForm(String url, Map<String, String> params) {
+		HttpPut httpput = new HttpPut(url);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
-        try {
-            logger.info("set utf-8 form entity to httppost");
-            httpput.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+		if (params != null && !params.isEmpty()) {
+			Set<String> keySet = params.keySet();
+			for (String key : keySet) {
+				nvps.add(new BasicNameValuePair(key, params.get(key)));
+				logger.info("param-->" + key + ":" + params.get(key));
+			}
+		}
 
-        return httpput;
-    }
+		try {
+			logger.info("set utf-8 form entity to httppost");
+			httpput.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return httpput;
+	}
+	private static HttpDeleteWithBody deleteForm(String url, Map<String, String> params) {
+		HttpDeleteWithBody deleteWithBody = new HttpDeleteWithBody(url);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+
+		if (params != null && !params.isEmpty()) {
+			Set<String> keySet = params.keySet();
+			for (String key : keySet) {
+				nvps.add(new BasicNameValuePair(key, params.get(key)));
+				logger.info("param-->" + key + ":" + params.get(key));
+			}
+		}
+
+		try {
+			logger.info("set utf-8 form entity to httppost");
+			deleteWithBody.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return deleteWithBody;
+	}
 
     private static DefaultHttpClient getHttpclient(String username,
                                                    String password) {

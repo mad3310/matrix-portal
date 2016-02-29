@@ -2,6 +2,8 @@ package com.letv.portal.task.rds.service.add.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -14,11 +16,12 @@ import com.letv.portal.task.rds.service.impl.BaseTask4RDSServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 @Service("taskMclusterAddStartService")
 public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
@@ -28,9 +31,12 @@ public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implem
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
-	private IHostService hostService;
-	@Autowired
 	private IMclusterService mclusterService;
+
+    @Value("${python_rds_add_check_time}")
+    private long PYTHON_RDS_ADD_CHECK_TIME;
+    @Value("${python_rds_add_interval_time}")
+    private long PYTHON_RDS_ADD_INTERVAL_TIME;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterStartServiceImpl.class);
 	
@@ -39,7 +45,7 @@ public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implem
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
-		
+
 		Long mclusterId = getLongFromObject(params.get("mclusterId"));
 		if(mclusterId == null)
 			throw new ValidateException("params's mclusterId is null");
@@ -56,28 +62,82 @@ public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implem
 		}
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by name:" + namesstr);
+
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
-		for (int i = 0; i < containers.size(); i++) {
-			String ipAddr = containers.get(i).getIpAddr();
-			ApiResultObject result = this.pythonService.startMcluster(ipAddr, username, password);
-			tr = analyzeRestServiceResult(result);
-			if(!tr.isSuccess()) {
-				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
-				break;
-			}
+        boolean startFlag = true;
+        boolean checkFlag = true;
+        ContainerModel vip = this.containerService.selectValidVipContianer(mclusterId, "mclustervip", null);
+
+        for(ContainerModel container:containers) {
+            String ipAddr = container.getIpAddr();
+            Long start = new Date().getTime();
+            while(startFlag) {
+                ApiResultObject result = this.pythonService.startNode(ipAddr, username, password);
+                if(new Date().getTime()-start >PYTHON_RDS_ADD_CHECK_TIME) {
+                    tr.setSuccess(false);
+                    tr.setResult("check time over:" + result.getUrl());
+                    startFlag = false;
+                    continue;
+                }
+                if(result.getResult().contains("\"code\":417")) {
+                    Thread.sleep(PYTHON_RDS_ADD_INTERVAL_TIME);
+                    startFlag = true;
+                    continue;
+                }
+                tr = analyzeRestServiceResult(result);
+                startFlag = false;
+            }
+            if(!tr.isSuccess()) {
+                break;
+            }
+            startFlag = true;
+            start = new Date().getTime();
+            while(checkFlag) {
+                ApiResultObject result = this.pythonService.checkContainerStatus(vip.getIpAddr(), mclusterModel.getAdminUser(), mclusterModel.getAdminPassword());
+                if(new Date().getTime()-start >PYTHON_RDS_ADD_CHECK_TIME) {
+                    tr.setSuccess(false);
+                    tr.setResult("check time over:" + result.getUrl());
+                    startFlag = false;
+                    break;
+                }
+                if(result.getResult().contains(container.getIpAddr())){
+                    container.setStatus(MclusterStatus.RUNNING.getValue());
+                    this.containerService.updateBySelective(container);
+                    tr.setSuccess(true);
+                    checkFlag = false;
+                }
+                Thread.sleep(PYTHON_RDS_ADD_INTERVAL_TIME);
+            }
+            checkFlag = true;
 		}
 		tr.setParams(params);
 		return tr;
 	}
-
 	@Override
 	public void callBack(TaskResult tr) {
+        Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+        MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+        mcluster.setStatus(MclusterStatus.RUNNING.getValue());
+        this.mclusterService.updateBySelective(mcluster);
 //		super.callBack(tr);
 	}
 
-	@Override
-	public void rollBack(TaskResult tr) {
+    @Override
+    public void rollBack(TaskResult tr) {
+        String namesstr  =  (String) ((Map<String, Object>) tr.getParams()).get("addNames");
+        String[] addNames = namesstr.split(",");
+        for (String addName:addNames) {
+            ContainerModel containerModel = this.containerService.selectByName(addName);
+            if(MclusterStatus.ADDING.getValue() == containerModel.getStatus()) {
+                containerModel.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+                this.containerService.updateBySelective(containerModel);
+            }
+        }
+        Long mclusterId = getLongFromObject(((Map<String, Object>) tr.getParams()).get("mclusterId"));
+        MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+        mcluster.setStatus(MclusterStatus.ADDINGFAILED.getValue());
+        this.mclusterService.updateBySelective(mcluster);
 //		super.rollBack(tr);
-	}
+    }
 }
