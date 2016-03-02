@@ -66,7 +66,23 @@ define(function(require){
 					stringLength: {
 						max: 50,
 						message: '应用描述在50字以内!'
-					}
+					},             
+                    callback: {
+                        callback: function(value, validator, $field) {
+                            if (/[<>=]/.test(value)) {
+                                return {
+                                    valid: false,
+                                    message: '不能包含左右尖括号以及等号'
+                                }
+                            }
+                            else{
+                                return {
+                                    valid: true
+                                }
+                            }
+
+                        }
+                    }
 				}
 			}
         }
