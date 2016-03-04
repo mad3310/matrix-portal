@@ -7,7 +7,7 @@ $(function(){
 	page_init();
 	
 	/*动态加载界面下拉列表值*/
-	var sltArray = [1,2,3,5,7,8,9,10,13,14];
+	var sltArray = [1,2,3,7,8,9,10,13,14];
 	addSltOpt(sltArray,$("#containerStatus"));
 	
 	$(document).on('click', 'th input:checkbox' , function(){
@@ -28,10 +28,10 @@ $(function(){
 			$('#buildStatusHeader').html("创建成功");
 			status = "1";
 		}else if($(this).html().indexOf("创建中")>=0){
-			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+			$('#buildStatusHeader').html("<i class='ace-icon fa fa-spinner fa-spin green bigger-125'></i>创建中...");
 			status = "2";
 		}else if($(this).html().indexOf("创建失败")>=0){
-			//$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			//$('#buildStatusHeader').html("<font color='red'>创建失败</font>");
 			$('#buildStatusHeader').html("创建失败");
 			status = "3";
 		}
@@ -128,53 +128,46 @@ function queryByPage() {
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
 			var records="";
+			var recordsArray=[];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var tempObj=array[i];
-				var td1 ="<td class=\"center\">"
-								+"<label class=\"position-relative\">"
-								+"<input name=\"mcluster_id\" value= \""+tempObj.id+"\" type=\"checkbox\" class=\"ace\"/>"
-								+"<span class=\"lbl\"></span>"
+				var td1 ="<td class='center'>"
+								+"<label class='position-relative'>"
+								+"<input name='mcluster_id' value='"+tempObj.id+"' type='checkbox' class='ace'/>"
+								+"<span class='lbl'></span>"
 								+"</label>"
 							+"</td>";
 				var td2="<td>"
-						+  "<a class=\"link\" href=\"/detail/mcluster/" + tempObj.id+"\">"+tempObj.mclusterName+"</a>"
+						+  "<a class='link' href='/detail/mcluster/" + tempObj.id+"'>"+tempObj.mclusterName+"</a>"
 						+"</td>";
 				if(tempObj.hcluster){
 					var td3="<td class='hidden-480'>"
-							+ "<a class=\"link\" href=\"/detail/hcluster/" + tempObj.hclusterId+"\">"+tempObj.hcluster.hclusterNameAlias+"</a>"
+							+ "<a class='link' href='/detail/hcluster/" + tempObj.hclusterId+"'>"+tempObj.hcluster.hclusterNameAlias+"</a>"
 							+ "</td>";
 				} else {
 					var td3="<td class='hidden-480'>-</td>";
 				} 
 				var type=tempObj.type?"后台创建":"系统创建";
-				var td4 ="<td class='hidden-480'>"
-						+ type
-						+"</td>";
+				var td4 ="<td class='hidden-480'>"+type+"</td>";
 				var userName=tempObj.createUserModel?tempObj.createUserModel.userName:"system";
-				var td5 ="<td>"
-						+ userName
-						+"</td>";
-				var td6 ="<td class='hidden-480'>"
-						+ date('Y-m-d H:i:s',tempObj.createTime)
-						+"</td>";
+				var td5 ="<td>"+userName+"</td>";
+				var td6 ="<td class='hidden-480'>"+date('Y-m-d H:i:s',tempObj.createTime)+"</td>";
+				var tempStatus=tempObj.status;
+				var td7 ="<td>"+stateTransform(tempStatus,"rdsMcluster")+"</td>";
 
-				var td7 ="<td>"
-						+stateTransform(tempObj.status,"rdsMcluster")
-						+"</td>";
-				var td8 ="<td>"
-							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-							+"</a>"
-							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-							+"</a>"
-							+"<a class=\"orange\" href=\"#\" onclick=\"expandMcluster(this);\" onfocus=\"this.blur();\"  title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-expand bigger-120\"></i>"
-							+"</a>"
-							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</a>"
+				var startHtml='',stopHtml='',expandHtml='',deleteHtml='';
+				var startOs=containerClusterOs(tempStatus,"rds","start"),
+				stopOs=containerClusterOs(tempStatus,"rds","stop"),
+				expandOs=containerClusterOs(tempStatus,"rds","expand"),
+				deleteOs=containerClusterOs(tempStatus,"rds","delete");
+
+				startHtml=startOs==0?startHtml:containerOsHtml("rds","start");
+				stopHtml=stopOs==0?stopHtml:containerOsHtml("rds","stop");
+				expandHtml=expandOs==0?expandHtml:containerOsHtml("rds","expand");
+				deleteHtml=deleteOs==0?deleteHtml:containerOsHtml("rds","delete");
+				var td8 ="<td data-status='"+tempStatus+"'>"
+							+"<div class='hidden-sm hidden-xs  action-buttons'>"
+							+startHtml+stopHtml+expandHtml+deleteHtml
 							+"</div>"
 							+'<div class="hidden-md hidden-lg">'
 							+'<div class="inline pos-rel">'
@@ -182,31 +175,11 @@ function queryByPage() {
 								+'<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>'
 							+'</button>'
 							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
-								+'<li>'
-									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">'
-										+'<span class="blue">'
-											+'<i class="ace-icon fa fa-play-circle-o bigger-120"></i>'
-										+'</span>'
-									+'</a>'
-								+'</li>'
-								+'<li>'
-									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">'
-										+'<span class="green">'
-											+'<i class="ace-icon fa fa-power-off bigger-120"></i>'
-										+'</span>'
-									+'</a></li>'
-								+'<li>'
-									+'<a class=\"orange\" href=\"#\" onclick=\"expandMcluster(this)\" onfocus=\"this.blur();\" title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">'
-										+'<span class="green">'
-											+'<i class="ace-icon fa fa-expand bigger-120"></i>'
-										+'</span>'
-									+'</a></li>'
-								+'<li>'
-									+'<a  class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">'
-										+'<span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span>'
-									+'</a>'
-								+'</li>'
-									+'</ul></div></div>'
+								+'<li>'+startHtml+'</li>'
+								+'<li>'+stopHtml+'</li>'
+								+'<li>'+expandHtml+'</li>'
+								+'<li>'+deleteHtml+'</li>'
+							+'</ul></div></div>'
 						+ "</td>";
 				var tr="";	
 				if(tempObj.status == 3||tempObj.status == 4||tempObj.status == 14){
@@ -216,10 +189,9 @@ function queryByPage() {
 				}else{
 					tr ="<tr>";
 				}
-				tr=tr+td1+td2+td3+td4+td5+td6+td7+td8+"</tr>";
-				records=records+tr;
+				recordsArray.push(tr,td1,td2,td3,td4,td5,td6,td7,td8,"</tr>");
 			}
-			tby.append(records);
+			tby.append(recordsArray.join(''));
 			/*初始化tooltip*/
 			$('[data-toggle = "tooltip"]').tooltip();
 			
@@ -446,11 +418,13 @@ function createMcluster(){
 	});
 }
 function startMcluster(obj){
-	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("已停止") < 0){
-		warn("当前状态无法执行启动操作!",3000);
+	var _target=$(obj);
+	var status=_target.parents("td").attr('data-status');
+	if(!containerClusterOs(status,"rds","start")){
+		warn("该集群所处状态不可被启动",3000);
 		return 0;
 	}
+
 	function startCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		getLoading();
@@ -469,13 +443,15 @@ function startMcluster(obj){
 	confirmframe("启动container集群","启动集群大概需要几分钟时间!","请耐心等待...",startCmd);
 }
 function stopMcluster(obj){
-	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("运行中") < 0 &&tr.indexOf("异常") < 0&&tr.indexOf("危险") < 0&&tr.indexOf("严重危险") < 0 ){
-		warn("当前状态无法执行关闭操作!",3000);
+	var _target=$(obj);
+	var status=_target.parents("td").attr('data-status');
+	if(!containerClusterOs(status,"rds","stop")){
+		warn("该集群所处状态不可被停止",3000);
 		return 0;
 	}
+	
 	function stopCmd(){
-		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		var mclusterId =_target.parents("tr").find('[name="mcluster_id"]').val();
 		getLoading();
 		$.ajax({
 			cache:false,
@@ -492,16 +468,13 @@ function stopMcluster(obj){
 	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
-	
-	/*warn("危险操作，本版本不启用...",3000);
-	return;*/
-	
-	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("删除中") >= 0){
-		warn("正在删除集群,请耐心等待...",3000);
+	var _target=$(obj);
+	var status=_target.parents("td").attr('data-status');
+	if(!containerClusterOs(status,"rds","delete")){
+		warn("该集群所处状态不可被删除",3000);
 		return 0;
 	}
-	
+
 	function deleteCmd(){
 		var value=$("[name='kaptcha']").val();
 		$.ajax({
@@ -511,7 +484,7 @@ function deleteMcluster(obj){
 			data:{'kaptcha': value},	
 			success:function(data){
 				if(data.data == true){
-					var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+					var mclusterId=_target.parents("tr").find('[name="mcluster_id"]').val();
 					$.ajax({
 						cache:false,
 						url:'/mcluster/'+mclusterId,
@@ -543,10 +516,10 @@ function deleteMcluster(obj){
 	
 	/*验证码DOM*/
 	var form = $("<form>"
-			 + "<div class=\"form-group\">"
-			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
-			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
-             + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"
+			 + "<div class='form-group'>"
+			 + "<a class='kaptcha' style='cursor:pointer;margin-right:10px;'><img src='/kaptcha' width='65' height='30' id='kaptchaImage' style='margin-bottom: 2px'/></a>"
+			 + "<input type='text' name='kaptcha' style='width:120px;' />"			 
+             + "<p id='infoBlock' style='width:20px;height：20px;display:inline;border:none;'></p>"
 			 + "</div>"
              + "</form>");
 	
@@ -608,7 +581,7 @@ function expandMcluster(obj){
 		return 0;
 	}
 	var form = $("<form>"
-			 + "<div class=\"form-group\">"
+			 + "<div class='form-group'>"
 			 +"<div class='col-md-6'><span>1个</span><input type='radio' name='count' style='margin-left:5px;vertical-align:top' value='1' checked/></div>"
 			 +"<div class='col-md-6'><span>2个</span><input type='radio' name='count' value='2' style='margin-left:5px;vertical-align:top'/></div>"
 			 +"<div class='clearfix'></div>"
@@ -648,7 +621,7 @@ function queryHcluster(){
 			var array = data.data;
 			for(var i = 0, len = array.length; i < len; i++){
 				
-				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
+				var option = $("<option value='"+array[i].id+"' data-hclsName='"+array[i].hclusterName+"'>"
 								+array[i].hclusterNameAlias
 								+"</option>");
 //				options1.append(option);
