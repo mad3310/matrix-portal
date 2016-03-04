@@ -36,7 +36,7 @@
 				and LCS.ID=#{id}
 			</if>
 			<if test="clusterName != null  and clusterName != '' and clusterName != 'null'">
-				and LCS.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
+				and LCS.CLUSTER_NAME like CONCAT('%',#{clusterName},'%') escape '^'
 			</if>
 			<if test="status != null and status != ''">
 				and LCS.STATUS=#{status}

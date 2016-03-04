@@ -39,7 +39,7 @@
 			<if
 				test="cbaseClusterName != null  and cbaseClusterName != '' and cbaseClusterName != 'null'">
 				and CBASE.CBASECLUSTER_NAME like
-				CONCAT('%','${cbaseClusterName}','%') escape '^'
+				CONCAT('%',#{cbaseClusterName},'%') escape '^'
 			</if>
 			<if test="status != null and status != ''">
 				and CBASE.STATUS=#{status}
@@ -172,10 +172,10 @@
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
 			<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
-				and U.USERNAME like CONCAT('%','${userName}','%') escape '^'
+				and U.USERNAME like CONCAT('%',#{userName},'%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
-				and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+				and h.hCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 			</if>
 	</select>
 	<select id="selectValidClusterCount" resultType="java.lang.Integer">
@@ -196,10 +196,10 @@
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
 			<include refid="List_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
-				and U.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+				and U.USERNAME like CONCAT('%',#{params.userName},'%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-				and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+				and h.hCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 			</if>
 		ORDER BY CBASE.CREATE_TIME DESC
 			<if test="page != null">
@@ -214,7 +214,7 @@
 				and CBASE.ID=#{params.id}
 			</if>
 			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != '' and params.cbaseClusterName != 'null'">
-				and CBASE.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
+				and CBASE.CBASECLUSTER_NAME like CONCAT('%',#{params.cbaseClusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.status != null and params.status != '' ">
 				and CBASE.STATUS=#{params.status}

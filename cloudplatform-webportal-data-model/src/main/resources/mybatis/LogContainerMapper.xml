@@ -65,7 +65,7 @@
 				and LCT.ID=#{id}
 			</if>
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
-				and LCT.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+				and LCT.CONTAINER_NAME like CONCAT('%',#{containerName},'%')
 			</if>
 			<if test="type != null ">
 				and LCT.TYPE=#{type}

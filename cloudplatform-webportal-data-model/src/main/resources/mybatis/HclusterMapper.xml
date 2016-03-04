@@ -62,16 +62,16 @@
 				and m.ID=#{id}
 			</if>
 			<if test="hclusterName != null  and hclusterName != '' and hclusterName != 'null'">
-				and m.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+				and m.HCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 			</if>
 			<if test="hclusterNameAlias != null  and hclusterNameAlias != ''  and hclusterNameAlias != 'null'">
-				and m.HCLUSTER_NAME_ALIAS like CONCAT('%','${hclusterNameAlias}','%') escape '^'
+				and m.HCLUSTER_NAME_ALIAS like CONCAT('%',#{hclusterNameAlias},'%') escape '^'
 			</if>
 			<if test="status != null and status != '' ">
 				and m.STATUS=#{status}
 			</if>
 			<if test="type != null and type != '' ">
-				and m.TYPE like CONCAT('%','${type}','%') escape '^'
+				and m.TYPE like CONCAT('%',#{type},'%') escape '^'
 			</if>
 			<if test="deleted != null  ">
 				and m.DELETED=#{deleted}
@@ -100,10 +100,10 @@
 				and m.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
-				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+				and m.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterNameAlias != null  and params.hclusterNameAlias != ''  and params.hclusterNameAlias != 'null'">
-				and m.HCLUSTER_NAME_ALIAS like CONCAT('%','${params.hclusterNameAlias}','%') escape '^'
+				and m.HCLUSTER_NAME_ALIAS like CONCAT('%',#{params.hclusterNameAlias},'%') escape '^'
 			</if>
 
 		</trim>
@@ -201,7 +201,7 @@
 	</select>
 	<select id="selectCountByType" resultType="java.lang.Integer"
 		parameterType="java.lang.String">
-		select count(1) from WEBPORTAL_HCLUSTER m where m.TYPE like CONCAT('%','${_parameter}','%') escape '^'
+		select count(1) from WEBPORTAL_HCLUSTER m where m.TYPE like CONCAT('%',#{_parameter},'%') escape '^'
 	</select>
 
    <!-- 修改 -->

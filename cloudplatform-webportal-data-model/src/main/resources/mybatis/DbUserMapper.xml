@@ -170,7 +170,7 @@
 			and m.ID=#{id}
 		</if>
 		<if test="username !=null and username !='' ">
-			and m.USERNAME like CONCAT('%','${username}','%')
+			and m.USERNAME like CONCAT('%',#{username},'%')
 		</if>
 		<if test="type !=null and type !=''">
 			and m.TYPE=#{type}
@@ -179,10 +179,10 @@
 			and m.STATUS=#{status}
 		</if>
 		<if test="acceptIp !=null and acceptIp !=''">
-			and m.ACCEPT_IP like CONCAT('%','${acceptIp}','%') escape '^'
+			and m.ACCEPT_IP like CONCAT('%',#{acceptIp},'%') escape '^'
 		</if>
 		<if test="dbName != null  and dbName != ''  and dbName != 'null'">
-			and n.DB_NAME like CONCAT('%','${dbName}','%')
+			and n.DB_NAME like CONCAT('%',#{dbName},'%')
 		</if>
 		<if test="name4Ip == null  ">
 			and m.USERNAME != '#$*defaultRO'
@@ -204,7 +204,7 @@
 			and m.ID=#{params.id}
 		</if>
 		<if test="params != null and params.username !=null and params.username !='' ">
-			and m.USERNAME like CONCAT('%','${params.username}','%')
+			and m.USERNAME like CONCAT('%',#{params.username},'%')
 		</if>
 		<if test="params != null and params.type !=null and params.type !=''">
 			and m.TYPE=#{params.type}
@@ -213,10 +213,10 @@
 			and m.STATUS=#{params.status}
 		</if>
 		<if test="params != null and params.acceptIp !=null and params.acceptIp !=''">
-			and m.ACCEPT_IP like CONCAT('%','${params.acceptIp}','%') escape '^'
+			and m.ACCEPT_IP like CONCAT('%',#{params.acceptIp},'%') escape '^'
 		</if>
 		<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
-			and n.DB_NAME like CONCAT('%','${params.dbName}','%')
+			and n.DB_NAME like CONCAT('%',#{params.dbName},'%')
 		</if>
 		<if test="params != null and params.name4Ip == null  ">
 			and m.USERNAME != '#$*defaultRO'

@@ -6,15 +6,12 @@ import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.validation.annotation.IdValid;
 import com.letv.portal.validation.annotation.NumberLimit;
-
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import java.util.List;
 
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
@@ -127,7 +124,7 @@ public class GceServer extends BaseModel {
 	}
 
     public void setGceName(String gceName) {
-        this.gceName = StringEscapeUtils.escapeHtml(gceName);
+        this.gceName = gceName;
     }
 
     public void setGceClusterId(Long gceClusterId) {
@@ -159,7 +156,7 @@ public class GceServer extends BaseModel {
     }
 
     public void setDescn(String descn) {
-        this.descn = StringEscapeUtils.escapeHtml(descn);
+        this.descn = descn;
     }
 
     public void setType(GceType type) {
