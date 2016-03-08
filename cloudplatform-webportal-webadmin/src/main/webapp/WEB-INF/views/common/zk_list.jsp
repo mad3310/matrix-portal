@@ -29,7 +29,7 @@
 								<th>使用次数</th>
 								<th>所属物理机集群</th>
 								<th  class="hidden-480">状态</th>
-								<th class="hidden-480">描述</th>
+								<!-- <th class="hidden-480">描述</th> -->
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -92,7 +92,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">端口</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<input class="form-control" name="port" id="port" type="text" />
+									<input class="form-control" name="port" id="port" type="text" value="2181" readOnly="true" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper端口，默认填2181" style="cursor:pointer; text-decoration:none;">
@@ -146,7 +146,7 @@
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="form-control" name="status" id="status" data-placeholder="该zookeeper是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
-										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
+										<!-- <option value="NOTAVAILABLE">NOTAVAILABLE</option> -->
 									</select>
 								</div>							
 								<label class="control-label">
@@ -155,7 +155,7 @@
 									</a>
 								</label>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
@@ -165,7 +165,7 @@
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
-							</div>
+							</div> -->
             			</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>

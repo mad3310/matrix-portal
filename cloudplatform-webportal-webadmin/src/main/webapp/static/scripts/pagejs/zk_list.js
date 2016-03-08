@@ -87,9 +87,9 @@ function queryByPage() {
 				var td7 = $("<td class='hidden-480'>"
 						+ array[i].status
 						+ "</td>");
-				var td8 = $("<td class='hidden-480'>"
-						+ array[i].descn
-						+ "</td>");
+				// var td8 = $("<td class='hidden-480'>"
+				// 		+ array[i].descn
+				// 		+ "</td>");
 				var td9 = $("<td>"
 						+"<a class=\"red\" href=\"#\" onclick=\"delZookeeper(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
@@ -98,7 +98,7 @@ function queryByPage() {
 				
 				var tr = $("<tr></tr>");
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td9);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -220,7 +220,7 @@ function formValidate() {
     		url : "/zk/batch",
     		data: {
     			name:$('#name').val(),
-    			descn:$('#descn').val(),
+    			// descn:$('#descn').val(),
     			url:$('#url').val(),
     			status:$('#status').val(),
     			hclusterId:$('#hcluster').val(),
