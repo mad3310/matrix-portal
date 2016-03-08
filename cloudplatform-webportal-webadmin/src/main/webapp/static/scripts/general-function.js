@@ -283,39 +283,37 @@ function stateTransform(status,type){
 	return temp?temp:statusObj["default"][status];
 }
 function containerClusterOs(status,type,os){
-	var defaultOs={
-		"1":{"start":0,"restart":1,"stop":1,"delete":0,"create":1},
-		"2":{"start":0,"restart":0,"stop":0,"delete":0,"create":1},
-		"3":{"start":0,"restart":0,"stop":0,"delete":1,"create":1},
-		"5":{"start":0,"restart":1,"stop":1,"delete":0,"create":1},
-		"7":{"start":0,"restart":0,"stop":0,"delete":0,"create":1},
-		"8":{"start":0,"restart":0,"stop":0,"delete":0,"create":1},
-		"10":{"start":0,"restart":0,"stop":0,"delete":0,"create":1},
-		"9":{"start":1,"restart":1,"stop":0,"delete":0,"create":1},
-		"13":{"start":0,"restart":1,"stop":1,"delete":0,"create":1},
-		"14":{"start":0,"restart":1,"stop":1,"delete":0,"create":1}
-	};
 	var rds={
-		"1":{"expand":1,"compress":1},
-		"2":{"expand":0,"compress":0},
-		"3":{"expand":0,"compress":0},
-		"5":{"expand":0,"compress":0},
-		"7":{"expand":0,"compress":0},
-		"8":{"expand":0,"compress":0},
-		"10":{"expand":0,"compress":0},
-		"9":{"expand":1,"compress":1},
-		"13":{"expand":1,"compress":1},
-		"14":{"expand":1,"compress":1},
+		"1":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
+		"2":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"3":{"start":0,"restart":0,"stop":0,"delete":1,"create":1,"expand":0,"compress":0},
+		"5":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"7":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"8":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"10":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"9":{"start":1,"restart":1,"stop":0,"delete":0,"create":1,"expand":1,"compress":1},
+		"13":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
+		"14":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
 		"15":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
 		"16":{"start":1,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":1},
 		"17":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0}
 	};
+	var rdsContainer={
+		"1":{"start":0,"stop":0,"delete":0,"compress":1},
+		"5":{"start":0,"stop":1,"delete":0,"compress":0},
+		"7":{"start":0,"stop":0,"delete":0,"compress":0},
+		"8":{"start":0,"stop":0,"delete":0,"compress":0},
+		"10":{"start":0,"stop":0,"delete":0,"compress":0},
+		"9":{"start":1,"stop":0,"delete":0,"compress":1},
+		"17":{"start":0,"stop":0,"delete":0,"compress":0},
+		"15":{"start":0,"stop":0,"delete":0,"compress":0}
+	}
 	var osObjs={
-		"default":defaultOs,
-		"rds":rds
+		"rds":rds,
+		"rdsContainer":rdsContainer
 	};
 	var temp=osObjs[type][status][os];
-	return temp?temp:osObjs["default"][status][os];
+	return temp;
 }
 function containerOsHtml(type,os){
 	var rdsHtml={
@@ -327,9 +325,18 @@ function containerOsHtml(type,os){
 							+"<i class='ace-icon fa fa-expand bigger-120'></i></a>",
 		"delete":"<a class='red' href='#' onclick='deleteMcluster(this);' onfocus='this.blur();'  title='删除' data-toggle='tooltip' data-placement='right'>"
 							+"<i class='ace-icon fa fa-trash-o bigger-120'></i></a>"
+	};
+	var rdsContainerHtml={
+		"start":"<a class='green' href='#' onclick='startContainer(this)' onfocus='this.blur();' title='启动' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-play-circle-o bigger-130'></i></a>",
+		"stop":"<a class='blue' href='#' onclick='stopContainer(this)' onfocus='this.blur();' title='停止' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-power-off bigger-120'></i></a>",
+		"compress":"<a class='red' href='#' onclick='compressContainer(this)' title='缩容' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-compress bigger-120'></i></a>"
 	}
 	var htmlObjs={
-		"rds":rdsHtml
+		"rds":rdsHtml,
+		"rdsContainer":rdsContainerHtml
 	}
 	var temp=htmlObjs[type][os];
 	return temp?temp:'-';
