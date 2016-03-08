@@ -291,11 +291,11 @@ function containerClusterOs(status,type,os){
 		"7":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
 		"8":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
 		"10":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
-		"9":{"start":1,"restart":1,"stop":0,"delete":0,"create":1,"expand":1,"compress":1},
-		"13":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
-		"14":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
+		"9":{"start":1,"restart":1,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"13":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"14":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
 		"15":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
-		"16":{"start":1,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":1},
+		"16":{"start":1,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
 		"17":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0}
 	};
 	var rdsContainer={
@@ -304,7 +304,7 @@ function containerClusterOs(status,type,os){
 		"7":{"start":0,"stop":0,"delete":0,"compress":0},
 		"8":{"start":0,"stop":0,"delete":0,"compress":0},
 		"10":{"start":0,"stop":0,"delete":0,"compress":0},
-		"9":{"start":1,"stop":0,"delete":0,"compress":1},
+		"9":{"start":1,"stop":0,"delete":0,"compress":0},
 		"17":{"start":0,"stop":0,"delete":0,"compress":0},
 		"15":{"start":0,"stop":0,"delete":0,"compress":0}
 	}
