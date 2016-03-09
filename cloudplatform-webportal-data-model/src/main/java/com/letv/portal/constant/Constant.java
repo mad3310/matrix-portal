@@ -8,6 +8,8 @@ public class Constant {
 
 	public static int PAGE_SIZE = 10;
 
+	public static String ZK_PORT = "2181";
+
 	// container node节点类型
 	public static String MCLUSTER_NODE_TYPE_VIP_SUFFIX = "_vip";
 	public static String MCLUSTER_NODE_TYPE_DATA_SUFFIX = "_data";
