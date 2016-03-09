@@ -92,40 +92,42 @@ function queryByPage() {
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
-			
-			for (var i = 0, len = array.length; i < len; i++) {
+			var arraylen=array.length;
+			var recordsArray=[];
+			for (var i = 0, len = arraylen; i < len; i++) {
+				var tempObj=array[i];
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
-								+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+								+"<input name=\"mcluster_id\" value= \""+tempObj.id+"\" type=\"checkbox\" class=\"ace\"/>"
 								+"<span class=\"lbl\"></span>"
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\"  href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].containerName+"</a>"
+						+  "<a class=\"link\"  href=\"/detail/mcluster/" + tempObj.id+"\">"+tempObj.containerName+"</a>"
 						+ "</td>");
-				if(array[i].mcluster){
+				if(tempObj.mcluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
+							+ "<a class=\"link\"  href=\"/detail/mcluster/" + tempObj.mclusterId+"\">"+tempObj.mcluster.mclusterName+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td class='hidden-480'> </td>");
 				} 
-				if(array[i].hcluster){
+				if(tempObj.hcluster){
 					var td4 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/hcluster/" + array[i].mcluster.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+							+ "<a class=\"link\"  href=\"/detail/hcluster/" + tempObj.mcluster.hclusterId+"\">"+tempObj.hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				} else {
 					var td4= $("<td class='hidden-480'> </td>");
 				}
 				var td5 = $("<td>"
-						+ array[i].ipAddr
+						+ tempObj.ipAddr
 						+ "</td>");
 				var td6 = $("<td>"
-						+ array[i].hostIp
+						+ tempObj.hostIp
 						+ "</td>");
-				if(array[i].zookeeperIp != null){
+				if(tempObj.zookeeperIp != null){
 					var	td10 = $("<td class='hidden-480'>"
-							+ array[i].zookeeperIp
+							+ tempObj.zookeeperIp
 							+ "</td>");
 				}else{
 					var	td10 = $("<td class='hidden-480'>"
@@ -133,13 +135,13 @@ function queryByPage() {
 							+ "</td>");
 				}
 				var td9 = $("<td class='hidden-480'>"
-						+ date('Y-m-d H:i:s',array[i].createTime)
+						+ date('Y-m-d H:i:s',tempObj.createTime)
 						+ "</td>");
 				var td7 = $("<td>"
-						+translateStatus(array[i].status)
+						+stateTransform(tempObj.status,"rdsMcluster")
 						+ "</td>");
 					
-				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
+				if(tempObj.status == 3||tempObj.status == 4||tempObj.status == 14){
 					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else if(array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
