@@ -13,6 +13,7 @@ import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.task.rds.service.impl.BaseTask4RDSServiceImpl;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		if(oldContainers.isEmpty())
 			throw new ValidateException("old containers is empty by mclusterId:" + mclusterId);
 		String zookeeperIp = oldContainers.get(0).getZookeeperIp();
-		if(null == zookeeperIp)
+		if(StringUtils.isEmpty(zookeeperIp))
 			throw new ValidateException("init zk error,old container's zk ip is null");
 
 		for (int i = 0; i < containers.size(); i++) {
