@@ -1198,3 +1198,9 @@ td,th{word-break: break-all; word-wrap:break-word;}
 .monitor-table-headr-group .header-two .table-head-sort a .fa{height:4px;cursor:pointer;}
 .monitor-table-headr-group .header-two .table-head-sort a .sort-by{visibility: visible; color: #428bca;}
 td .text-danger{color: #d95c5c;}
+
+/*begin gce_image_list.jsp selectHcluster style*/
+.skin-custom .form-horizontal .form-group select#selectHcluster{
+	height:auto;
+}
+/*end modalGceImagePush selectHcluster style*/

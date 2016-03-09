@@ -158,11 +158,11 @@
 		select count(1) from WEBPORTAL_BACKUP_RESULT r
 		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
 		<if test="mclusterName != null and mclusterName != ''">
-			and m.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
+			and m.MCLUSTER_NAME like CONCAT('%',#{mclusterName},'%') escape '^'
 		</if> 
 		join WEBPORTAL_DB d on r.DB_ID = d.ID
 		<if test="dbName != null and dbName != ''">
-			and d.DB_NAME like CONCAT('%','${dbName}','%') escape '^'
+			and d.DB_NAME like CONCAT('%',#{dbName},'%') escape '^'
 		</if> 
 		<include refid="Example_Where_Clause" />
 	</select>
@@ -265,11 +265,11 @@
 		from WEBPORTAL_BACKUP_RESULT r
 		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
-			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+			and m.MCLUSTER_NAME like CONCAT('%',#{params.mclusterName},'%') escape '^'
 		</if>
 		join WEBPORTAL_DB d on r.DB_ID = d.ID
 		<if test="params != null and params.dbName != null and params.dbName != ''">
-			and d.DB_NAME like CONCAT('%','${params.dbName}','%') escape '^'
+			and d.DB_NAME like CONCAT('%',#{params.dbName},'%') escape '^'
 		</if> 
 		<include refid="Example_Page_Where_Clause" />
 		<if test="params != null and params.orderBy != null  ">

@@ -42,16 +42,16 @@
                 </foreach>
 			</if>
 			<if test="moduleKeyword != null and moduleKeyword != '' and moduleKeyword != 'null' ">
-				and l.MODULE like CONCAT('%','${moduleKeyword}','%') escape '^'
+				and l.MODULE like CONCAT('%',#{moduleKeyword},'%') escape '^'
 			</if>
 			<if test="descriptionKeyword != null and descriptionKeyword != '' and descriptionKeyword != 'null' ">
-				and l.DESCRIPTION like CONCAT('%','${descriptionKeyword}','%') escape '^'
+				and l.DESCRIPTION like CONCAT('%',#{descriptionKeyword},'%') escape '^'
 			</if>
 			<if test="eventKeyword != null  and eventKeyword != ''  and eventKeyword != 'null' ">
-				and l.EVENT like CONCAT('%','${eventKeyword}','%') escape '^'
+				and l.EVENT like CONCAT('%',#{eventKeyword},'%') escape '^'
 			</if>
 			<if test="userNameKeyword != null  and userNameKeyword != ''  and userNameKeyword != 'null' ">
-				and user.USERNAME like CONCAT('%','${userNameKeyword}','%') escape '^'
+				and user.USERNAME like CONCAT('%',#{userNameKeyword},'%') escape '^'
 			</if>
 			<if test="beginTime != null "><![CDATA[
 				and l.CREATE_TIME > #{beginTime}

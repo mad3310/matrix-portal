@@ -52,7 +52,7 @@
 				and m.IP=#{ip}
 			</if>
 			<if test="monitorDate != null  and monitorDate != '' and monitorDate != 'null'">
-				and m.MONITOR_DATE like CONCAT('%','${monitorDate}','%')
+				and m.MONITOR_DATE like CONCAT('%',#{monitorDate},'%')
 			</if>
 		</trim>
 	</sql>

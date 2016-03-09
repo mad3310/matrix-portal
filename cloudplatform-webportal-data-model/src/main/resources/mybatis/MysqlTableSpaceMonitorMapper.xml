@@ -105,10 +105,10 @@
 			left join WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace on tablespace.DB_SPACE_ID=dbspace.ID
 			<include refid="List_Page_Where_Clause" />
 			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
-				and dbspace.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+				and dbspace.HOST_IP like CONCAT('%',#{params.hostIp},'%') escape '^'
 			</if>
 			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
-				and dbspace.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+				and dbspace.HOST_TAG like CONCAT('%',#{params.hostTag},'%') escape '^'
 			</if>
 	</select>
 	
@@ -144,10 +144,10 @@
 			left join WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace on tablespace.DB_SPACE_ID=dbspace.ID
 			<include refid="List_Page_Where_Clause" />
 			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
-				and dbspace.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+				and dbspace.HOST_IP like CONCAT('%',#{params.hostIp},'%') escape '^'
 			</if>
 			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
-				and dbspace.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+				and dbspace.HOST_TAG like CONCAT('%',#{params.hostTag},'%') escape '^'
 			</if>
 		ORDER BY 
 			<if test="params != null and params.order != null and params.order != '' ">

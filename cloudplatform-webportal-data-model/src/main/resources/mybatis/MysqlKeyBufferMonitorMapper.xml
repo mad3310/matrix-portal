@@ -119,10 +119,10 @@
 				and keybuffer.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
-				and keybuffer.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+				and keybuffer.HOST_IP like CONCAT('%',#{params.hostIp},'%') escape '^'
 			</if>
 			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
-				and keybuffer.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+				and keybuffer.HOST_TAG like CONCAT('%',#{params.hostTag},'%') escape '^'
 			</if>
 			
 			<if test="params != null and params.descn != null and params.descn != ''  ">

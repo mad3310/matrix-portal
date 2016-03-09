@@ -103,10 +103,10 @@
 				and innodb.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
-				and innodb.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+				and innodb.HOST_IP like CONCAT('%',#{params.hostIp},'%') escape '^'
 			</if>
 			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
-				and innodb.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+				and innodb.HOST_TAG like CONCAT('%',#{params.hostTag},'%') escape '^'
 			</if>
 			
 			<if test="params != null and params.descn != null and params.descn != ''  ">

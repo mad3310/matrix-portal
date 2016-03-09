@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,8 @@ public class DbUserController {
 		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)|| types.contains("undefined") || ips.contains("undefined")) {
 			throw new ValidateException("参数不合法");
 		}
+		//XSS跨站漏洞
+		dbUserModel.setDescn(StringEscapeUtils.escapeHtml(dbUserModel.getDescn()));
 		this.dbUserProxy.saveAndBuild(dbUserModel,ips,types);
 		return obj;
 	}

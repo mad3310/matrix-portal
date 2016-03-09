@@ -28,6 +28,8 @@ import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogServerService;
 import com.letv.portal.util.CommonServiceUtils;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -76,9 +78,13 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private String CLUSTER_ENGINE_CATEGORY;
 	
 	@Override
-	public void saveAndBuild(GceServer gceServer,Long rdsId,Long ocsId) {
+	public void saveAndBuild(GceServer gceServer,Long rdsId,Long ocsId) {	
 		if(gceServer == null)
 			throw new ValidateException("参数不合法");
+		
+		//参数转换防止XSS跨站漏洞
+		gceServer.setGceName(StringEscapeUtils.escapeHtml(gceServer.getGceName()));
+		gceServer.setDescn(StringEscapeUtils.escapeHtml(gceServer.getDescn()));
 		
 		//create logstash
 		LogServer log = new LogServer();

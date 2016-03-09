@@ -50,7 +50,7 @@
 			</if>
 
 			<if test="bucketName != null and bucketName != '' ">
-				and M.BUCKET_NAME like CONCAT('%','${bucketName}','%')
+				and M.BUCKET_NAME like CONCAT('%',#{bucketName},'%')
 				escape '^'
 			</if>
 
@@ -67,11 +67,11 @@
 				and M.BUCKET_TYPE=#{bucketType}
 			</if>
 			<if test="ramQuotaMB != null and ramQuotaMB != ''  ">
-				and M.RAMQUOTAMB like CONCAT('%','${ramQuotaMB}','%')
+				and M.RAMQUOTAMB like CONCAT('%',#{ramQuotaMB},'%')
 				escape '^'
 			</if>
 			<if test="authType != null and authType != ''  ">
-				and M.AUTH_TYPE like CONCAT('%','${authType}','%')
+				and M.AUTH_TYPE like CONCAT('%',#{authType},'%')
 				escape
 				'^'
 			</if>
@@ -208,13 +208,13 @@
 		left join WEBPORTAL_CBASECLUSTER_INFO n on n.ID = M.CBASECLUSTER_ID
 		<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
-				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+				and u.USERNAME like CONCAT('%',#{userName},'%') escape '^'
 			</if>
 			<if test="cbaseClusterName != null  and cbaseClusterName != ''">
-				and n.CBASECLUSTER_NAME like CONCAT('%','${cbaseClusterName}','%') escape '^'
+				and n.CBASECLUSTER_NAME like CONCAT('%',#{cbaseClusterName},'%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 			</if>
 	</select>
 	<select id="selectCountByStatus" resultType="java.lang.Integer"
@@ -241,7 +241,7 @@
 			</if>
 			<if
 				test="params != null and params.bucketName != null  and params.bucketName != ''  and params.bucketName != 'null'">
-				and M.BUCKET_NAME like CONCAT('%','${params.bucketName}','%')
+				and M.BUCKET_NAME like CONCAT('%',#{params.bucketName},'%')
 				escape
 				'^'
 			</if>
@@ -264,12 +264,12 @@
 
 			<if
 				test="params != null and params.ramQuotaMB != null  and params.ramQuotaMB != ''  and params.ramQuotaMB != 'null'">
-				and M.RAMQUOTAMB like CONCAT('%','${params.ramQuotaMB}','%')
+				and M.RAMQUOTAMB like CONCAT('%',#{params.ramQuotaMB},'%')
 				escape '^'
 			</if>
 			<if
 				test="params != null and params.authType != null  and params.authType != ''  and params.authType != 'null'">
-				and M.AUTH_TYPE like CONCAT('%','${params.authType}','%')
+				and M.AUTH_TYPE like CONCAT('%',#{params.authType},'%')
 				escape
 				'^'
 			</if>
@@ -308,13 +308,13 @@
 		WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
-				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+				and u.USERNAME like CONCAT('%',#{params.userName},'%') escape '^'
 			</if>
 			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != ''">
-				and n.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
+				and n.CBASECLUSTER_NAME like CONCAT('%',#{params.cbaseClusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 			</if>
 		ORDER BY M.CREATE_TIME DESC
 		<if test="page != null">

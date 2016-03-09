@@ -64,7 +64,7 @@
 				and C.ID=#{id}
 			</if>
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
-				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+				and C.CONTAINER_NAME like CONCAT('%',#{containerName},'%')
 			</if>
 			<if test="type != null ">
 				and C.TYPE=#{type}
@@ -246,24 +246,24 @@
 		select count(1) from WEBPORTAL_CONTAINER C
 		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = C.MCLUSTER_ID 
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
-			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+			and n.MCLUSTER_NAME like CONCAT('%',#{params.mclusterName},'%') escape '^'
 		</if>
 		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			and h.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 		</if>
 		where 1=1
 		<if test="id != null  ">
 			and C.ID=#{id}
 		</if>
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">
-			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			and C.CONTAINER_NAME like CONCAT('%',#{containerName},'%')
 		</if>
 		<if test="type != null ">
 			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null ">
-			and C.IP_ADDR like CONCAT('%','${ipAddr}','%')
+			and C.IP_ADDR like CONCAT('%',#{ipAddr},'%')
 		</if>
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId}
@@ -293,13 +293,13 @@
 		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
 		where 1=1
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">
-			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			and C.CONTAINER_NAME like CONCAT('%',#{containerName},'%')
 		</if>
 		<if test="type != null ">
 			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null and ipAddr != ''">
-			and C.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
+			and C.IP_ADDR like CONCAT('%',#{ipAddr},'%') escape '^'
 		</if>
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId} 
@@ -319,13 +319,13 @@
 		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
 		where 1=1
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">
-			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			and C.CONTAINER_NAME like CONCAT('%',#{containerName},'%')
 		</if>
 		<if test="type != null ">
 			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null and ipAddr != ''">
-			and C.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
+			and C.IP_ADDR like CONCAT('%',#{ipAddr},'%') escape '^'
 		</if>
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId}
@@ -357,13 +357,13 @@
 				and C.ID=#{params.id}
 			</if>
 			<if test="params !=null and params.containerName != null  and params.containerName != '' and params.containerName != 'null'">
-				and C.CONTAINER_NAME like CONCAT('%','${params.containerName}','%')
+				and C.CONTAINER_NAME like CONCAT('%',#{params.containerName},'%')
 			</if>
 			<if test="params !=null and params.type != null ">
 				and C.TYPE=#{params.type}
 			</if>
 			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
-				and C.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
+				and C.IP_ADDR like CONCAT('%',#{params.ipAddr},'%')
 			</if>
 			<if test="params !=null and params.mclusterId != null ">
 				and C.MCLUSTER_ID=#{params.mclusterId}
@@ -387,11 +387,11 @@
 		from WEBPORTAL_CONTAINER C
 		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = C.MCLUSTER_ID 
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
-			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+			and n.MCLUSTER_NAME like CONCAT('%',#{params.mclusterName},'%') escape '^'
 		</if>
 		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			and h.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 		</if>
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY C.CREATE_TIME DESC

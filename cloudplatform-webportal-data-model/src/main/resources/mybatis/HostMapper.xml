@@ -49,10 +49,10 @@
 				and m.ID=#{id}
 			</if>
 			<if test="hostName != null  and hostName != '' ">
-				and m.HOST_NAME like CONCAT('%','${hostName}','%')
+				and m.HOST_NAME like CONCAT('%',#{hostName},'%')
 			</if>
 			<if test="hostIp != null  and hostIp != '' ">
-				and m.HOST_IP like CONCAT('%','${hostIp}','%')
+				and m.HOST_IP like CONCAT('%',#{hostIp},'%')
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
@@ -87,7 +87,7 @@
 				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.host_name != null  and params.host_name != ''  and params.host_name != 'null'">
-				and m.host_name like CONCAT('%','${params.host_name}','%')
+				and m.host_name like CONCAT('%',#{params.host_name},'%')
 			</if>
 
 		</trim>
@@ -197,7 +197,7 @@
 	</select>
 	<select id="selectCountByHclusterType" resultType="java.lang.Integer"
 		parameterType="java.lang.String">
-		select count(1) from WEBPORTAL_HOST m JOIN WEBPORTAL_HCLUSTER H  ON  m.HCLUSTER_ID=H.ID and H.TYPE like CONCAT('%','${_parameter}','%') escape '^'
+		select count(1) from WEBPORTAL_HOST m JOIN WEBPORTAL_HCLUSTER H  ON  m.HCLUSTER_ID=H.ID and H.TYPE like CONCAT('%',#{_parameter},'%') escape '^'
 	</select>
 
    <!-- 修改 -->

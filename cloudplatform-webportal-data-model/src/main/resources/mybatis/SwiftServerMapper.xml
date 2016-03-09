@@ -42,7 +42,7 @@
 				and s.ID=#{id}
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
-				and s.NAME like CONCAT('%','${name}','%') escape '^'
+				and s.NAME like CONCAT('%',#{name},'%') escape '^'
 			</if>
 			<if test="hclusterId != null  ">
 				and s.HCLUSTER_ID=#{hclusterId}
@@ -157,10 +157,10 @@
 		left join WEBPORTAL_USER user on s.CREATE_USER = user.ID
 		<include refid="Example_Where_Clause" />
 			<if test="hclusterName != null  and hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 			</if>
 			<if test="userName != null  and userName != ''">
-				and user.USERNAME like CONCAT('%','${userName}','%') escape '^'
+				and user.USERNAME like CONCAT('%',#{userName},'%') escape '^'
 			</if>
 	</select>
 	<select id="selectCountByStatus" resultType="java.lang.Integer"
@@ -186,7 +186,7 @@
 				and s.ID=#{params.id}
 			</if>
 			<if test="params != null and params.name != null  and params.name != ''  and params.name != 'null'">
-				and s.NAME like CONCAT('%','${params.name}','%') escape '^'
+				and s.NAME like CONCAT('%',#{params.name},'%') escape '^'
 			</if>
 			<if test="params != null and params.status != null and params.status != ''  and params.status != 'null' ">
 				and s.STATUS=#{params.status}
@@ -229,10 +229,10 @@
 		left join WEBPORTAL_USER user on s.CREATE_USER = user.ID
 		<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.userName != null  and params.userName != ''">
-				and user.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+				and user.USERNAME like CONCAT('%',#{params.userName},'%') escape '^'
 			</if>
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">

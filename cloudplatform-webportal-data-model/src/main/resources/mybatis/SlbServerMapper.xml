@@ -47,7 +47,7 @@
 			</if>
 			
 			<if test="slbName != null and slbName != '' ">
-				and s.SLB_NAME like CONCAT('%','${slbName}','%') escape '^'
+				and s.SLB_NAME like CONCAT('%',#{slbName},'%') escape '^'
 			</if>
 			
 			<if test="slbClusterId != null  ">
@@ -163,13 +163,13 @@
 		left join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
-				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+				and u.USERNAME like CONCAT('%',#{userName},'%') escape '^'
 			</if>
 			<if test="clusterName != null  and clusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
+				and n.CLUSTER_NAME like CONCAT('%',#{clusterName},'%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 			</if>
 	</select>
 	<select id="selectCountByStatus" resultType="java.lang.Integer"
@@ -196,7 +196,7 @@
 				and s.ID=#{params.id}
 			</if>
 			<if test="params != null and params.slbName != null  and params.slbName != ''  and params.slbName != 'null'">
-				and s.SLB_NAME like CONCAT('%','${params.slbName}','%') escape '^'
+				and s.SLB_NAME like CONCAT('%',#{params.slbName},'%') escape '^'
 			</if>
 			
 			<if test="params != null and params.slbClusterId != null  ">
@@ -244,13 +244,13 @@
 		left join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
-				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+				and u.USERNAME like CONCAT('%',#{params.userName},'%') escape '^'
 			</if>
 			<if test="params != null and params.clusterName != null  and params.clusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
+				and n.CLUSTER_NAME like CONCAT('%',#{params.clusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+				and h.HCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 			</if>
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">

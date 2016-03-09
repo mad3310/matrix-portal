@@ -109,6 +109,22 @@ define(function(require){
                     stringLength: {
                         max: 100,
                         message: '输入长度不超过100个字符!'
+                    },               
+                    callback: {
+                        callback: function(value, validator, $field) {
+                            if (/[<>=]/.test(value)) {
+                                return {
+                                    valid: false,
+                                    message: '不能包含左右尖括号以及等号'
+                                }
+                            }
+                            else{
+                                return {
+                                    valid: true
+                                }
+                            }
+
+                        }
                     }
                 }
             }
