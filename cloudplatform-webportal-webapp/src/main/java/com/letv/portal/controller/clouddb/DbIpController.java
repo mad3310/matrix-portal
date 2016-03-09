@@ -48,12 +48,12 @@ public class DbIpController {
 		if(null == dbId || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		} else {
-			DbModel dbModel = this.dbService.selectById(dbId);
-			if(dbModel!=null && dbModel.getCreateUser()==this.sessionService.getSession().getUserId()) {
+			//DbModel dbModel = this.dbService.selectById(dbId);
+			//if(dbModel!=null && dbModel.getCreateUser()==this.sessionService.getSession().getUserId()) {
 				this.dbUserProxy.saveOrUpdateIps(dbId,ips);
-			} else {
-				throw new ValidateException("非法用户！");
-			}
+			//} else {
+			//	throw new ValidateException("非法用户！");
+			//}
 		}
 		return obj;
 	}
