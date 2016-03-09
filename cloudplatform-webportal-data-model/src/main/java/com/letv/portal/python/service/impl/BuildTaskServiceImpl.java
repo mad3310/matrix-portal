@@ -515,6 +515,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     @Override
     @Async
     public void checkContainerStatus(ContainerModel container) {
+        if(MclusterStatus.DELETING.getValue() == container.getStatus() || MclusterStatus.ADDING.getValue() == container.getStatus() ||
+                MclusterStatus.DELETINGFAILED.getValue() == container.getStatus() || MclusterStatus.ADDINGFAILED.getValue() == container.getStatus())
+            return;
         HostModel host = this.hostService.selectById(container.getHostId());
         String result = this.pythonService.checkContainerStatus(container.getContainerName(), host.getHostIp(), host.getName(), host.getPassword());
         Map map = this.transResult(result);
