@@ -111,11 +111,6 @@
 			</script>
 
 			<ul id="main-content-header" class="breadcrumb">
-				<li>
-					<i class="ace-icon fa fa-home home-icon"></i> 
-					<a href="#"></a>
-				</li>
-				<li class="active"></li>
 			</ul>
 			<!-- /.breadcrumb -->
 
@@ -238,253 +233,32 @@
 </script>
 	<!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
-	var path = window.location.pathname;
-	var cookie_skin;
-	var mySkin="mySkin";
-	if(path.indexOf("/list/mcluster/monitorView") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
-		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#main-content-header li:eq(1)').html("预警数据总览");
-	}else if(path.indexOf("/list/mcluster/monitor/1") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 1)){
-		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
-		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#main-content-header li:eq(1)').html("集群预警列表");
-	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 2)){
-		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
-		$('#main-content-header li:eq(1)').html("节点预警列表");
-	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 3)){
-		// $('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-forewarning-monitor-mgr').addClass("active open");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
-		$('#sidebar-forewarning-monitor-mgr ul li:eq(3)').addClass("active");
-		$('#main-content-header li:eq(1)').html("数据库预警列表");
-	}else if(path.indexOf("/dashboard") >= 0){
-		$('#sidebar-dashboard').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
-		$('#main-content-header li:eq(1)').html("Dashboard");
-	}else if(path.indexOf("/view/mcluster/monitor/topN") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor/topN").html("监控管理");
-		$('#main-content-header li:eq(1)').html("container集群TopN监控图");
-	}else if(path.indexOf("/view/mcluster/monitor") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("container集群监控图");
-	}else if(path.indexOf("/list/rds/node/health") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(2)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds健康监控");
-	}else if(path.indexOf("/list/rds/node/resource") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(3)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds资源监控");
-	}else if(path.indexOf("/list/rds/node/keyBuffer") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(4)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds键缓存监控");
-	}else if(path.indexOf("/list/rds/node/innodb") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(5)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds InnoDB监控");
-	}else if(path.indexOf("/list/rds/node/galera") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(6)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds galera监控");
-	}else if(path.indexOf("/list/rds/node/dbSpace") >= 0||path.indexOf("/list/rds/node/tableSpace") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(7)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/view/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("rds表空间分析");
-	}else if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
-		// $('#sidebar-cluster-mgr').addClass("active open hsub");
-		// $('#sidebar-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		// $('#sidebar-rds-mgr ul li:eq(3)').addClass("active");
-		$('#sidebar-cluster-mgr').addClass("active open");
-		$('#sidebar-cluster-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("container集群管理");
-		$('#main-content-header li:eq(1)').html("Container集群列表");
-	}else if(path.indexOf("/list/hcluster") >= 0||path.indexOf("/detail/hcluster") >= 0){
-		// $('#sidebar-cluster-mgr').addClass("active open hsub");
-		// $('#sidebar-cluster-mgr ul li:first').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-common-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/hcluster").html("物理机集群管理");
-		$('#main-content-header li:eq(1)').html("物理机集群列表");
-	}else if(path.indexOf("/list/zk") >= 0){
-		// $('#sidebar-zk-mgr').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-common-mgr ul li:eq(4)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/container") >= 0){
-		// $('#sidebar-cluster-mgr').addClass("active open hsub");
-		// $('#sidebar-cluster-mgr ul li:eq(2)').addClass("active");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-cluster-mgr').addClass("active open hsub");
-		$('#sidebar-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/container").html("container管理");
-		$('#main-content-header li:eq(1)').html("Container列表");
-	}else if(path.indexOf("/list/dbUser") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-db-mgr').addClass("active open");
-		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/dbUser").html("数据库用户管理");
-		$('#main-content-header li:eq(1)').html("数据库用户列表");
-	}else if(path.indexOf("/list/db") >= 0 ||path.indexOf("/audit/db") >= 0||path.indexOf("/detail/db") >= 0){
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-db-mgr').addClass("active open");
-		$('#sidebar-db-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
-		$('#main-content-header li:eq(1)').html("数据库列表");
-	}else if(path.indexOf("/list/backup") >= 0){
-		// $('#backupRecover').addClass("active");
-		$('#sidebar-rds-mgr').addClass("active open hsub");
-		$('#sidebar-rds-mgr ul:first').children('li:eq(2)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/backup").html("备份与修复");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/job/stream") >= 0 || path.indexOf("/detail/job/stream") >= 0){
-		// $('#sidebar-task-mgr').addClass("active open hsub");
-		// $('#sidebar-task-mgr ul li:eq(1)').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-task-mgr').addClass("active open");
-		$('#sidebar-task-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/unit").html("任务管理");
-		$('#main-content-header li:eq(1)').html("任务流列表");
-	}else if(path.indexOf("/list/job/unit") >= 0){
-		// $('#sidebar-task-mgr').addClass("active open hsub");
-		// $('#sidebar-task-mgr ul li:first').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-task-mgr').addClass("active open");
-		$('#sidebar-task-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/unit").html("任务管理");
-		$('#main-content-header li:eq(1)').html("任务单元列表");
-	}else if(path.indexOf("/list/job/monitor") >= 0){
-		// $('#sidebar-task-mgr').addClass("active open hsub");
-		// $('#sidebar-task-mgr ul li:eq(2)').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-task-mgr').addClass("active open");
-		$('#sidebar-task-mgr ul li:eq(4)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/monitor").html("任务管理");
-		$('#main-content-header li:eq(1)').html("任务监控");
-	}else if(path.indexOf("/list/gce/image") >= 0){
-		// $('#sidebar-image-mgr').addClass("active");
-		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-mgr ul:first').children('li:eq(2)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/image").html("镜像管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/timingTask") >= 0){
-		// $('#sidebar-timing-task-mgr').addClass("active");
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-common-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/timingTask").html("定时任务管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/baseImages") >= 0){
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-common-mgr ul li:eq(2)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/baseImages").html("基础镜像管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/dictMgr") >= 0){
-		$('#sidebar-common-mgr').addClass("active open hsub");
-		$('#sidebar-common-mgr ul li:eq(3)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/dictMgr").html("字典管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/gfs/peer") >= 0){
-		$('#sidebar-gfs-mgr').addClass("active open hsub");
-		$('#sidebar-gfs-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");
-		$('#main-content-header li:eq(1)').html("节点列表");
-	}else if(path.indexOf("/list/gfs/volume") >= 0 ||path.indexOf("/detail/gfs/volume") >= 0){
-		$('#sidebar-gfs-mgr').addClass("active open hsub");
-		$('#sidebar-gfs-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");
-		$('#main-content-header li:eq(1)').html("卷列表");
-	}else if(path.indexOf("/list/gce/cluster") >= 0||path.indexOf("/detail/gce/cluster") >= 0){//------------------------新添 gce 集群管理
-		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-cluster-mgr').addClass("active open");
-		$('#sidebar-gce-cluster-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/cluster").html("container集群管理");
-		$('#main-content-header li:eq(1)').html("Container集群列表");
-	}else if(path.indexOf("/list/gce/container") >= 0){
-		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-cluster-mgr').addClass("active open");
-		$('#sidebar-gce-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/container").html("container管理");
-		$('#main-content-header li:eq(1)').html("Container列表");
-	}else if(path.indexOf("/list/gce/server") >= 0){
-		// $('#sidebar-image-mgr').addClass("active");
-		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-mgr ul:first').children('li:eq(1)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/server").html("GCE管理");
-		$('#main-content-header li:eq(1)').remove();
-	}else if(path.indexOf("/list/slb/cluster") >= 0||path.indexOf("/detail/slb/cluster") >= 0){//------------------------新添 slb 集群管理
-		$('#sidebar-slb-mgr').addClass("active open hsub");
-		$('#sidebar-slb-cluster-mgr').addClass("active open");
-		$('#sidebar-slb-cluster-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb/cluster").html("container集群管理");
-		$('#main-content-header li:eq(1)').html("Container集群列表");
-	}else if(path.indexOf("/list/slb/container") >= 0){
-		$('#sidebar-slb-mgr').addClass("active open hsub");
-		$('#sidebar-slb-cluster-mgr').addClass("active open");
-		$('#sidebar-slb-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb/container").html("container管理");
-		$('#main-content-header li:eq(1)').html("Container列表");
-	}else if(path.indexOf("/list/slb") >= 0){
-		$('#sidebar-slb-mgr').addClass("active open hsub");
-		$('#sidebar-slb-server-mgr').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb").html("slb管理");
-		$('#main-content-header li:eq(1)').html("slb列表");
-	}else if(path.indexOf("/list/ocs/cluster") >= 0||path.indexOf("/detail/ocs/cluster") >= 0){//------------------------新添 ocs 集群管理
-		$('#sidebar-ocs-mgr').addClass("active open hsub");
-		$('#sidebar-ocs-cluster-mgr').addClass("active open");
-		$('#sidebar-ocs-cluster-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/ocs/cluster").html("container集群管理");
-		$('#main-content-header li:eq(1)').html("Container集群列表");
-	}else if(path.indexOf("/list/ocs/container") >= 0){
-		$('#sidebar-ocs-mgr').addClass("active open hsub");
-		$('#sidebar-ocs-cluster-mgr').addClass("active open");
-		$('#sidebar-ocs-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/ocs/container").html("container管理");
-		$('#main-content-header li:eq(1)').html("Container列表");
-	}else if(path.indexOf("/list/bucket") >= 0 ||path.indexOf("/audit/bucket") >= 0||path.indexOf("/detail/bucket") >= 0){
-		$('#sidebar-ocs-mgr').addClass("active open hsub");
-		$('#sidebar-ocs-mgr').children('ul').children('li:eq(1)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/bucket").html("Bucket管理");
-		$('#main-content-header li:eq(1)').html("bucket列表");
-	}else if(path.indexOf("/list/oss") >= 0||path.indexOf("/audit/oss") >= 0||path.indexOf("/detail/oss") >= 0){//---------------新添 oss 集群管理
-		$('#sidebar-oss-mgr').addClass("active open hsub");
-		$('#sidebar-oss-mgr ul li:eq(0)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/oss").html("OSS服务管理");
-		$('#main-content-header li:eq(1)').html("OSS服务管理");
-	}
-	
+	var path = window.location.pathname.replace(/;[\s\S]*/,''),
+	cookie_skin,
+	mySkin="mySkin";
+	var activeMenuItemEl=$('#sidebar-list a[href="'+path+'"]').parent(),
+		breadcrumbItemArray=[];
+	if(activeMenuItemEl && activeMenuItemEl.length){
+		activeMenuItemEl.addClass("active");
+		var activeParentMenuItemEl=activeMenuItemEl.parent('ul').parent('li');
+		if(activeParentMenuItemEl && activeParentMenuItemEl.length){
+			breadcrumbItemArray.push('<li class="active">'+activeMenuItemEl.children('a').find('.menu-text').text()+'</li>');
+			activeParentMenuItemEl.addClass("active open");
+			var activeGrandfatherMenuItemEl=activeParentMenuItemEl.parent('ul').parent('li');
+			if(activeGrandfatherMenuItemEl && activeGrandfatherMenuItemEl.length){
+				activeGrandfatherMenuItemEl.addClass("active open");
+				breadcrumbItemArray.unshift('<li><a href="javascript:void(0);">'+activeParentMenuItemEl.children('a').find('.menu-text').text()+'</a></li>');
+				breadcrumbItemArray.unshift('<li class="active"><i class="ace-icon fa fa-home home-icon"></i><a href="javascript:void(0);">'+activeGrandfatherMenuItemEl.children('a').find('.menu-text').text()+'</a></li>');
+			}
+			else{
+				breadcrumbItemArray.unshift('<li class="active"><i class="ace-icon fa fa-home home-icon"></i><a href="javascript:void(0);">'+activeParentMenuItemEl.children('a').find('.menu-text').text()+'</a></li>');
+			}
+		}
+		else{
+			breadcrumbItemArray.push('<li class="active"><i class="ace-icon fa fa-home home-icon"></i>'+activeMenuItemEl.children('a').find('.menu-text').text()+'</li>');
+		}
+		$('.breadcrumb').append(breadcrumbItemArray.join(''));
+	}		
 			
 
 </script>
