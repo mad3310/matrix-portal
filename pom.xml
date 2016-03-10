@@ -795,8 +795,8 @@
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
-                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
+                <webportal.errormail.to>lisuxiao@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>lisuxiao@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -867,8 +867,8 @@
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
-                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
+                <webportal.errormail.to>lisuxiao@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>lisuxiao@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -939,8 +939,8 @@
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
-                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
+                <webportal.errormail.to>lisuxiao@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>lisuxiao@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -1011,8 +1011,8 @@
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
-                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
+                <webportal.errormail.to>lisuxiao@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>lisuxiao@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
 
                 <webportal.log.path>/var/log</webportal.log.path>

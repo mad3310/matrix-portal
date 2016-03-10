@@ -44,7 +44,7 @@
 				and M.ID=#{id}
 			</if>
 			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
-				and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
+				and M.MCLUSTER_NAME like CONCAT('%',#{mclusterName},'%') escape '^'
 			</if>
 			<if test="status != null and status != ''">
 				and M.STATUS=#{status}
@@ -83,7 +83,7 @@
 				and M.ID=#{params.id}
 			</if>
 			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
-				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+				and M.MCLUSTER_NAME like CONCAT('%',#{params.mclusterName},'%') escape '^'
 			</if>
 			<if test="params != null and params.status != null and params.status != '' ">
 				and M.STATUS=#{params.status}
@@ -202,11 +202,11 @@
 		select count(1) from WEBPORTAL_MCLUSTER_INFO M
 		join WEBPORTAL_USER U ON U.ID = M.CREATE_USER
 		<if test="userName != null  and userName != ''">
-			and U.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			and U.USERNAME like CONCAT('%',#{userName},'%') escape '^'
 		</if>
 		join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<if test="hclusterName != null  and hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			and h.hCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 		</if>
 		<include refid="Example_Where_Clause" />
 	</select>
@@ -244,10 +244,10 @@
 		from WEBPORTAL_MCLUSTER_INFO M
 		join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<if test="mclusterName != null  and mclusterName != ''">
-			and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
+			and M.MCLUSTER_NAME like CONCAT('%',#{mclusterName},'%') escape '^'
 		</if>
 		<if test="hclusterName != null  and hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			and h.hCLUSTER_NAME like CONCAT('%',#{hclusterName},'%') escape '^'
 		</if>
 		<include refid="Example_Where_Clause" />
 		 and M.STATUS IN(1,7,8,9,13,14)
@@ -274,11 +274,11 @@
 		FROM  WEBPORTAL_MCLUSTER_INFO M 
 		join WEBPORTAL_USER U ON U.ID = M.CREATE_USER
 		<if test="params != null and params.userName != null  and params.userName != ''">
-			and U.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			and U.USERNAME like CONCAT('%',#{params.userName},'%') escape '^'
 		</if>
 		join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			and h.hCLUSTER_NAME like CONCAT('%',#{params.hclusterName},'%') escape '^'
 		</if>
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY M.CREATE_TIME DESC	

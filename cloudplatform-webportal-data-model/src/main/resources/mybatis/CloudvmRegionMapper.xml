@@ -32,10 +32,10 @@
 				and R.ID=#{id}
 			</if>
 			<if test="code != null  and code != ''  and code != 'null'">
-				and R.CODE like CONCAT('%','${code}','%') escape '^'
+				and R.CODE like CONCAT('%',#{code},'%') escape '^'
 			</if>
 			<if test="displayName != null  and displayName != ''  and displayName != 'null'">
-				and R.DISPLAY_NAME like CONCAT('%','${displayName}','%') escape '^'
+				and R.DISPLAY_NAME like CONCAT('%',#{displayName},'%') escape '^'
 			</if>
 			<if test="deleted != null  ">
 				and R.DELETED=#{deleted}
@@ -149,10 +149,10 @@
 				and R.ID=#{params.id}
 			</if>
 			<if test="params != null and params.code != null  and params.code != ''  and params.code != 'null'">
-				and R.CODE like CONCAT('%','${params.code}','%') escape '^'
+				and R.CODE like CONCAT('%',#{params.code},'%') escape '^'
 			</if>
 			<if test="params != null and params.displayName != null  and params.displayName != ''  and params.displayName != 'null'">
-				and R.DISPLAY_NAME like CONCAT('%','${params.displayName}','%') escape '^'
+				and R.DISPLAY_NAME like CONCAT('%',#{params.displayName},'%') escape '^'
 			</if>
 			<if test="params != null and params.deleted != null  ">
 				and R.DELETED=#{params.deleted}

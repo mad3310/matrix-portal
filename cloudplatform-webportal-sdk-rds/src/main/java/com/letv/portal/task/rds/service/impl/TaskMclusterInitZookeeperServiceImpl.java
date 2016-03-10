@@ -54,14 +54,14 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),containers.size()-1);
+		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),1); //get 1 ip everytime.
 	
 		for (int i = 0; i < containers.size()-1; i++) {
 			ContainerModel container = containers.get(i);
 			String nodeIp = container.getIpAddr();
 			Map<String, String> zkParm = new HashMap<String,String>();
-			zkParm.put("zkAddress", zks.get(i).getIp());
-			zkParm.put("zkPort", zks.get(i).getPort());
+			zkParm.put("zkAddress", zks.get(0).getIp());
+			zkParm.put("zkPort", zks.get(0).getPort());
 			ApiResultObject resultObject = this.pythonService.initZookeeper(nodeIp,zkParm);
 			
 			tr = analyzeRestServiceResult(resultObject);
@@ -69,7 +69,7 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
 				break;
 			} else {
-				container.setZookeeperIp(zks.get(i).getIp());
+				container.setZookeeperIp(zks.get(0).getIp());
 				this.containerService.updateBySelective(container);
 			}
 		}

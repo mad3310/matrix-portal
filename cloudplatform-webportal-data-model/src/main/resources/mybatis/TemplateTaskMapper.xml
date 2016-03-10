@@ -40,7 +40,7 @@
 				and tt.ID=#{id}
 			</if>
 			<if test="name != null and name != '' ">
-				and tt.NAME like CONCAT('%','${name}','%') escape '^'
+				and tt.NAME like CONCAT('%',#{name},'%') escape '^'
 			</if>
 			<if test="descn != null and descn != '' ">
 				and tt.DESCN=#{descn}
@@ -126,7 +126,7 @@
 				and tt.ID=#{id}
 			</if>
 			<if test="params != null and params.name != null and params.name != '' ">
-				and tt.NAME like CONCAT('%','${params.name}','%') escape '^'
+				and tt.NAME like CONCAT('%',#{params.name},'%') escape '^'
 			</if>
 			<if test="params != null and params.descn != null and params.descn != '' ">
 				and tt.DESCN=#{params.descn}

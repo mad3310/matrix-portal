@@ -133,10 +133,10 @@
 				and health.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
-				and health.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+				and health.HOST_IP like CONCAT('%',#{params.hostIp},'%') escape '^'
 			</if>
 			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
-				and health.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+				and health.HOST_TAG like CONCAT('%',#{params.hostTag},'%') escape '^'
 			</if>
 			<if test="params != null and params.connectCount != null and params.connectCount != ''  ">
 				and health.CONNECT_COUNT &gt; #{params.connectCount}

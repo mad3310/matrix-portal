@@ -282,6 +282,65 @@ function stateTransform(status,type){
 	var temp=statusObj[type][status];
 	return temp?temp:statusObj["default"][status];
 }
+function containerClusterOs(status,type,os){
+	var rds={
+		"1":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":1,"compress":1},
+		"2":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"3":{"start":0,"restart":0,"stop":0,"delete":1,"create":1,"expand":0,"compress":0},
+		"5":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"7":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"8":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"10":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"9":{"start":1,"restart":1,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"13":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"14":{"start":0,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"15":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0},
+		"16":{"start":1,"restart":1,"stop":1,"delete":0,"create":1,"expand":0,"compress":0},
+		"17":{"start":0,"restart":0,"stop":0,"delete":0,"create":1,"expand":0,"compress":0}
+	};
+	var rdsContainer={
+		"1":{"start":0,"stop":0,"delete":0,"compress":1},
+		"5":{"start":0,"stop":1,"delete":0,"compress":0},
+		"7":{"start":0,"stop":0,"delete":0,"compress":0},
+		"8":{"start":0,"stop":0,"delete":0,"compress":0},
+		"10":{"start":0,"stop":0,"delete":0,"compress":0},
+		"9":{"start":1,"stop":0,"delete":0,"compress":0},
+		"17":{"start":0,"stop":0,"delete":0,"compress":0},
+		"15":{"start":0,"stop":0,"delete":0,"compress":0}
+	}
+	var osObjs={
+		"rds":rds,
+		"rdsContainer":rdsContainer
+	};
+	var temp=osObjs[type][status][os];
+	return temp;
+}
+function containerOsHtml(type,os){
+	var rdsHtml={
+		"start":"<a class='green' href='#' onclick='startMcluster(this)' onfocus='this.blur();' title='启动' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-play-circle-o bigger-130'></i></a>",
+		"stop":"<a class='blue' href='#' onclick='stopMcluster(this)' onfocus='this.blur();' title='停止' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-power-off bigger-120'></i></a>",
+		"expand":"<a class='orange' href='#' onclick='expandMcluster(this);' onfocus='this.blur();'  title='扩容' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-expand bigger-120'></i></a>",
+		"delete":"<a class='red' href='#' onclick='deleteMcluster(this);' onfocus='this.blur();'  title='删除' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-trash-o bigger-120'></i></a>"
+	};
+	var rdsContainerHtml={
+		"start":"<a class='green' href='#' onclick='startContainer(this)' onfocus='this.blur();' title='启动' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-play-circle-o bigger-130'></i></a>",
+		"stop":"<a class='blue' href='#' onclick='stopContainer(this)' onfocus='this.blur();' title='停止' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-power-off bigger-120'></i></a>",
+		"compress":"<a class='red' href='#' onclick='compressContainer(this)' title='缩容' data-toggle='tooltip' data-placement='right'>"
+							+"<i class='ace-icon fa fa-compress bigger-120'></i></a>"
+	}
+	var htmlObjs={
+		"rds":rdsHtml,
+		"rdsContainer":rdsContainerHtml
+	}
+	var temp=htmlObjs[type][os];
+	return temp?temp:'-';
+}
 /* 错误提示框,一般在异步请求返回信息中用到 */
 function error(errorThrown, time) {
 	if (errorThrown.result == 0) {
