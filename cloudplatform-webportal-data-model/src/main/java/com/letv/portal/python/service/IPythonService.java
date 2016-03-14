@@ -28,6 +28,8 @@ public interface IPythonService {
 	ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password);
 
 	ApiResultObject addContainerOnMcluster(Map<String, String> map, String hostIp, String name, String password);
+
+	ApiResultObject getZkInfo(String nodeIp,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
