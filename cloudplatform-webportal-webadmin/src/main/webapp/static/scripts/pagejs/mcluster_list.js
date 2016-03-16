@@ -147,8 +147,6 @@ function queryByPage() {
 				} else {
 					var td3="<td class='hidden-480'>-</td>";
 				} 
-				var type=tempObj.type?"后台创建":"系统创建";
-				var td4 ="<td class='hidden-480'>"+type+"</td>";
 				var userName=tempObj.createUserModel?tempObj.createUserModel.userName:"system";
 				var td5 ="<td>"+userName+"</td>";
 				var td6 ="<td class='hidden-480'>"+date('Y-m-d H:i:s',tempObj.createTime)+"</td>";
@@ -189,7 +187,7 @@ function queryByPage() {
 				}else{
 					tr ="<tr>";
 				}
-				recordsArray.push(tr,td1,td2,td3,td4,td5,td6,td7,td8,"</tr>");
+				recordsArray.push(tr,td1,td2,td3,td5,td6,td7,td8,"</tr>");
 			}
 			tby.append(recordsArray.join(''));
 			/*初始化tooltip*/
