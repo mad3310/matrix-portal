@@ -66,7 +66,19 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		List<ContainerModel> oldContainers = this.containerService.selectByMclusterId(mclusterId);
 		if(oldContainers.isEmpty())
 			throw new ValidateException("old containers is empty by mclusterId:" + mclusterId);
-		String zookeeperIp = oldContainers.get(0).getZookeeperIp();
+
+		String zookeeperIp = "";
+		for (ContainerModel oldContainer:oldContainers) {
+			ApiResultObject zkInfo = this.pythonService.getZkInfo(oldContainer.getIpAddr(), mclusterModel.getAdminUser(), mclusterModel.getAdminPassword());
+			tr = analyzeRestServiceResult(zkInfo);
+			if(tr.isSuccess()) {
+				Map zkInfoMap = ((Map)transToMap(zkInfo.getResult()).get("response"));
+				if(null != zkInfoMap && "False".equals(zkInfoMap.get("zkLeader"))) {
+					zookeeperIp = (String) zkInfoMap.get("zkAddress");
+					break;
+				}
+			}
+		}
 		if(StringUtils.isEmpty(zookeeperIp))
 			throw new ValidateException("init zk error,old container's zk ip is null");
 

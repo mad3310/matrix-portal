@@ -32,9 +32,9 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitZookeeperServiceImpl.class);
-	
+
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = super.execute(params);
@@ -44,38 +44,38 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 		Long mclusterId = getLongFromObject(params.get("mclusterId"));
 		if(mclusterId == null)
 			throw new ValidateException("params's mclusterId is null");
-		
+
 		//执行业务
 		MclusterModel mclusterModel = this.mclusterService.selectById(mclusterId);
 		if(mclusterModel == null)
 			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
-		
+
 		//执行业务
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),1); //get 1 ip everytime.
-	
+		List<ZookeeperInfo> zks = super.selectMinusedZkByHclusterId(mclusterModel.getHclusterId(),containers.size()-1);
+
 		for (int i = 0; i < containers.size()-1; i++) {
 			ContainerModel container = containers.get(i);
 			String nodeIp = container.getIpAddr();
 			Map<String, String> zkParm = new HashMap<String,String>();
-			zkParm.put("zkAddress", zks.get(0).getIp());
-			zkParm.put("zkPort", zks.get(0).getPort());
+			zkParm.put("zkAddress", zks.get(i).getIp());
+			zkParm.put("zkPort", zks.get(i).getPort());
 			ApiResultObject resultObject = this.pythonService.initZookeeper(nodeIp,zkParm);
-			
+
 			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess()) {
 				tr.setResult("the" + (i+1) +"node error:" + tr.getResult());
 				break;
 			} else {
-				container.setZookeeperIp(zks.get(0).getIp());
+				container.setZookeeperIp(zks.get(i).getIp());
 				this.containerService.updateBySelective(container);
 			}
 		}
-		
+
 		tr.setParams(params);
 		return tr;
 	}
-	
+
 }

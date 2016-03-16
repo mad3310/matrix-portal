@@ -60,6 +60,14 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
+	public ApiResultObject getZkInfo(String nodeIp,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/node/conf/zk");
+		String result = HttpClient.get(url.toString(),username,password);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
 	public ApiResultObject initZookeeper(String nodeIp,Map<String,String> zkParm) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/conf");
