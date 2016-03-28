@@ -129,11 +129,11 @@ function initePage(freshType){
         url: '../monitor/mcluster/list/?key=&&mclusterName=&&hclusterName=&&ipAddr=&_=1439178470038',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
+/*         beforeSend: function(resquest){
              var token= AppObj.getToken();
              resquest.setRequestHeader('authtoken',token);
              resquest.setRequestHeader('clientType','android');
-        },
+        }, */
         success:function(data){
             var _targetData=data.data;
             for(var i in _targetData){
@@ -234,11 +234,11 @@ function freshState(){
             url: '../monitor/'+ip+'/db/status?_=1439190565940',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
+/*             beforeSend: function(resquest){
              var token= AppObj.getToken();
              resquest.setRequestHeader('authtoken',token);
              resquest.setRequestHeader('clientType','android');
-            },
+            }, */
             success:function(data){
                 if(data.result==0){//error
                     $.afui.toast({
@@ -318,11 +318,11 @@ function freshStateCluster(){
             url: '../monitor/'+ip+'/mcluster/status?_=1439190565940',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
+/*             beforeSend: function(resquest){
              var token= AppObj.getToken();
              resquest.setRequestHeader('authtoken',token);
              resquest.setRequestHeader('clientType','android');
-            },
+            }, */
             success:function(data){
                 if(data.result==0){//error
                     $.afui.toast({
@@ -405,11 +405,11 @@ function freshStateNode(){
             url: '../monitor/'+ip+'/node/status?_=1439190565940',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
+/*             beforeSend: function(resquest){
              var token= AppObj.getToken();
              resquest.setRequestHeader('authtoken',token);
              resquest.setRequestHeader('clientType','android');
-            },
+            }, */
             success:function(data){
                 if(data.result==0){//error
                     $.afui.toast({

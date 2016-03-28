@@ -21,7 +21,7 @@
     <script type="text/javascript" charset="utf-8" src="build/js/fastclick.js"></script>
     <script type="text/javascript" charset="utf-8" src="build/js/appframework.ui.min.js"></script>
 
-    <!-- // <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="build/js/iscroll-probe.js"></script>
     <script type="text/javascript" charset="utf-8" src="build/js/common.js"></script>
 </head>
 <body>
@@ -46,8 +46,8 @@
         <div class="pages" id="main">
              <!--Initial List of items-->
             <div class="panel" data-title="故障列表" data-selected="true" data-footer="none">
-                <div class="wrapper" style="left:0;">
-                    <div class="scroller">
+                <div id="wrapper" class="wrapper" style="left:0;">
+                    <div class="scroller" id="scroller">
                         <div class="pullDown" style="display:none;">
                             <span class="pullDownIcon"></span>
                             <span class="pullDownLabel">下拉刷新</span>
@@ -77,11 +77,7 @@ function initePage(){
         url: '../monitor/mcluster/list/?key=&&mclusterName=&&hclusterName=&&ipAddr=&_=1439178470038',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-            var token= AppObj.getToken();
-            resquest.setRequestHeader('authtoken',token);
-            resquest.setRequestHeader('clientType','android');
-        },
+        beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data;
             for(var i in _targetData){
@@ -138,11 +134,7 @@ function freshState(){
             url: '../monitor/'+ip+'/node/status?_=1439190565940',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
-                var token= AppObj.getToken();
-                resquest.setRequestHeader('authtoken',token);
-                resquest.setRequestHeader('clientType','android');
-            },
+            beforeSend:keyTestBySelf,
             success:function(data){
                 if(data.result==0){//error
                     $.afui.toast({
@@ -213,6 +205,7 @@ $('#list').unbind('click').bind('click',function(event) {
     $('header').removeClass('self-hidden');
 });
 common.selfHeaderNav();
-common.freshOnly(initePage,'','list');
+common.scrollInite("",initePage);
+//common.freshOnly(initePage,'','list');
 </script>
 </html>

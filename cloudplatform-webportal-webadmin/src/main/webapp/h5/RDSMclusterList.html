@@ -108,11 +108,7 @@ function initePage(refresh,next_page){
         url: '../mcluster/list?key=&&currentPage='+next_page+'&&recordsPerPage=15&&mclusterName=&&hclusterName=&&userName=&&status=&_=1439774858710',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-             var token= AppObj.getToken();
-             resquest.setRequestHeader('authtoken',token);
-             resquest.setRequestHeader('clientType','android');
-        },
+		beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data.data;
             for(var i in _targetData){
@@ -124,7 +120,7 @@ function initePage(refresh,next_page){
                         + "<span class=\"self-clearfix\"></span>"
                         + "</div>"
                         + "</a>"
-                        +"</li>";
+                        + "</li>";
                 
                 htmlPage=htmlPage+"<div class=\"panel\" data-title='Container详情列表' data-footer=\"none\" id='item"+data.data.currentPage+i+"'>"
                                 + "</div>";
@@ -154,11 +150,7 @@ function initePageCon(refresh,next_page){
         url: '../container?key=&&currentPage=1&&recordsPerPage=15&&containerName=&&ipAddr=&&status=&_=1439775815147',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-             var token= AppObj.getToken();
-             resquest.setRequestHeader('authtoken',token);
-             resquest.setRequestHeader('clientType','android');
-        },
+        beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data.data;
             for(var i in _targetData){
@@ -200,11 +192,7 @@ function initeSubPage(){
             url: '../container/'+id+'?_=1439778538311',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
-             var token= AppObj.getToken();
-             resquest.setRequestHeader('authtoken',token);
-             resquest.setRequestHeader('clientType','android');
-            },
+            beforeSend:keyTestBySelf,
             success:function(data){
                 var _targetData=data.data;
                 var html='';

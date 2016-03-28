@@ -51,7 +51,7 @@
         <div class="pages" id="main">
              <!--Initial List of items-->
             <div class="panel" data-title="故障列表" data-selected="true" data-footer="none">
-                <div class="wrapper" style="left:0">
+                <div id="wrapper" class="wrapper" style="left:0">
                     <div class="scroller">
                         <div class="pullDown" style="display:none;">
                             <span class="pullDownIcon"></span>
@@ -83,11 +83,7 @@ function initePage(){
         url:'../app/mclusterFailedList',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-            var token= AppObj.getToken();
-            resquest.setRequestHeader('authtoken',token);
-            resquest.setRequestHeader('clientType','android');
-        },
+        beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data;
             for(var i in _targetData){
@@ -144,11 +140,7 @@ function freshState(){
             url: '../monitor/'+ip+'/mcluster/status?_=1439190565940',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
-                var token= AppObj.getToken();
-                resquest.setRequestHeader('authtoken',token);
-                resquest.setRequestHeader('clientType','android');
-            },
+            beforeSend:keyTestBySelf,
             success:function(data){
                 if(data.result==0){//error
                     $.afui.toast({
@@ -222,6 +214,7 @@ $('#list').unbind('click').bind('click',function(event) {
     $('header').removeClass('self-hidden');
 });
 common.selfHeaderNav();
-common.freshOnly(initePage,'','list');
+common.scrollInite("",initePage);
+//common.freshOnly(initePage,'','list');
 </script>
 </html>

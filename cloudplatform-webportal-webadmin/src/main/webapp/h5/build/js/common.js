@@ -1,3 +1,11 @@
+//测试开关
+var keyTestBySelf = function(){
+/*    var token= AppObj.getToken();
+    resquest.setRequestHeader('authtoken',token);
+    resquest.setRequestHeader('clientType','android');*/
+}
+	
+	
 var myScroll;
 // var items_per_page=7,scroll_in_progress=false;
 var Common=function(){
@@ -8,6 +16,7 @@ var Common=function(){
 };
 Common.prototype={
 	scrollInite:function(refresh,initePage){
+
 		var that=this;
 		var pullDownAction=function(){
 		    initePage('refresh');
@@ -129,7 +138,7 @@ Common.prototype={
 		    // In order to prevent seeing the "pull down to refresh" before the iScoll is trigger - the wrapper is located at left:-9999px and returned to left:0 after the iScoll is initiated
 		    setTimeout(function() {
 		        $('#wrapper').css({left:0});
-		    }, 100);
+		    }, 500);
 		}
 
 		//入口
@@ -157,9 +166,18 @@ Common.prototype={
 			    _touchStartY=touch.clientY;
 			},false);
 			_target.addEventListener('touchmove', function(event) {
+				event.preventDefault();
+				console.log(111);
 				var touch = event.touches[0];
-				if(touch.clientY-_touchStartY<=0){
+				if(touch.clientY-_touchStartY<=0){//
 					_touchMove=false;
+					console.log(111);
+					$("#scroller").css({
+						"transition-timing-function":'cubic-bezier(0.1, 0.57, 0.1, 1)',
+						"transition-duration": '0ms',
+						"transform":"translate(0px, -200px) translateZ(0px)"
+					});
+
 				}else{
 					_touchMove=true;
 					$('.pullDown').fadeIn('fast');

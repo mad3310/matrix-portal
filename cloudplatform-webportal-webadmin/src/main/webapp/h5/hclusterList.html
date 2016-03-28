@@ -80,11 +80,7 @@ function initePage(refresh,next_page){
         url: '../hcluster/list?key=&&currentPage='+next_page+'&&recordsPerPage=15&&mclusterName=&&hclusterName=&&userName=&&status=&_=1438659830453',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-         var token= AppObj.getToken();
-         resquest.setRequestHeader('authtoken',token);
-         resquest.setRequestHeader('clientType','android');
-        },
+        beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data.data;
             if(refresh){
@@ -141,11 +137,7 @@ function initeSubPage(id,pageId){
             url: '../hcluster/'+id+'?_=1439351322358',
             type: 'get',
             cache:false,
-            beforeSend: function(resquest){
-             var token= AppObj.getToken();
-             resquest.setRequestHeader('authtoken',token);
-             resquest.setRequestHeader('clientType','android');
-            },
+            beforeSend:keyTestBySelf,
             success:function(data){
                 var _targetData=data.data.hclusterDetail;
                 var html=''
@@ -231,11 +223,7 @@ function deleteCmd(id){
                             cache:false,
                             url:'../host/'+id,
                             type:'delete',
-                            beforeSend: function(resquest){
-                                var token= AppObj.getToken();
-                                resquest.setRequestHeader('authtoken',token);
-                                resquest.setRequestHeader('clientType','android');
-                            },
+                            beforeSend:keyTestBySelf,
                             success:function(data){
                                 if(data.result==0){//has error
                                     $.afui.toast({

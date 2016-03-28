@@ -87,11 +87,7 @@ function initePage(refresh,next_page){
         url: '../backup?&&startTime=&&endTime=&&currentPage='+next_page+'&&recordsPerPage=15&&dbName=&&mclusterName=&&status=',
         type: 'get',
         cache:false,
-        beforeSend: function(resquest){
-         var token= AppObj.getToken();
-         resquest.setRequestHeader('authtoken',token);
-         resquest.setRequestHeader('clientType','android');
-        },
+        beforeSend:keyTestBySelf,
         success:function(data){
             var _targetData=data.data.data;
             if(refresh){
