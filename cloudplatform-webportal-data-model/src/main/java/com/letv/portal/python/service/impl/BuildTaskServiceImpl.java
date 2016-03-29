@@ -932,7 +932,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
         if(analysisResult(result)) {
             Map<String,Object>  data= (Map<String, Object>) result.get("response");
 
-            BulkRequestBuilder bulkRequestBuilder = ESUtil.getClient().prepareBulk();
+            //BulkRequestBuilder bulkRequestBuilder = ESUtil.getClient().prepareBulk();
 
             for(Iterator it =  data.keySet().iterator();it.hasNext();){
                 String key = (String) it.next();
@@ -943,33 +943,33 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
                 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));
                 monitorDetail.setIp(container.getIpAddr());
                 this.monitorService.insert(monitorDetail);
-                //save into es
-                try {
-                    bulkRequestBuilder.add(ESUtil.getClient().prepareIndex((Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase() + "_" + DataFormat.compactDate(new Date())).toLowerCase(),
-                            monitorDetail.getDetailName().toLowerCase(), UUID.randomUUID().toString())
-                            //                        .setSource(JsonUtil.transToString(monitorMap)));
-                            .setSource(
-                                    XContentFactory.jsonBuilder().startObject()
-                                            .field("detailName", monitorDetail.getDetailName())
-                                            .field("detailValue", monitorDetail.getDetailValue())
-                                            .field("ip", monitorDetail.getIp())
-                                            .field("monitorDate", date)
-                                            .endObject()));
-                } catch (IOException e) {
-                    logger.error(e.getMessage());
-                    e.printStackTrace();
-                }
+                //save into es 
+//                try {
+//                    bulkRequestBuilder.add(ESUtil.getClient().prepareIndex((Constant.ES_RDS_MONITOR_INDEX + index.getDetailTable().toLowerCase() + "_" + DataFormat.compactDate(new Date())).toLowerCase(),
+//                            monitorDetail.getDetailName().toLowerCase(), UUID.randomUUID().toString())
+//                            //                        .setSource(JsonUtil.transToString(monitorMap)));
+//                            .setSource(
+//                                    XContentFactory.jsonBuilder().startObject()
+//                                            .field("detailName", monitorDetail.getDetailName())
+//                                            .field("detailValue", monitorDetail.getDetailValue())
+//                                            .field("ip", monitorDetail.getIp())
+//                                            .field("monitorDate", date)
+//                                            .endObject()));
+//                } catch (IOException e) {
+//                    logger.error(e.getMessage());
+//                    e.printStackTrace();
+//                }
             }
-            BulkResponse bulkResponse = null;
-            try {
-                bulkResponse = bulkRequestBuilder.execute().actionGet();
-            } catch (ElasticsearchException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
-            }
-            if(bulkResponse.hasFailures()) {
-                logger.error(bulkResponse.buildFailureMessage());
-            }
+//            BulkResponse bulkResponse = null;
+//            try {
+//                bulkResponse = bulkRequestBuilder.execute().actionGet();
+//            } catch (ElasticsearchException e) {
+//                logger.error(e.getMessage());
+//                e.printStackTrace();
+//            }
+//            if(bulkResponse.hasFailures()) {
+//                logger.error(bulkResponse.buildFailureMessage());
+//            }
         } else {
             MonitorErrorModel error = new MonitorErrorModel();
             error.setTableName(index.getDetailTable());
