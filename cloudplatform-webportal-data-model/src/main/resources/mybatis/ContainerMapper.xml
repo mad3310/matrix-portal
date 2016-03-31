@@ -233,9 +233,9 @@
 		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HCLUSTER_NAME
 		from 
 			WEBPORTAL_CONTAINER C 
-		left join 
+		join 
 			WEBPORTAL_MCLUSTER_INFO M ON M.ID = C.MCLUSTER_ID
-		left join 
+		join 
 			WEBPORTAL_HCLUSTER H on M.HCLUSTER_ID = H.ID
 		where 
 			C.MCLUSTER_ID = #{mclusterId} and C.TYPE='mclustervip' ORDER BY C.TYPE,C.ZOOKEEPER_ID
@@ -298,9 +298,9 @@
 		<include refid="Base_Column_List" />,H.HCLUSTER_NAME
 		from 
 			WEBPORTAL_CONTAINER C
-		left join 
+		join 
 			WEBPORTAL_MCLUSTER_INFO M ON M.ID = C.MCLUSTER_ID
-		left join 
+		join 
 			WEBPORTAL_HCLUSTER H on M.HCLUSTER_ID = H.ID
 		<include refid="Example_Where_Clause" />
 	</select>
