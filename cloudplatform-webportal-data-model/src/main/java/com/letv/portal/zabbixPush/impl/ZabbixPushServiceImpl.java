@@ -45,6 +45,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	@Value("${zabbix.host.usermacro}")
 	private String ZABBIX_HOST_USERMACRO;
 	
+	@Value("${zabbix.lsj.host.groupid}")
+	private String ZABBIX_LSJ_HOST_GROUPID;//洛杉矶单独的groupId
+	@Value("${zabbix.lsj.host.proxy_hostid}")
+	private String ZABBIX_LSJ_HOST_PROXY_HOSTID;//洛杉矶单独的hostId
+	@Value("${zabbix.lsj.host.usermacro}")
+	private String ZABBIX_LSJ_HOST_USERMACRO;//洛杉矶单独的usermacro
+	
 	@Autowired
 	private IContainerService containerService;
 	@Override
@@ -73,7 +80,16 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 			} else if("mclustervip".equals(c.getType())) {
 				templateId = ZABBIX_TEMPLATE_VIP;
 			}
-			HostParam params = new HostParam(templateId,ZABBIX_HOST_GROUPID,ZABBIX_HOST_PROXY_HOSTID);
+			//临时方案，以LSJ开头的使用洛杉矶的id
+			HostParam params = null;
+			if(c.getHcluster().getHclusterName().startsWith("LSJ")) {
+				logger.info("洛杉矶id推送：groupId-{}，hostId-{}", ZABBIX_LSJ_HOST_GROUPID, ZABBIX_LSJ_HOST_PROXY_HOSTID);
+				params = new HostParam(templateId,ZABBIX_LSJ_HOST_GROUPID,ZABBIX_LSJ_HOST_PROXY_HOSTID);
+			} else {
+				logger.info("其他id推送：groupId-{}，hostId-{}", ZABBIX_HOST_GROUPID, ZABBIX_HOST_PROXY_HOSTID);
+				params = new HostParam(templateId,ZABBIX_HOST_GROUPID,ZABBIX_HOST_PROXY_HOSTID);
+			}
+			
 			params.setHost(c.getContainerName());
 
 			InterfacesModel interfacesModel = new InterfacesModel();
@@ -88,7 +104,15 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 
 			if(StringUtils.isNullOrEmpty(hostId))
 				return false;
-			UserMacroParam macro = new UserMacroParam(hostId,ZABBIX_HOST_USERMACRO);
+			
+			//临时方案，以LSJ开头的使用洛杉矶的id
+			UserMacroParam macro = null;
+			if(c.getHcluster().getHclusterName().startsWith("LSJ")) {
+				macro = new UserMacroParam(hostId,ZABBIX_LSJ_HOST_USERMACRO);
+			} else {
+				macro = new UserMacroParam(hostId,ZABBIX_HOST_USERMACRO);
+			}
+			
 			zabbixPushModel.setParams(macro);
 			zabbixPushModel.setMethod("usermacro.create");
 			usermacroCreate(zabbixPushModel);

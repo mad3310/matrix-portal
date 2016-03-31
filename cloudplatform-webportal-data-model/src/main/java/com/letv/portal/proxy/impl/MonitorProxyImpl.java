@@ -88,17 +88,16 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		Map<String,Object> map = new  HashMap<String,Object>();
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
-		Map<String,Object> indexParams = new  HashMap<String,Object>();
-		indexParams.put("status", 1);
-		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		map.clear();
+		map.put("status", 1);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(map);
 		Date date = new Date();
 		logger.info("collectMclusterServiceData start" + date);
 		for (MonitorIndexModel index : indexs) {
 			for (ContainerModel container : contianers) {
-				this.buildTaskService.getContainerServiceData(container, index,date);
+				this.buildTaskService.getContainerServiceData(container.getIpAddr(), index.getDataFromApi(), index.getDetailTable(), date);
 			}
 		}
-		contianers.clear();
 		logger.info("collectMclusterServiceData end");
 	}
 	@Override
