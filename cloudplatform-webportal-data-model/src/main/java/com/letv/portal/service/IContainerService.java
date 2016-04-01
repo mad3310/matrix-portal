@@ -35,5 +35,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	ContainerModel selectValidVipContianer(Long mclusterId, String type, Map<String, Object> params);
 
 	List<ContainerModel> selectVaildNormalContainers(Map<String, Object> params);
+	
+	List<ContainerModel> selectWithHClusterNameByMap(Map<String, Object> params);
 
 }

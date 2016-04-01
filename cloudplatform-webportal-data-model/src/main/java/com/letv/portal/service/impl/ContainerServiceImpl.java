@@ -6,9 +6,11 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.service.IContainerService;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +99,12 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 			return null;
 		}
 		return containers.get(0);
+	}
+
+	@Override
+	public List<ContainerModel> selectWithHClusterNameByMap(
+			Map<String, Object> params) {
+		return this.containerDao.selectWithHClusterNameByMap(params);
 	}
 	
 

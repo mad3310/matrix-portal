@@ -35,7 +35,7 @@ public class ZabbixTest extends AbstractTest {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mclusterId", 17);
-		zabbixPushService.createMultiContainerPushZabbixInfo(this.containerService.selectByMap(map));
+		zabbixPushService.createMultiContainerPushZabbixInfo(this.containerService.selectWithHClusterNameByMap(map));
 	}
 
 	@Test

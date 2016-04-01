@@ -46,6 +46,7 @@
 		
 	    <association property="hcluster" javaType="Hcluster">
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+			<result column="HCLUSTER_NAME" property="hclusterName" />
 		</association>
 	</resultMap>
 	
@@ -229,11 +230,15 @@
 	</select>
 	<select id="selectVipByClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
-		<include refid="Base_Column_List" />
-		,M.MCLUSTER_NAME
-		from WEBPORTAL_CONTAINER C left join WEBPORTAL_MCLUSTER_INFO M
-		ON M.ID = C.MCLUSTER_ID
-		where C.MCLUSTER_ID = #{mclusterId} and C.TYPE='mclustervip' ORDER BY C.TYPE,C.ZOOKEEPER_ID
+		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HCLUSTER_NAME
+		from 
+			WEBPORTAL_CONTAINER C 
+		join 
+			WEBPORTAL_MCLUSTER_INFO M ON M.ID = C.MCLUSTER_ID
+		join 
+			WEBPORTAL_HCLUSTER H on M.HCLUSTER_ID = H.ID
+		where 
+			C.MCLUSTER_ID = #{mclusterId} and C.TYPE='mclustervip' ORDER BY C.TYPE,C.ZOOKEEPER_ID
 	</select>
 	<!-- 物理删除 -->
 	<update id="deleteByMclusterId" parameterType="java.lang.Long">
@@ -286,6 +291,20 @@
 		from WEBPORTAL_CONTAINER C
 		<include refid="Example_Where_Clause" />
 	</select>
+	
+	<!-- 根据条件查询 -->
+	<select id="selectWithHClusterNameByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />,H.HCLUSTER_NAME
+		from 
+			WEBPORTAL_CONTAINER C
+		join 
+			WEBPORTAL_MCLUSTER_INFO M ON M.ID = C.MCLUSTER_ID
+		join 
+			WEBPORTAL_HCLUSTER H on M.HCLUSTER_ID = H.ID
+		<include refid="Example_Where_Clause" />
+	</select>
+	
 	<!-- 根据条件查询 -->
 	<select id="selectValidByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select

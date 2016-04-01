@@ -142,6 +142,7 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
+	public void getContainerServiceData(String ipAddr, String dataFromApi, String detailTable,Date date);
 
 	public BaseMonitor getMonitorData(String ip, Long monitorType);
 
