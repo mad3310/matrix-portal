@@ -26,7 +26,7 @@
 								<th class="hidden-480">名称</th>
 								<th>ip</th>
 								<th>端口</th>
-								<th>使用次数</th>
+								<th>挂载集群数</th>
 								<th>所属物理机集群</th>
 								<th  class="hidden-480">状态</th>
 								<!-- <th class="hidden-480">描述</th> -->

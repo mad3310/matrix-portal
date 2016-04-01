@@ -6,7 +6,7 @@ $(function(){
 	//初始化 
 	page_init();
 	/*动态加载下拉列表值*/
-	var sltArray = [1,15];
+	var sltArray = [0,1,15];
 	addSltOpt(sltArray,$("#hclusterStatus"));
 	
 	$('[name = "popoverHelp"]').popover();

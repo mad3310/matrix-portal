@@ -81,9 +81,9 @@ function queryByPage() {
 				var td5 = $("<td class=\"used\">"
 						+ array[i].used
 						+ "</td>");
-				var td6 = $("<td class=\"used\">"
+				var td6 = $("<td class=\"used\"><a href='/detail/hcluster/"+array[i].hclusterId+"'>"
 						+ (array[i].hcluster!=null?array[i].hcluster.hclusterName:"-")
-						+ "</td>");
+						+ "</a></td>");
 				var td7 = $("<td class='hidden-480'>"
 						+ array[i].status
 						+ "</td>");
