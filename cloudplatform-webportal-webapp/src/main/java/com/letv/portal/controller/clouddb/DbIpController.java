@@ -69,13 +69,13 @@ public class DbIpController {
 	}
 	
 	private void isAuthorityDb(Long dbId) {
-		if(dbId == null)
+		if(null == dbId)
 			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", dbId);
 		map.put("createUser", sessionService.getSession().getUserId());
 		List<DbModel> dbs = this.dbService.selectByMap(map);
-		if(dbs == null || dbs.isEmpty())
+		if(null == dbs  || dbs.isEmpty())
 			throw new ValidateException("参数不合法");
 	}
 }
