@@ -178,7 +178,9 @@ public class HttpClient {
 
 		logger.info("response status: " + response.getStatusLine());
 		String charset = EntityUtils.getContentCharSet(entity);
-		logger.info(charset);
+		if(charset!=null) {
+			logger.info(charset);
+		}
 
 		String body = null;
 		try {
