@@ -18,7 +18,7 @@
 <div class="row">
 <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
 		<div class="widget-header hidden-md hidden-lg">
-			<h5 class="widget-title">Container集群查询条件</h5>
+			<h5 class="widget-title">RDS集群查询条件</h5>
 			<div class="widget-toolbar">
 				<a href="#" data-action="collapse">
 					<i class="ace-icon fa fa-chevron-down"></i>
@@ -27,7 +27,7 @@
 		</div>
 		<div class="widget-body">
 		<div class="page-header col-sm-12 col-xs-12 col-md-12">
-				<!-- <h3>Container集群列表</h3> -->
+				<!-- <h3>RDS集群列表</h3> -->
 				<div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 					<form class="form-inline">
 						<!-- <div class="form-group">
@@ -35,7 +35,7 @@
 								placeholder="类型">
 						</div> -->
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="containerName" placeholder="container集群名称">
+							<input type="text" class="form-control" id="containerName" placeholder="RDS集群名称">
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<!-- <input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理机集群"> -->
@@ -71,11 +71,11 @@
 	
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">Container集群列表</h5>
+				<h5 class="widget-title">RDS集群列表</h5>
 				<div class="widget-toolbar no-border">
 					<!-- <button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
 						<i class="ace-icont fa fa-plus"></i>
-						 创建Container集群
+						 创建RDS集群
 					</button> -->
 				</div>
 			</div>
@@ -91,14 +91,14 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<!-- <th width="13%">Container集群名称</th>
+								<!-- <th width="13%">RDS集群名称</th>
 								<th width="16%">所属物理机集群</th>
 								<th width="13%">类型</th>
 								<th width="13%">所属用户</th>
 								<th width="13%">创建时间 </th>
 								<th width="13%" class="hidden-480">当前状态</th>
 								<th width="13%">操作</th> -->
-								<th>Container集群名称</th>
+								<th>RDS集群名称</th>
 								<th class="hidden-480">所属物理机集群</th>
 								<!-- <th class="hidden-480">类型</th> -->
 								<th>所属用户</th>
@@ -114,7 +114,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-12">
-			<small><font color="gray">*注：点击Container集群名可查看详情.</font></small>
+			<small><font color="gray"></font></small>
 		</div>
 		<div id="pageControlBar" class="col-xs-12 col-sm-12">
 			<input type="hidden" id="totalPage_input" />
@@ -137,18 +137,18 @@
             					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
             					<span class="sr-only">关闭</span>
             				</button>
-            				<h4 class="modal-title">创建Container集群</h4>
+            				<h4 class="modal-title">创建RDS集群</h4>
             		</div>
 					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form">
 					<!-- <div class="col-xs-12">
 						<h4 class="lighter">
-							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建Container集群 </a>
+							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建RDS集群 </a>
 						</h4>
 						<div class="widget-box">
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="mcluster_name">Container集群名称</label>
+										<label class="col-sm-4 control-label" for="mcluster_name">RDS集群名称</label>
 										<div class="col-sm-6">
 											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 										</div>
@@ -176,7 +176,7 @@
 					</div> -->
 					<div class="modal-body">            				
             					<div class="form-group">
-										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="mcluster_name">Container集群名称</label>
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="mcluster_name">RDS集群名称</label>
 										<div class="col-sm-10 col-xs-10 col-md-6">
 											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 										</div>
@@ -238,7 +238,7 @@
 		</div><!-- /.modal -->
 		<div id="dialog-confirm" class="hide">
 			<div id="dialog-confirm-content" class="alert alert-info bigger-110">
-				删除container集群将不能恢复！
+				删除RDS集群将不能恢复！
 			</div>
 			<div class="space-6"></div>
 			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">

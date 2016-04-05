@@ -80,12 +80,12 @@ $(function(){
 					$(this).parent().remove();
 					queryByPage();
 					if($('.queryBadge').length<=0){
-						$('.queryOption').find('.widget-title').html('Container集群查询条件');
+						$('.queryOption').find('.widget-title').html('RDS集群查询条件');
 					}
 					return;
 				});
 			}else{
-				$('.queryOption').find('.widget-title').html('Container集群查询条件');
+				$('.queryOption').find('.widget-title').html('RDS集群查询条件');
 			}
 
 		}
@@ -272,7 +272,7 @@ function pageControl() {
 	    });
 	}
 	
-//创建Container集群表单验证
+//创建RDS集群表单验证
 function formValidate() {
 	$("#create-mcluster-form").bootstrapValidator({
 	  message: '无效的输入',
@@ -286,17 +286,17 @@ function formValidate() {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
-                         message: 'Container集群名称不能为空!'
+                         message: 'RDS集群名称不能为空!'
                      },
 			          stringLength: {
 			              max: 40,
-			              message: 'Container集群名过长'
+			              message: 'RDS集群名过长'
 			          },regexp: {
 		                  regexp: /^([a-zA-Z_0-9]*)$/,
   		                  message: "请输入字母数字或'_'"
                  	  },
                  	 remote: {
-	                        message: 'Container集群名已存在!',
+	                        message: 'RDS集群名已存在!',
 	                        url: "/mcluster/validate"
 	                    }
 	             }
@@ -308,7 +308,7 @@ function formValidate() {
     	 $('#create-mcluster-botton').removeClass("disabled");
      });
 }
-//查询Container集群创建过程
+//查询RDS集群创建过程
 function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	if(type == "new"){
 		$("#build_status_tby tr").remove();
@@ -438,7 +438,7 @@ function startMcluster(obj){
 			}
 		});
 	}
-	confirmframe("启动container集群","启动集群大概需要几分钟时间!","请耐心等待...",startCmd);
+	confirmframe("启动RDS集群","启动集群大概需要几分钟时间!","请耐心等待...",startCmd);
 }
 function stopMcluster(obj){
 	var _target=$(obj);
@@ -463,7 +463,7 @@ function stopMcluster(obj){
 			}
 		});
 	}
-	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
+	confirmframe("关闭RDS集群","关闭RDS集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
 	var _target=$(obj);
@@ -521,7 +521,7 @@ function deleteMcluster(obj){
 			 + "</div>"
              + "</form>");
 	
-	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
+	confirmframe("删除RDS集群","删除RDS集群后将不能恢复!",form,deleteCmd);
 	
 	/*刷新验证码*/
 	function refreshCode(){
@@ -603,7 +603,7 @@ function expandMcluster(obj){
 			}
 		});
 	}
-	confirmframe("扩容container集群","选择扩容数量",form,expandCmd);
+	confirmframe("扩容RDS集群","选择扩容数量",form,expandCmd);
 }
 function queryHcluster(){
 //	var options1 = $('#hcluster_select');

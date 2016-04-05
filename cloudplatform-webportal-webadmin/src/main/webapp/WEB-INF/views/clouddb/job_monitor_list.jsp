@@ -9,7 +9,7 @@
 			<div class="row">
 				<div class="input-group pull-right">
 					<form>
-						<div class="form-group col-xs-6 col-sm-6">
+						<div class="form-group col-xs-7 col-sm-7">
 							<select class="" id="jobstatus" style="height:34px;width:150px;">
 								<option value="GCE">GCE</option>
 								<option value="RDS">RDS</option>
@@ -19,7 +19,7 @@
 								<option value="LOG">LOG</option>
 							</select>
 						</div>
-						<div class=" form-group col-xs-6 col-sm-6">
+						<div class=" form-group col-xs-5 col-sm-5">
 							<button class="btn btn-sm btn-primary btn-search pull-right " id="jobSearch"
 								type="button">
 								<i class="ace-icon fa fa-search"></i>搜索
